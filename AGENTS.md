@@ -42,6 +42,13 @@ sites/
 - 图片资源压缩后再提交
 - 遵循 Tailwind CSS 工具类优先写法，避免自定义 CSS
 
+## 部署信息
+- **GitHub**: https://github.com/qcqe/yeslon-website
+- **主站**: https://www.yeslon.com（yeslon.com 301 跳转到 www）
+- **部署平台**: Cloudflare Pages
+- **构建命令**: `cd yeslon-multi-site && npm install && npm run build`
+- **输出目录**: `yeslon-multi-site/dist`
+
 ## 建站工作流程
 
 参见 `yeslon-multi-site/docs/YESLON建站指南.md` 完整说明。
