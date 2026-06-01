@@ -1,0 +1,4 @@
+{
+  "project": "微物联多站点静态网站平台",
+  "description": "市场部多租户静态网站系统，基于 Vite + React + TypeScript + Tailwind CSS"
+}
