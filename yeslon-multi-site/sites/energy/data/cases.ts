@@ -3,52 +3,42 @@ import { Case } from '@shared/types';
 export const energyCases: Case[] = [
   {
     id: '1',
-    slug: 'state-grid-project',
-    title: '某省级电网智能调度项目',
-    description: '为某省级电网建设的智能调度系统，实现了全省电网的实时监控和优化调度。',
-    client: '某省级电网公司',
-    image: '/images/energy/cases/state-grid.jpg',
-    solutionIds: ['1'],
-    publishedAt: '2024-01-20'
+    slug: 'ksdsfe-harmonic-monitoring',
+    title: 'KSDSFE3250220001 充电站谐波监测项目',
+    description: '为KSDSFE3250220001大型公共充电站部署谐波监测与电气安全系统，实现全站充电桩的谐波指纹采集与实时分析，成功预警7起潜在电气故障。',
+    client: 'KSDSFE3250220001 充电站运营方',
+    image: '/images/energy/cases/ksdsfe-harmonic.jpg',
+    solutionIds: ['1', '4'],
+    publishedAt: '2024-07-15'
   },
   {
     id: '2',
-    slug: 'steel-plant-ems',
-    title: '某大型钢铁企业能源管理项目',
-    description: '帮助某大型钢铁企业建立完善的能源管理系统，年节能效益超过2000万元。',
-    client: '某大型钢铁企业',
-    image: '/images/energy/cases/steel-plant.jpg',
+    slug: 'city-ebike-shed-monitoring',
+    title: '某市电动自行车充电棚安全监测项目',
+    description: '为某市主城区200余个电动自行车集中充电棚部署电气安全监测终端，实现充电回路漏电、过载、温度的实时监测与远程告警，火灾事故率降低90%。',
+    client: '某市消防救援支队',
+    image: '/images/energy/cases/ebike-shed.jpg',
     solutionIds: ['2'],
-    publishedAt: '2024-02-10'
+    publishedAt: '2024-08-01'
   },
   {
     id: '3',
-    slug: 'solar-farm-monitoring',
-    title: '某大型光伏电站监控项目',
-    description: '为总装机容量500MW的光伏电站建设的智能化监控平台。',
-    client: '某新能源公司',
-    image: '/images/energy/cases/solar-farm.jpg',
-    solutionIds: ['3'],
-    publishedAt: '2024-02-25'
+    slug: 'bus-depot-electrical-safety',
+    title: '某新能源公交场站电气安全项目',
+    description: '为某大型新能源公交场站建设电气安全监测系统，覆盖60余个公交充电桩及配套配电设施，实现电气隐患的实时监测与智能预警。',
+    client: '某市公共交通集团有限公司',
+    image: '/images/energy/cases/bus-depot.jpg',
+    solutionIds: ['1', '5'],
+    publishedAt: '2024-08-20'
   },
   {
     id: '4',
-    slug: 'industrial-park-storage',
-    title: '某工业园区储能项目',
-    description: '为某工业园区建设的储能系统，参与电网调峰，年收益超过500万元。',
-    client: '某工业园区管理委员会',
-    image: '/images/energy/cases/park-storage.jpg',
-    solutionIds: ['4'],
-    publishedAt: '2024-03-15'
-  },
-  {
-    id: '5',
-    slug: 'campus-microgrid',
-    title: '某大学校园微电网项目',
-    description: '为某知名大学建设的风光储一体化微电网系统，实现校园100%清洁能源供电。',
-    client: '某知名大学',
-    image: '/images/energy/cases/campus.jpg',
-    solutionIds: ['5'],
-    publishedAt: '2024-04-05'
+    slug: 'commercial-complex-monitoring',
+    title: '某商业综合体充电站监测项目',
+    description: '为某大型商业综合体地下停车场充电站区域提供电气安全整体解决方案，集成谐波指纹分析与电弧检测功能，保障商业体充电安全。',
+    client: '某商业地产集团',
+    image: '/images/energy/cases/commercial-complex.jpg',
+    solutionIds: ['1', '4'],
+    publishedAt: '2024-09-05'
   }
 ];

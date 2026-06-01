@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "npm run build:sites",
-    "build:sites": "npx tsx scripts/build-sites.ts",
+    "build:sites": "node scripts/build-sites.mjs",
     "build:seo": "node scripts/generate-seo.js",
     "preview": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
@@ -33,6 +33,7 @@
     "eslint-plugin-react-refresh": "^0.4.4",
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.5",
+    "tsconfig-paths": "^4.2.0",
     "tsx": "^4.22.4",
     "typescript": "^5.3.2",
     "vite": "^5.0.2"
