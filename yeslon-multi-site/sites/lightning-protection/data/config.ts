@@ -2,7 +2,7 @@ import { SiteConfig } from '@shared/types';
 
 export const lightningProtectionConfig: SiteConfig = {
   subdomain: 'lightning-protection',
-  domain: 'qcqe.com',
+  domain: 'yeslon.com',
   siteName: '智能防雷监测系统',
   siteNameEn: 'Smart Lightning Protection',
   description: '专注于智能防雷监测领域，提供FS/FSS/FSP电涌保护器监测仪、FL雷电峰值监测仪、FR/FRP接地电阻监测仪及FG智能网关，构建全方位的雷电防护智能监测网络。',

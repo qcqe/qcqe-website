@@ -44,8 +44,7 @@ sites/
 
 ## 部署信息
 - **GitHub**: https://github.com/qcqe/qcqe-website
-- **主站**: https://www.qcqe.com（qcqe.com 301 跳转到 www）
-- **旧域名**: yeslon.com → 301 跳转到 www.qcqe.com
+- **主站**: https://www.yeslon.com（yeslon.com 301 跳转到 www）
 - **部署平台**: Cloudflare Pages
 - **构建命令**: `cd yeslon-multi-site && npm install && npm run build`
 - **输出目录**: `yeslon-multi-site/dist`

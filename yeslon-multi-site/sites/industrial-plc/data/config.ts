@@ -2,7 +2,7 @@ import { SiteConfig } from '@shared/types';
 
 export const industrialPlcConfig: SiteConfig = {
   subdomain: 'industrial-plc',
-  domain: 'qcqe.com',
+  domain: 'yeslon.com',
   siteName: '工业分布式可编程控制系统',
   siteNameEn: 'Industrial PLC Control',
   description: '专注于工业分布式可编程控制领域，提供CC/CR/X系列PLC、分布式可编程控制器"设备大脑"、HMI人机界面及工业网关产品，赋能智能制造与工业自动化。',
