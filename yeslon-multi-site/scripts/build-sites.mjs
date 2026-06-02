@@ -191,6 +191,148 @@ energy:[{cat:'充电站安全',ico:'🔋',items:[
 ],
 };
 
+// ═══════════ SOLUTION DETAIL DATA ═══════════
+const SOLS = {
+'distributed-plc-control': {
+  sub:'分布式可编程控制系统', stats:[
+    {v:'99.99%',l:'系统可用性'},{v:'<100μs',l:'总线通信周期'},{v:'128轴',l:'最大同步控制'},{v:'1000+',l:'工业现场部署'},
+  ],
+  goals:[{ico:'🎯',t:'建设目标',d:'构建以CC/CR/X系列PLC为核心的分布式控制网络，实现工业现场设备的实时数据采集、逻辑控制与边缘AI推理。'},{ico:'📈',t:'核心价值',d:'替代传统集中式PLC架构，降低布线成本60%，提升系统灵活性与可扩展性，支持产线快速重构与柔性制造。'},{ico:'🚀',t:'技术优势',d:'国内首家实现CODESYS Runtime预装+边缘AI推理一体化的分布式PLC方案，支持TensorFlow Lite/ONNX模型本地部署。'}],
+  arch:[
+    {ico:'⚙️',t:'控制层',d:'CC-500/CC-900高性能PLC作为主站，EtherCAT总线连接远程I/O站与伺服驱动器，通信周期≤100μs。'},
+    {ico:'🔌',t:'I/O层',d:'CR系列分布式I/O站，灵活组合AI/AO/DI/DO/温度/脉冲等模块，最大64000 I/O点。'},
+    {ico:'🧠',t:'边缘智能层',d:'DB系列"设备大脑"控制器，ARM Cortex-A72+FPGA架构，本地运行AI推理模型。'},
+    {ico:'📡',t:'通信层',d:'IG系列工业网关，支持100+协议转换，OPC UA/MQTT对接MES/SCADA/云平台。'},
+  ],
+  feats:[
+    {ico:'📋',t:'IEC 61131-3全编程语言',d:'支持ST/LD/FBD/IL/SFC五种编程语言，兼容CODESYS/OpenPCS开发环境，降低工程师学习成本。'},
+    {ico:'⚡',t:'EtherCAT高速总线',d:'100μs通信周期，纳秒级时钟同步精度，最多支持256个EtherCAT从站设备。'},
+    {ico:'🛡️',t:'工业级可靠性',d:'-25℃~70℃宽温设计，CE/FCC/SIL 2功能安全认证，EMC三级防护，适应粉尘/振动/高温严苛工况。'},
+    {ico:'🔗',t:'多协议互联互通',d:'支持EtherCAT/PROFINET/EtherNet/IP/Modbus TCP/OPC UA，产线设备一网到底。'},
+    {ico:'🤖',t:'边缘AI推理',d:'内置TensorFlow Lite/ONNX Runtime，设备端实时运行视觉检测、振动分析、故障预测等AI模型。'},
+    {ico:'☁️',t:'云边协同管理',d:'通过IG网关数据上云，支持远程编程调试、OTA升级、设备健康管理，运维效率提升80%。'},
+  ],
+  prods:['CC-900旗舰型PLC','CC-500高性能PLC','CR-200分布式PLC','X-200微型PLC','DB-200设备大脑','IG-1000工业网关'],
+  scenes:['新能源汽车电池模组PACK产线控制','半导体封测设备PLC升级改造','食品饮料灌装线电子凸轮同步控制','超高层建筑楼宇自控系统','工业设备远程监控与预测性维护'],
+  benefits:['产线节拍提升35%','设备综合效率(OEE)提升22%','设备联网率从15%提升至100%','综合能耗降低26%','维护成本降低40%'],
+},
+'ev-charging-electrical-safety': {
+  sub:'新能源充电站电气安全数字化保障方案', stats:[
+    {v:'97.3%',l:'电弧识别准确率'},{v:'256点',l:'谐波采样/周期'},{v:'30天',l:'隐患提前预警'},{v:'7×24',l:'实时在线监测'},
+  ],
+  goals:[{ico:'🎯',t:'方案目标',d:'为新能源汽车充电站提供从充电桩漏电监测、电弧故障检测、谐波分析到后台集中管理的一站式电气安全数字化保障方案。'},{ico:'📈',t:'核心价值',d:'将充电站电气安全从"被动报警"转变为"主动预警"，提前发现线路隐患，杜绝电气火灾事故，保障充电运营安全。'},{ico:'🚀',t:'技术优势',d:'基于谐波指纹AI分析技术，256点/周期精细采样，97.3%电弧识别准确率，可提前30天发现电气隐患。'}],
+  arch:[
+    {ico:'🔌',t:'感知层',d:'ESA智能电表、ESB三相不平衡监测器、EST无线温度传感器、FA故障电弧探测器，部署于充电桩配电回路。'},
+    {ico:'📡',t:'通信层',d:'ESX/ESX智能网关集中采集感知层数据，通过4G/Wi-Fi/Ethernet上报云平台。'},
+    {ico:'☁️',t:'平台层',d:'FEXLINK云平台数据汇聚、存储与分析，AI谐波指纹模型实时推理。'},
+    {ico:'📱',t:'应用层',d:'PC端监控看板+移动端APP告警推送，支持远程巡检与运维工单管理。'},
+  ],
+  feats:[
+    {ico:'⚡',t:'充电桩漏电流实时监测',d:'高精度漏电流传感器，AC/DC兼容检测，1mA级分辨率，越限秒级告警推送。'},
+    {ico:'🔥',t:'故障电弧检测与报警',d:'串联/并联电弧智能识别，UL 1699B标准符合，杜绝充电桩电弧火灾隐患。'},
+    {ico:'📊',t:'谐波指纹分析与电能质量评估',d:'256点/周期高频采样，AI深度学习谐波特征识别，电能质量全参数评估。'},
+    {ico:'🌡️',t:'接点无线温度在线监测',d:'EST无线温度传感器，-40℃~+200℃，±0.5℃精度，无线传输≥200m。'},
+    {ico:'🔄',t:'三相不平衡智能诊断',d:'ESB三相不平衡监测器，实时计算不平衡度，预警中性线过载风险。'},
+    {ico:'📱',t:'云端集中管理与告警推送',d:'FEXLINK云平台多站点集中管理，告警分级推送至手机APP/短信/邮箱。'},
+  ],
+  prods:['ESA全要素智能电表','ESB三相不平衡监测器','EST温度监测模组','FA故障电弧监测模块','ESX智能网关','FEXLINK云平台'],
+  scenes:['大型集中式充电站电气安全监测','公交场站充电桩安全监控','商业综合体地下停车场充电区监测','高速服务区充电站远程运维','电动自行车集中充电棚安全监测'],
+  benefits:['电气火灾事故降低90%','运维人力成本降低60%','充电桩故障停机减少70%','满足最新国标监管要求','保险费用降低30%'],
+},
+'electrical-hazard-monitoring': {
+  sub:'电气安全隐患监测与AI分析系统', stats:[
+    {v:'97.3%',l:'隐患识别准确率'},{v:'30天',l:'隐患提前预警'},{v:'408项',l:'国标AI红线规则'},{v:'22个',l:'电气安全诊断模型'},
+  ],
+  goals:[{ico:'🎯',t:'方案目标',d:'基于谐波指纹AI分析技术，对线路电气参数进行高频采样与特征提取，实现电弧故障、接触不良、绝缘老化等早期隐患的精准识别与预警。'},{ico:'📈',t:'核心价值',d:'将电气安全从"被动维修"转变为"主动预警"，在隐患发展为事故前发出告警，避免电气火灾和经济损失。'},{ico:'🚀',t:'技术优势',d:'自研谐波指纹识别技术，256点/周期高频采样，深度学习模型97.3%识别准确率，较传统阈值法提升4倍。'}],
+  arch:[
+    {ico:'🔌',t:'数据采集层',d:'ESA智能电表、ESB监测器、EST温度传感器等设备，采集配电回路电压/电流/温度/谐波全参数。'},
+    {ico:'🧠',t:'AI分析层',d:'太一智能大模型·千知中枢，22个电气安全诊断模型，408项国标红线AI规则引擎。'},
+    {ico:'⚡',t:'预警处置层',d:'四级告警机制（正常→预警→告警→严重），自动生成工单并推送至运维人员。'},
+    {ico:'📊',t:'报告层',d:'自动生成电气安全评估报告、隐患趋势分析、设备健康度评分。'},
+  ],
+  feats:[
+    {ico:'🔬',t:'谐波指纹特征提取与识别',d:'256点/周期精细采样，提取不同故障类型的谐波特征图谱，AI模型精准匹配。'},
+    {ico:'🔥',t:'电弧故障早期预警',d:'串联/并联电弧特征识别，较传统热 detection 法提前数周发现隐患。'},
+    {ico:'📉',t:'绝缘老化趋势分析',d:'长期跟踪绝缘电阻变化趋势，预测剩余使用寿命，合理安排维修计划。'},
+    {ico:'🌡️',t:'接触不良热隐患定位',d:'EST温度传感器+负荷电流分析，精确定位接点发热隐患位置。'},
+    {ico:'📋',t:'电气安全评估报告自动生成',d:'定期生成设备级、回路级、系统级电气安全评估报告，支持导出PDF/Excel。'},
+    {ico:'💡',t:'国标AI红线规则引擎',d:'内置408项国家标准红线规则，自动比对监测数据，违规即告警。'},
+  ],
+  prods:['ESA全要素智能电表','ESB三相不平衡监测器','EST温度监测模组','FA故障电弧监测模块','FD剩余电流监测模块','FEXLINK云平台'],
+  scenes:['高速公路隧道/收费站配电回路监测','机场航站楼核心配电系统监控','大型商业综合体电气火灾预防','医院/学校等重要场所安全监测','老旧小区电气线路改造后监测'],
+  benefits:['电气火灾风险降低85%','隐患平均提前30天发现','巡检人力减少60%','设备寿命延长20%','符合GB 50116/GB 14287标准'],
+},
+'ground-resistance-monitoring': {
+  sub:'接地电阻在线监测系统', stats:[
+    {v:'0.01Ω',l:'测量分辨率'},{v:'200Ω',l:'最大测量范围'},{v:'7×24',l:'全天候在线'},{v:'<5%',l:'测量误差'},
+  ],
+  goals:[{ico:'🎯',t:'方案目标',d:'采用FR/FRP系列接地电阻监测仪，对接地系统进行7×24小时在线监测，实现接地电阻值实时采集、趋势分析与分级告警。'},{ico:'📈',t:'核心价值',d:'替代传统人工月度巡检方式，实现接地电阻远程在线监测，降低运维成本80%，杜绝接地故障引发的人身与设备事故。'},{ico:'🚀',t:'技术优势',d:'支持三极法/钳表法双测量模式，防爆型Ex ia IIC T4满足石化场景，LoRa无线组网适合大面积分布式接地监测。'}],
+  arch:[
+    {ico:'🌍',t:'监测层',d:'FR系列三极法/FRP系列钳表法接地电阻监测仪，室内导轨/室内螺丝/室外型多规格。'},
+    {ico:'📡',t:'通信层',d:'RS485有线组网或LoRa无线组网，FG智能网关数据汇聚，4G上云。'},
+    {ico:'☁️',t:'平台层',d:'FEXLINK云平台接地电阻专题看板，趋势分析，分级告警。'},
+    {ico:'📱',t:'应用层',d:'PC+移动端远程查看接地电阻数据，自动生成接地系统评估报告。'},
+  ],
+  feats:[
+    {ico:'📐',t:'三极法/钳表法双模式',d:'FR系列支持三极法（电位降法）精准测量，FRP系列支持钳表法快速巡检，适应不同场景需求。'},
+    {ico:'🎯',t:'高精度宽量程',d:'0.01Ω~200Ω测量范围，<5%测量误差，满足各行业接地标准要求。'},
+    {ico:'🌡️',t:'多测点同步监测',d:'支持同一网络内多台监测仪同步采集，数据集中对比分析。'},
+    {ico:'📈',t:'趋势变化智能分析',d:'自动分析接地电阻随季节/天气变化的趋势规律，科学评估接地系统状态。'},
+    {ico:'🔔',t:'超限分级告警',d:'多级阈值可配置，越限自动告警并推送至责任人，支持短信/APP/邮件。'},
+    {ico:'🌩️',t:'雷击事件记录',d:'自动关联雷电流监测数据，记录雷击时间与接地阻值变化，辅助防雷分析。'},
+  ],
+  prods:['FR接地电阻监测仪','FRP回路法接地电阻监测仪','FG智能防雷网关','FL雷电峰值监测仪'],
+  scenes:['变电站/换流站接地网在线监测','通信基站/雷达站接地电阻巡检','石化罐区防爆区接地监测','风电场/光伏电站接地系统监测','建筑防雷接地装置定期检测'],
+  benefits:['巡检频率从月度降至按需','运维成本降低80%','接地故障响应时间缩短90%','符合GB 50057/GB/T 21431标准','数据可追溯，审计无忧'],
+},
+'smart-lightning-protection': {
+  sub:'智能防雷系统解决方案', stats:[
+    {v:'200kA',l:'最大雷电流测量'},{v:'μA级',l:'SPD漏电流监测'},{v:'256台',l:'单网关接入设备'},{v:'40+',l:'产品系列数量'},
+  ],
+  goals:[{ico:'🎯',t:'方案目标',d:'基于FS电涌保护器监测仪、FSS/FSP智能型SPD、FL雷电峰值监测仪、FR/FRP接地电阻监测仪及FG智能网关，构建全方位智能防雷监测网络。'},{ico:'📈',t:'核心价值',d:'实现SPD劣化预警、雷电流峰值记录、接地状态监测及远程集中管理，将传统防雷系统从"哑设备"升级为"智能终端"。'},{ico:'🚀',t:'技术优势',d:'国内最完整的智能防雷产品线，FS/FSS/FSP/FL/FR/FRP/FG全系列自主研发，覆盖SPD监测、雷电流监测、接地监测全场景。'}],
+  arch:[
+    {ico:'🌩️',t:'感知层',d:'FS/FSS/FSP SPD监测仪、FL雷电峰值监测仪、FR/FRP接地电阻监测仪，部署于防雷系统各关键节点。'},
+    {ico:'📡',t:'汇聚层',d:'FG智能网关，汇聚感知层全部设备数据，支持4G/Wi-Fi/Ethernet多模通信。'},
+    {ico:'☁️',t:'云平台层',d:'FEXLINK防雷云平台，多站点集中管理，智能告警与数据分析。'},
+    {ico:'📱',t:'应用层',d:'防雷看板、SPD健康度评分、雷暴日统计、防雷系统综合评估报告。'},
+  ],
+  feats:[
+    {ico:'🔍',t:'SPD劣化趋势AI预测',d:'μA级漏电流监测，劣化趋势分析+剩余寿命预测，替代人工月度巡检。'},
+    {ico:'⚡',t:'雷电流峰值精确记录',d:'0.1~200kA雷电流峰值测量，GPS授时精度±1μs，多站联合雷击定位。'},
+    {ico:'🌍',t:'接地电阻全天候监测',d:'三极法/钳表法双模式，0.01Ω~200Ω，土壤电阻率辅助分析。'},
+    {ico:'📡',t:'FG智能网关边缘计算',d:'瑞芯微RK3588S，6 TOPS NPU，本地运行SPD寿命预测模型，5G/Wi-Fi 6冗余通信。'},
+    {ico:'📊',t:'综合防雷云平台',d:'防雷设备全生命周期管理，智能告警规则引擎，自动生成防雷系统评估报告。'},
+    {ico:'🔧',t:'远程运维与OTA升级',d:'设备远程配置、固件OTA升级、一键巡检，运维效率提升90%。'},
+  ],
+  prods:['FS防雷器监测模块','FSS智能型电涌保护器','FSP电涌保护器底座','FL雷电流监测模块','FR/FRP接地电阻监测仪','FG智能防雷网关'],
+  scenes:['机场航站楼及飞行区防雷监测','石化炼化一体化基地防雷','海上风电场防雷系统','地铁线路SPD集中监测','数据中心防雷系统智能管理'],
+  benefits:['人工巡检减少90%','SPD失效前100%预警','雷击定位精度<50米','设备寿命延长30%','满足GB 50057/SH/T 3169'],
+},
+'power-distribution-monitoring': {
+  sub:'配电监测与能耗管理系统', stats:[
+    {v:'0.5S级',l:'电能计量精度'},{v:'63次',l:'谐波分析'},{v:'20+',l:'能耗分析模型'},{v:'15-25%',l:'节能潜力'},
+  ],
+  goals:[{ico:'🎯',t:'方案目标',d:'面向工业园区、商业综合体、公共建筑等场景，通过ESA智能电表及分布式采集单元实现全回路电气参数采集、负荷分析与能效优化。'},{ico:'📈',t:'核心价值',d:'将配电系统从"盲管"升级为"可视化智能管理"，实现能耗精细化管理，降低运营成本15-25%。'},{ico:'🚀',t:'技术优势',d:'0.5S级高精度计量，2~63次谐波全分析，配合太一AI能源模型实现能源预测与优化调度。'}],
+  arch:[
+    {ico:'🔌',t:'感知层',d:'ESA全要素智能电表、ESA-M301微型电表、EST无线温度传感器，部署于各级配电柜。'},
+    {ico:'📡',t:'通信层',d:'FG/ESX系列智能网关，RS485/4G/Wi-Fi多模通信，断点续传保障数据完整性。'},
+    {ico:'☁️',t:'平台层',d:'FEXLINK能源管理平台，"4×3×2"能碳自治治理框架，安全·能效·碳排三维分析。'},
+    {ico:'📱',t:'应用层',d:'能源看板、负荷预测、需量管理、碳排放核算、节能优化建议。'},
+  ],
+  feats:[
+    {ico:'📊',t:'全回路电气参数实时采集',d:'电压/电流/功率/功率因数/谐波/温度全参数，覆盖从进线到末端回路全层级。'},
+    {ico:'📈',t:'分项能耗统计与分析',d:'按回路/区域/设备类型分项统计，自动识别高能耗环节与异常用能。'},
+    {ico:'📉',t:'负荷曲线与需量管理',d:'实时负荷曲线监控，需量越限预警，辅助制定需量优化策略，降低基本电费。'},
+    {ico:'⚡',t:'电能质量在线评估',d:'2~63次谐波分析，电压暂降/暂升/闪变检测，综合电能质量评分。'},
+    {ico:'🤖',t:'太一AI能效优化模型',d:'14个能源分析模型+10个节能优化模型，AI自动识别节能机会并给出建议。'},
+    {ico:'📋',t:'碳排放核算与报告',d:'基于能耗数据自动核算碳排放，支持ISO 14064标准报告生成，助力碳达峰碳中和。'},
+  ],
+  prods:['ESA全要素智能电表','ESB三相不平衡监测器','EST温度监测模组','FG智能防雷网关','FEXLINK云平台'],
+  scenes:['工业园区配电回路监测与能效管理','商业综合体能耗分项计量','数据中心PUE监测与优化','医院/校园能耗管理','政府机关建筑节能改造'],
+  benefits:['综合能耗降低15-25%','电费支出减少20%','配电故障减少85%','碳排放数据自动核算','投资回收期18-24个月'],
+},
+};
+
 function prodFeatures(cat, name, desc) {
   const n=name.toLowerCase();
   if(cat.includes('电气安全')||cat.includes('ES')||n.includes('esa')||n.includes('esb')||n.includes('est')) return ['实时在线监测，24小时不间断守护用电安全','多参数同步采集，全面掌握电气运行状态','越限智能告警，分级推送，防患于未然','标准Modbus协议，无缝对接第三方系统','工业级设计，适应-25℃~70℃严苛环境'];
@@ -432,6 +574,58 @@ function listPage(t, pp, c, items, path, pfx){
   return lay(t+' - '+c.name,'',bd,c);
 }
 
+function solDetailPage(sk, title, desc, pp, c, pfx) {
+  const sd = SOLS[sk];
+  if (!sd) return listPage(title, pp, c, [{title,description:desc}], 'solutions', pfx);
+
+  const bd = `${nav(pp,c,pfx+'/solutions',pfx)}
+<style>.sol-progress{height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden}.sol-progress-fill{height:100%;background:linear-gradient(90deg,#2563eb,#60a5fa);border-radius:4px}</style>
+<div class="bg-gradient-to-r from-gray-900 via-primary-900 to-primary-800 text-white">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+<a href="${pfx}/solutions" class="text-primary-200 hover:text-white text-sm no-underline flex items-center gap-1">← 返回解决方案</a>
+<h1 class="text-3xl md:text-4xl font-bold mt-4">${h(title)}</h1>
+<p class="text-primary-200 text-lg mt-2 max-w-3xl">${h(sd.sub)}</p>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">${sd.stats.map(s=>`<div class="bg-white/10 rounded-xl p-4 text-center"><div class="text-2xl md:text-3xl font-bold text-white">${h(s.v)}</div><div class="text-primary-200 text-sm mt-1">${h(s.l)}</div></div>`).join('')}</div>
+</div></div>
+
+<section class="py-12 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="text-2xl font-bold mb-8">方案目标与价值</h2>
+<div class="grid md:grid-cols-3 gap-6">${sd.goals.map(g=>`<div class="bg-gray-50 rounded-xl p-6"><div class="text-3xl mb-3">${g.ico}</div><h3 class="font-bold text-gray-900 mb-2">${h(g.t)}</h3><p class="text-sm text-gray-600 leading-relaxed">${h(g.d)}</p></div>`).join('')}</div>
+</div></section>
+
+<section class="py-12 bg-gray-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="text-2xl font-bold mb-8">系统架构</h2>
+<div class="flex flex-col md:flex-row justify-center items-stretch gap-4 md:gap-2">${sd.arch.map((a,i)=>`<div class="flex-1 bg-white rounded-xl p-5 shadow-sm border border-gray-100"><div class="text-2xl mb-2">${a.ico}</div><h3 class="font-semibold text-sm text-primary-600 mb-1">${h(a.t)}</h3><p class="text-xs text-gray-500 leading-relaxed">${h(a.d)}</p></div>${i<sd.arch.length-1?'<div class="hidden md:flex items-center text-gray-300 text-xl">→</div>':''}`).join('')}</div>
+</div></section>
+
+<section class="py-12 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="text-2xl font-bold mb-8">核心功能</h2>
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">${sd.feats.map(f=>`<div class="bg-gray-50 rounded-xl p-5"><div class="flex items-center gap-2 mb-3"><span class="text-xl">${f.ico}</span><h3 class="font-semibold text-gray-900 text-sm">${h(f.t)}</h3></div><p class="text-xs text-gray-500 leading-relaxed">${h(f.d)}</p></div>`).join('')}</div>
+</div></section>
+
+<section class="py-12 bg-gray-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="text-2xl font-bold mb-8">适用产品</h2>
+<div class="grid md:grid-cols-3 gap-4">${sd.prods.map(pn=>`<a href="${pfx}/products/${slug(pn)}" class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-shadow no-underline flex items-center gap-3"><span class="text-primary-600 text-lg">🔹</span><span class="text-sm font-medium text-gray-900">${h(pn)}</span></a>`).join('')}</div>
+</div></section>
+
+<section class="py-12 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="text-2xl font-bold mb-8">典型应用场景</h2>
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">${sd.scenes.map(s=>`<div class="flex items-center gap-3 p-4 border border-gray-100 rounded-xl"><span class="w-2 h-2 bg-primary-500 rounded-full flex-shrink-0"></span><span class="text-sm text-gray-700">${h(s)}</span></div>`).join('')}</div>
+</div></section>
+
+<section class="py-12 bg-gray-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="text-2xl font-bold mb-8">方案收益</h2>
+<div class="grid md:grid-cols-3 gap-5">${sd.benefits.map((b,i)=>`<div class="bg-white rounded-xl p-5 text-center shadow-sm border border-gray-100"><div class="sol-progress mb-3"><div class="sol-progress-fill" style="width:${(i+1)*(100/sd.benefits.length)}%"></div></div><p class="text-sm font-semibold text-gray-800">${h(b)}</p></div>`).join('')}</div>
+</div></section>
+
+<section class="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-12"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+<h2 class="text-2xl font-bold mb-3">获取完整方案文档</h2>
+<p class="text-primary-100 mb-6">联系我们获取详细技术方案书、配置清单及项目报价</p>
+<a href="${pfx}/contact" class="inline-flex items-center gap-2 px-8 py-3 bg-white text-primary-700 font-semibold rounded-xl hover:bg-gray-100 transition-colors shadow-lg no-underline">📞 立即咨询</a>
+</div></section>${ft(pp,c,pfx)}`;
+  return lay(title+' - '+c.name,desc,bd,c);
+}
+
 // ═══════════ BUILD ═══════════
 const defs=[
   {n:'yeslon',main:true,pfx:''},
@@ -445,7 +639,7 @@ if(!existsSync(DIST))mkdirSync(DIST,{recursive:true});
 
 for(const d of defs){
   const c=cfg(d.n);const pp=pages(d.n);
-  const sls=reItems(join(root,'sites',d.n,'data','solutions.ts'),['title','description','category']);
+  const sls=reItems(join(root,'sites',d.n,'data','solutions.ts'),['title','description','category','slug']);
   const cs=reItems(join(root,'sites',d.n,'data','cases.ts'),['title','description','client']);
   const nws=reItems(join(root,'sites',d.n,'data','news.ts'),['title','description','category']);
   const out=d.main?DIST:join(DIST,d.n);
@@ -464,7 +658,22 @@ for(const d of defs){
     else if(pt==='about')html=aboutPage(pp,c,pfx);
     else if(pt==='contact')html=contactPage(pp,c,pfx);
     else if(pt==='products')html=prodsPage(pp,c,d.n,pfx);
-    else if(pt==='solutions')html=listPage(p.title,pp,c,sls,pt,pfx);
+    else if(pt==='solutions'){
+      const solCards = sls.map(s=>{
+        const sk = s.slug || slug(s.title);
+        const sd=SOLS[sk];
+        return `<a href="${pfx}/solutions/${sk}" class="block bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md hover:border-primary-200 transition-all no-underline">
+          <h3 class="font-semibold text-gray-900 mb-2">${h(s.title)}</h3>
+          <p class="text-sm text-gray-500 leading-relaxed mb-3">${h((s.description||'').slice(0,120))}</p>
+          ${sd?`<div class="flex gap-3 text-xs text-gray-400 border-t border-gray-100 pt-3 mt-3">${sd.stats.slice(0,3).map(st=>`<span>${h(st.v)} ${h(st.l)}</span>`).join('<span class="text-gray-300">|</span>')}</div>`:''}
+          <span class="text-sm text-primary-600 font-medium mt-2 inline-block">查看详情 →</span>
+        </a>`;
+      }).join('');
+      html=`${nav(pp,c,pfx+'/solutions',pfx)}
+<div class="bg-gradient-to-r from-primary-700 to-primary-900 text-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16"><h1 class="text-3xl font-bold">${h(p.title)}</h1><p class="text-primary-200 mt-2">行业经验与技术积累，为客户创造价值</p></div></div>
+<section class="py-16 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">${solCards}</div></div></section>${ft(pp,c,pfx)}`;
+      html=lay(p.title+' - '+c.name,'',html,c);
+    }
     else if(pt==='cases')html=listPage(p.title,pp,c,cs,pt,pfx);
     else if(pt==='news')html=listPage(p.title,pp,c,nws.length?nws:cs,pt,pfx);
     else html=listPage(p.title,pp,c,[],pt,pfx);
@@ -482,7 +691,18 @@ for(const d of defs){
     const body=prodPageBody(cat.cat,item,pp,c,pfx);
     writeFileSync(join(dir,'index.html'),lay(item.n+' - '+c.name,item.d||'',body,c));
   }
-  console.log(`  ${d.n}${d.main?' (main)':''} → ${pp.length} pages + product details`);
+
+  // solution detail pages (main site only)
+  if(d.main) for(const s of sls){
+    const sk = s.slug || slug(s.title);
+    const sd = SOLS[sk];
+    if(!sd) continue;
+    const dir = join(out,'solutions',sk);
+    if(!existsSync(dir)) mkdirSync(dir,{recursive:true});
+    writeFileSync(join(dir,'index.html'),solDetailPage(sk,s.title,s.description||'',pp,c,pfx));
+  }
+
+  console.log(`  ${d.n}${d.main?' (main)':''} → ${pp.length} pages + product details + solutions`);
 }
 
 for(const f of['_redirects','_headers','_routes.json']){const s=join(root,f);if(existsSync(s))copyFileSync(s,join(DIST,f));}
