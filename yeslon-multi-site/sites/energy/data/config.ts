@@ -31,9 +31,10 @@ export const energyConfig: SiteConfig = {
     linkedin: 'yeslon-energy'
   },
   contact: {
-    phone: '+86 755-8888-6666',
-    email: 'energy@yeslon.com',
-    address: '深圳市南山区科技园南区微物联大厦A座12层',
-    workingHours: '周一至周五 9:00-18:00'
+    phone: '0755-86536148',
+    email: 'cc@fexlink.com',
+    address: '深圳市福田深港科技合作区长富金茂大厦1908',
+    workingHours: '周一至周五 9:00-18:00',
+    website: 'www.fexlink.com'
   }
 };

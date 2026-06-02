@@ -33,9 +33,10 @@ export const yeslonConfig: SiteConfig = {
     linkedin: 'yeslon-technologies'
   },
   contact: {
-    phone: '+86 0755-83008888',
-    email: 'contact@yeslon.com',
-    address: '广东省深圳市南山区高新科技园南区科技南路18号深圳湾科技生态园12栋B座19层',
-    workingHours: '周一至周五 9:00-18:00'
+    phone: '0755-86536148',
+    email: 'cc@fexlink.com',
+    address: '深圳市福田深港科技合作区长富金茂大厦1908',
+    workingHours: '周一至周五 9:00-18:00',
+    website: 'www.fexlink.com'
   }
 };
