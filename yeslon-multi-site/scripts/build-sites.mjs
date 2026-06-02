@@ -191,23 +191,77 @@ energy:[{cat:'充电站安全',ico:'🔋',items:[
 ],
 };
 
+function prodFeatures(cat, name, desc) {
+  const n=name.toLowerCase();
+  if(cat.includes('电气安全')||cat.includes('ES')||n.includes('esa')||n.includes('esb')||n.includes('est')) return ['实时在线监测，24小时不间断守护用电安全','多参数同步采集，全面掌握电气运行状态','越限智能告警，分级推送，防患于未然','标准Modbus协议，无缝对接第三方系统','工业级设计，适应-25℃~70℃严苛环境'];
+  if(cat.includes('防雷')||cat.includes('SPD')||n.includes('fs')||n.includes('fss')||n.includes('fsp')||n.includes('fl')||n.includes('fr')||n.includes('fg')) return ['7×24小时在线监测，替代人工月度巡检','μA级高精度采样，劣化趋势提前预警','国标/UL/IEC标准符合，品质可靠','支持远程配置与OTA升级，运维高效','多规格可选，适应不同场景需求'];
+  if(cat.includes('工业智控')||cat.includes('PLC')||n.includes('plc')||n.includes('cc')||n.includes('cr')||n.includes('hmi')) return ['IEC 61131-3标准编程，兼容主流开发环境','EtherCAT/PROFINET多协议，互联互通','模块化设计，灵活组合按需配置','工业级宽温设计，-25℃~70℃稳定运行','通过CE/FCC认证，品质保障'];
+  if(n.includes('断路器')||n.includes('fec')) return ['过载/短路/漏电多重保护，安全无忧','远程通断控制，随时随地管理配电','电能计量+数据分析，能耗可视化','无线通信上云，配电回路数字化管理','紧凑模块化设计，节省柜内空间'];
+  if(cat.includes('软件')||cat.includes('平台')) return ['全系列设备统一接入，一站式管理','实时监控+数据分析，决策有据可依','告警策略自定义，智能推送直达手机','多级用户权限，企业级安全管理','支持PC/移动端，随时随地掌控'];
+  return ['工业级品质，稳定可靠','标准通信协议，即装即用','智能告警，隐患早发现','宽温设计，适应严苛环境','支持远程运维，降低维护成本'];
+}
+function prodScenes(cat, name) {
+  const n=name.toLowerCase();
+  if(cat.includes('电气安全')||n.includes('esa')||n.includes('esb')||n.includes('est')||n.includes('esc')||n.includes('ese')||n.includes('esf')||n.includes('fa')||n.includes('fd')) return ['低压配电柜/配电箱电气参数监测','工厂车间动力配电回路安全监控','商业综合体/写字楼配电系统监测','数据中心精密配电柜温度与电能监测','医院/学校等重要场所电气火灾预防'];
+  if(cat.includes('防雷')||n.includes('fs')||n.includes('fl')||n.includes('fr')||n.includes('fss')||n.includes('fg')) return ['建筑物防雷系统SPD状态在线监测','石油化工罐区防爆区域防雷监测','风电场/光伏电站防雷设备集中管理','通信基站/雷达站接地电阻远程巡检','机场/地铁/铁路变电所防雷系统'];
+  if(cat.includes('工业智控')||n.includes('plc')||n.includes('cc')||n.includes('cr')||n.includes('cx')||n.includes('cw')||n.includes('hmi')) return ['产线自动化设备逻辑控制与数据采集','工业设备远程监控与预测性维护','楼宇自控系统暖通/照明/给排水控制','工业物联网边缘数据采集与上云'];
+  if(n.includes('断路器')||n.includes('fec')) return ['住宅小区楼层配电回路保护','商业楼宇末端配电箱智能管理','工厂车间动力柜回路监控','充电桩配套配电保护'];
+  if(cat.includes('软件')||cat.includes('平台')) return ['企业能源管理系统(EMS)搭建','设备远程运维与预测性维护平台','电气安全集中监控中心'];
+  return ['工业/商业/民用各类型配电场景','新建项目配套或既有项目改造','需要电气安全监测与智能化管理的各类场所'];
+}
+function prodRelItems(cat, items, selfName, pfx) {
+  const same=items.filter(i=>i.n!==selfName).slice(0,3);
+  if(!same.length) return '';
+  return same.map(i=>`<a href="${pfx}/products/${slug(i.n)}" class="block p-4 bg-gray-50 rounded-xl hover:shadow-sm transition-shadow no-underline"><p class="text-sm font-medium text-gray-900">${h(i.n)}</p>${i.m?'<p class="text-xs text-gray-400 mt-0.5">'+h(i.m)+'</p>':''}</a>`).join('');
+}
+
 function prodPageBody(cat, item, pp, c, pfx) {
+  const flags=prodFeatures(cat,item.n,(item.d||''));
+  const scenes=prodScenes(cat,item.n);
+  const allCats=PROD[Object.keys(PROD).find(k=>PROD[k].some(cc=>cc.items.some(i=>i.n===item.n)))||'yeslon']||PROD.yeslon;
+  const catData=allCats.find(cc=>cc.items.some(i=>i.n===item.n));
+  const rel=catData?prodRelItems(cat,catData.items,item.n,pfx):'';
+
   return `${nav(pp,c,pfx+'/products',pfx)}
+<style>.line-clamp-3{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}</style>
 <div class="bg-gradient-to-r from-primary-700 to-primary-900 text-white">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-<a href="${pfx}/products" class="text-primary-200 hover:text-white text-sm no-underline">← 返回产品中心</a>
+<a href="${pfx}/products" class="text-primary-200 hover:text-white text-sm no-underline flex items-center gap-1">← 返回产品中心 <span class="text-primary-300">/ ${h(cat)}</span></a>
 <h1 class="text-2xl md:text-3xl font-bold mt-4">${h(item.n)}</h1>
-${item.m?'<p class="text-primary-200 mt-1">型号：'+h(item.m)+'</p>':''}
+${item.m?'<p class="text-primary-200 mt-1 text-lg">型号：'+h(item.m)+'</p>':''}
+<div class="flex flex-wrap gap-2 mt-4"><span class="px-3 py-1 bg-white/20 text-white text-sm rounded-full">${h(cat)}</span>${item.s?`<span class="px-3 py-1 bg-white/10 text-primary-200 text-sm rounded-full">${item.s.length}项技术规格</span>`:''}</div>
 </div></div>
-<section class="py-12 bg-white">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="grid md:grid-cols-3 gap-8">
-<div class="md:col-span-2"><h2 class="text-xl font-bold mb-4">产品概述</h2><p class="text-gray-600 leading-relaxed">${h(item.d||item.desc||'')}</p></div>
-<div class="bg-gray-50 rounded-xl p-6"><h3 class="font-semibold mb-3">产品分类</h3><span class="inline-block px-3 py-1 bg-primary-50 text-primary-700 text-sm rounded-full">${h(cat)}</span></div>
-</div>
-${item.s&&item.s.length?`<div class="mt-12"><h2 class="text-xl font-bold mb-6">技术规格</h2>
-<div class="grid md:grid-cols-2 gap-4">${item.s.map(s=>`<div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"><span class="w-2 h-2 bg-primary-500 rounded-full flex-shrink-0"></span><span class="text-sm text-gray-700">${h(s)}</span></div>`).join('')}</div></div>`:''}
-<div class="mt-12 text-center"><a href="${pfx}/contact" class="inline-flex items-center gap-2 px-6 py-3 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 transition-colors no-underline">📞 咨询该产品</a></div>
+
+<section class="-mt-6 relative z-10"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="bg-white rounded-xl shadow-md border border-gray-100 p-6">
+<p class="text-gray-700 leading-relaxed">${h(item.d||item.desc||'')}</p>
+</div></div></section>
+
+<section class="py-12 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="text-2xl font-bold mb-8 flex items-center gap-2">核心功能与优势</h2>
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">${flags.map(f=>`<div class="flex items-start gap-3 p-4 bg-gray-50 rounded-xl"><span class="w-6 h-6 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"><span class="text-primary-600 text-xs">✓</span></span><span class="text-sm text-gray-700">${h(f)}</span></div>`).join('')}
+</div></div></section>
+
+${item.s&&item.s.length?`<section class="py-12 bg-gray-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="text-2xl font-bold mb-8 flex items-center gap-2">📋 技术规格</h2>
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+<table class="w-full text-sm"><tbody>${item.s.map((s,i)=>`<tr class="${i%2===0?'bg-white':'bg-gray-50'}"><td class="py-3 px-5 text-gray-600">${h(s)}</td></tr>`).join('')}</tbody></table>
+</div></div></section>`:''}
+
+<section class="py-12 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="text-2xl font-bold mb-8 flex items-center gap-2">📍 典型应用场景</h2>
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">${scenes.map(s=>`<div class="flex items-center gap-3 p-4 border border-gray-100 rounded-xl"><span class="w-2 h-2 bg-primary-500 rounded-full flex-shrink-0"></span><span class="text-sm text-gray-700">${h(s)}</span></div>`).join('')}
+</div></div></section>
+
+${rel?`<section class="py-12 bg-gray-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="text-2xl font-bold mb-8">同分类产品</h2>
+<div class="grid md:grid-cols-3 gap-4">${rel}</div>
+</div></section>`:''}
+
+<section class="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-12"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+<h2 class="text-2xl font-bold mb-3">需要详细资料或报价？</h2>
+<p class="text-primary-100 mb-6">获取产品手册、技术规格书、CAD图纸及项目报价</p>
+<a href="${pfx}/contact" class="inline-flex items-center gap-2 px-8 py-3 bg-white text-primary-700 font-semibold rounded-xl hover:bg-gray-100 transition-colors shadow-lg no-underline">📞 立即咨询</a>
 </div></section>${ft(pp,c,pfx)}`;
 }
 
