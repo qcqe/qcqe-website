@@ -43,7 +43,7 @@ sites/
 - 遵循 Tailwind CSS 工具类优先写法，避免自定义 CSS
 
 ## 部署信息
-- **GitHub**: https://github.com/qcqe/yeslon-website
+- **GitHub**: https://github.com/qcqe/qcqe-website
 - **主站**: https://www.qcqe.com（qcqe.com 301 跳转到 www）
 - **旧域名**: yeslon.com → 301 跳转到 www.qcqe.com
 - **部署平台**: Cloudflare Pages
