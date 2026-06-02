@@ -215,6 +215,10 @@ const SOLS = {
   prods:['CC-900旗舰型PLC','CC-500高性能PLC','CR-200分布式PLC','X-200微型PLC','DB-200设备大脑','IG-1000工业网关'],
   scenes:['新能源汽车电池模组PACK产线控制','半导体封测设备PLC升级改造','食品饮料灌装线电子凸轮同步控制','超高层建筑楼宇自控系统','工业设备远程监控与预测性维护'],
   benefits:['产线节拍提升35%','设备综合效率(OEE)提升22%','设备联网率从15%提升至100%','综合能耗降低26%','维护成本降低40%'],
+  problems:[{p:'传统集中式PLC架构布线复杂，扩展困难',s:'采用CR系列分布式I/O站，EtherCAT总线组网',a:'布线成本降低60%'},{p:'设备预警能力不足，故障停机损失大',s:'DB系列边缘AI控制器实时推理',a:'预测准确率≥85%'},{p:'多品牌设备协议不统一，数据孤岛',s:'IG网关100+协议转换',a:'设备联网率100%'},{p:'产线柔性不足，换型时间长',s:'模块化I/O+软件配置',a:'换型时间缩短70%'}],
+  requirements:[{n:'PLC编程',d:'IEC 61131-3标准，支持ST/LD/FBD',src:'国标'},{n:'总线通信',d:'EtherCAT通信周期≤100μs',src:'行业标准'},{n:'可靠性',d:'-25℃~70℃，CE/FCC认证',src:'产品标准'},{n:'联网率',d:'设备联网率≥95%',src:'项目需求'}],
+  implementation:[{p:'Phase 1',t:'方案设计',d:'2周·现场勘察+方案确认'},{p:'Phase 2',t:'设备交付',d:'3周·设备采购到货'},{p:'Phase 3',t:'安装调试',d:'4周·现场安装+通信调试'},{p:'Phase 4',t:'验收培训',d:'1周·联调验收+运维培训'}],
+  standards:['IEC 61131-3','EtherCAT','PROFINET','Modbus TCP','CE','FCC','SIL 2'],
 },
 'ev-charging-electrical-safety': {
   sub:'新能源充电站电气安全数字化保障方案', stats:[
@@ -238,6 +242,10 @@ const SOLS = {
   prods:['ESA全要素智能电表','ESB三相不平衡监测器','EST温度监测模组','FA故障电弧监测模块','ESX智能网关','FEXLINK云平台'],
   scenes:['大型集中式充电站电气安全监测','公交场站充电桩安全监控','商业综合体地下停车场充电区监测','高速服务区充电站远程运维','电动自行车集中充电棚安全监测'],
   benefits:['电气火灾事故降低90%','运维人力成本降低60%','充电桩故障停机减少70%','满足最新国标监管要求','保险费用降低30%'],
+  problems:[{p:'充电桩电气参数无实时监测',s:'ESA电表+ESB监测器+EST测温',a:'全覆盖实时监测'},{p:'电弧隐患无法识别',s:'FA电弧监测+AI谐波指纹',a:'准确率97.3%'},{p:'故障处理被动，响应慢',s:'FEXLINK云平台告警推送',a:'秒级告警通知'},{p:'多站点分散管理困难',s:'统一云平台集中管理',a:'运维成本降低60%'}],
+  requirements:[{n:'漏电监测',d:'1mA级精度，AC/DC兼容',src:'GB 13955'},{n:'电弧检测',d:'UL 1699B标准',src:'UL标准'},{n:'温度监测',d:'±0.5℃精度，200m传输',src:'产品标准'},{n:'云平台',d:'告警推送+数据分析',src:'项目需求'}],
+  implementation:[{p:'Phase 1',t:'勘察设计',d:'1周·现场勘察+回路确认'},{p:'Phase 2',t:'设备安装',d:'3周·监测模组部署'},{p:'Phase 3',t:'系统联调',d:'2周·通信调试+平台配置'},{p:'Phase 4',t:'验收交付',d:'1周·培训+验收报告'}],
+  standards:['UL 1699B','GB 13955','GB 50116','IEC 62305','Modbus RTU','MQTT'],
 },
 'electrical-hazard-monitoring': {
   sub:'电气安全隐患监测与AI分析系统', stats:[
@@ -261,6 +269,9 @@ const SOLS = {
   prods:['ESA全要素智能电表','ESB三相不平衡监测器','EST温度监测模组','FA故障电弧监测模块','FD剩余电流监测模块','FEXLINK云平台'],
   scenes:['高速公路隧道/收费站配电回路监测','机场航站楼核心配电系统监控','大型商业综合体电气火灾预防','医院/学校等重要场所安全监测','老旧小区电气线路改造后监测'],
   benefits:['电气火灾风险降低85%','隐患平均提前30天发现','巡检人力减少60%','设备寿命延长20%','符合GB 50116/GB 14287标准'],
+  problems:[{p:'配电回路无监测，人工巡检盲区',s:'ESA电表+EST测温全覆盖',a:'监测覆盖100%'},{p:'故障发现滞后，火灾风险高',s:'AI谐波指纹+电弧检测',a:'提前30天预警'},{p:'能耗数据靠人工抄表，滞后不准确',s:'自动采集+分项统计',a:'数据准确率100%'},{p:'缺少系统分析能力',s:'FEXLINK平台AI分析',a:'自动生成评估报告'}],
+  implementation:[{p:'Phase 1',t:'回路勘察',d:'1周·配电回路梳理'},{p:'Phase 2',t:'设备部署',d:'3周·监测终端安装'},{p:'Phase 3',t:'平台搭建',d:'2周·FEXLINK部署配置'},{p:'Phase 4',t:'试运行验收',d:'2周·联调+培训'}],
+  standards:['GB 50116','GB 14287','GB 13955','GB/T 31960','Modbus RTU'],
 },
 'ground-resistance-monitoring': {
   sub:'接地电阻在线监测系统', stats:[
@@ -284,6 +295,10 @@ const SOLS = {
   prods:['FR接地电阻监测仪','FRP回路法接地电阻监测仪','FG智能防雷网关','FL雷电峰值监测仪'],
   scenes:['变电站/换流站接地网在线监测','通信基站/雷达站接地电阻巡检','石化罐区防爆区接地监测','风电场/光伏电站接地系统监测','建筑防雷接地装置定期检测'],
   benefits:['巡检频率从月度降至按需','运维成本降低80%','接地故障响应时间缩短90%','符合GB 50057/GB/T 21431标准','数据可追溯，审计无忧'],
+  problems:[{p:'人工接地测量周期长、精度低',s:'FR/FRP全天候在线监测',a:'实时连续监测'},{p:'接地异常发现滞后',s:'阈值分级告警+趋势分析',a:'即时告警'},{p:'防爆区域人工测量风险高',s:'FRP防爆型本安设计',a:'Ex ia IIC T4安全'},{p:'多测点分散，管理困难',s:'FG网关统一汇聚上云',a:'集中平台管理'}],
+  requirements:[{n:'测量范围',d:'0.01Ω~200Ω',src:'GB 50057'},{n:'测量精度',d:'±2%',src:'产品标准'},{n:'防护等级',d:'IP65',src:'户外要求'},{n:'防爆等级',d:'Ex ia IIC T4',src:'石化场景'}],
+  implementation:[{p:'Phase 1',t:'现场勘察',d:'1周·接地网勘察'},{p:'Phase 2',t:'设备安装',d:'2周·监测仪安装'},{p:'Phase 3',t:'通信调试',d:'1周·网关+平台对接'},{p:'Phase 4',t:'验收培训',d:'1周·系统验收'}],
+  standards:['GB 50057','GB/T 21431','IEC 62305','SH/T 3169','Ex ia IIC T4'],
 },
 'smart-lightning-protection': {
   sub:'智能防雷系统解决方案', stats:[
@@ -307,6 +322,9 @@ const SOLS = {
   prods:['FS防雷器监测模块','FSS智能型电涌保护器','FSP电涌保护器底座','FL雷电流监测模块','FR/FRP接地电阻监测仪','FG智能防雷网关'],
   scenes:['机场航站楼及飞行区防雷监测','石化炼化一体化基地防雷','海上风电场防雷系统','地铁线路SPD集中监测','数据中心防雷系统智能管理'],
   benefits:['人工巡检减少90%','SPD失效前100%预警','雷击定位精度<50米','设备寿命延长30%','满足GB 50057/SH/T 3169'],
+  problems:[{p:'SPD状态不可知，失效后才发现',s:'FS/FSS实时监测+劣化预测',a:'失效前100%预警'},{p:'雷击数据无法追溯',s:'FL精确记录峰值+时间',a:'定位精度<50m'},{p:'接地电阻人工测量低效',s:'FR/FRP在线监测',a:'7×24h连续监测'},{p:'多站点管理分散',s:'FG网关汇聚+云平台',a:'统一集中管理'}],
+  implementation:[{p:'Phase 1',t:'勘测设计',d:'2周·防雷系统勘察'},{p:'Phase 2',t:'设备部署',d:'4周·全系列设备安装'},{p:'Phase 3',t:'系统联调',d:'2周·网关+平台联调'},{p:'Phase 4',t:'验收交付',d:'1周·培训验收'}],
+  standards:['GB 50057','IEC 62305','GB/T 21431','SH/T 3169','GB 15599'],
 },
 'power-distribution-monitoring': {
   sub:'配电监测与能耗管理系统', stats:[
@@ -330,6 +348,9 @@ const SOLS = {
   prods:['ESA全要素智能电表','ESB三相不平衡监测器','EST温度监测模组','FG智能防雷网关','FEXLINK云平台'],
   scenes:['工业园区配电回路监测与能效管理','商业综合体能耗分项计量','数据中心PUE监测与优化','医院/校园能耗管理','政府机关建筑节能改造'],
   benefits:['综合能耗降低15-25%','电费支出减少20%','配电故障减少85%','碳排放数据自动核算','投资回收期18-24个月'],
+  problems:[{p:'配电系统"盲管"，无实时数据',s:'ESA电表全回路覆盖',a:'全参数实时采集'},{p:'能耗数据人工抄表，滞后出错',s:'自动采集+分项统计',a:'数据准确率100%'},{p:'缺少能效分析手段',s:'太一AI能源模型',a:'节能建议自动生成'},{p:'碳排放核算困难',s:'自动碳排计算+报告',a:'ISO 14064标准报告'}],
+  implementation:[{p:'Phase 1',t:'体系设计',d:'2周·计量体系设计'},{p:'Phase 2',t:'设备部署',d:'4周·电表+网关安装'},{p:'Phase 3',t:'平台上线',d:'3周·FEXLINK部署'},{p:'Phase 4',t:'试运行',d:'2周·验收+培训'}],
+  standards:['GB 17167','GB/T 23331','ISO 50001','GB/T 31960','GB 50116'],
 },
 };
 
@@ -574,53 +595,109 @@ function listPage(t, pp, c, items, path, pfx){
   return lay(t+' - '+c.name,'',bd,c);
 }
 
-function solDetailPage(sk, title, desc, pp, c, pfx) {
+function solDetailPage(sk, title, desc, pp, c, pfx, sls) {
   const sd = SOLS[sk];
   if (!sd) return listPage(title, pp, c, [{title,description:desc}], 'solutions', pfx);
 
+  const probRows = (sd.problems||[]).map(p=>`<tr><td class="py-3 px-3 text-sm text-gray-900 font-medium">${h(p.p)}</td><td class="py-3 px-3 text-sm text-gray-500">${h(p.s)}</td><td class="py-3 px-3 text-sm text-primary-600">${h(p.a)}</td></tr>`).join('');
+  const reqRows = (sd.requirements||[]).map(r=>`<tr><td class="py-2.5 px-3 text-sm text-gray-900 font-medium">${h(r.n||'')}</td><td class="py-2.5 px-3 text-sm text-gray-500">${h(r.d||'')}</td><td class="py-2.5 px-3 text-sm text-gray-400 text-center">${h(r.src||'')}</td></tr>`).join('');
+  const phases = sd.implementation||[{p:'第一阶段',t:'方案设计',d:'1周'},
+    {p:'第二阶段',t:'设备采购',d:'2周'},{p:'第三阶段',t:'安装调试',d:'2周'},{p:'第四阶段',t:'验收培训',d:'1周'}];
+  const standards = sd.standards||[];
+
   const bd = `${nav(pp,c,pfx+'/solutions',pfx)}
-<style>.sol-progress{height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden}.sol-progress-fill{height:100%;background:linear-gradient(90deg,#2563eb,#60a5fa);border-radius:4px}</style>
-<div class="bg-gradient-to-r from-gray-900 via-primary-900 to-primary-800 text-white">
+<style>
+.sol-progress{height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden}
+.sol-progress-fill{height:100%;background:linear-gradient(90deg,#2563eb,#60a5fa);border-radius:4px}
+.sol-toc{position:sticky;top:80px}
+.sol-toc a{display:block;padding:6px 12px;font-size:13px;color:#64748b;border-left:2px solid #e2e8f0;text-decoration:none;transition:all .2s}
+.sol-toc a:hover,.sol-toc a.active{border-left-color:#2563eb;color:#2563eb;background:#eff6ff}
+</style>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-sm text-gray-400 flex gap-2">
+<a href="${pfx}" class="hover:text-primary-600 no-underline">首页</a><span>/</span><a href="${pfx}/solutions" class="hover:text-primary-600 no-underline">解决方案</a><span>/</span><span class="text-gray-600">${h(title)}</span>
+</div>
+
+<div class="bg-gradient-to-br from-gray-900 via-primary-900 to-primary-800 text-white">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-<a href="${pfx}/solutions" class="text-primary-200 hover:text-white text-sm no-underline flex items-center gap-1">← 返回解决方案</a>
-<h1 class="text-3xl md:text-4xl font-bold mt-4">${h(title)}</h1>
+<div class="flex flex-wrap gap-2 mb-4"><span class="text-xs px-2 py-1 bg-white/20 text-white/80 rounded-full">技术方案</span><span class="text-xs px-2 py-1 bg-white/10 text-primary-200 rounded-full">V1.0</span><span class="text-xs px-2 py-1 bg-white/10 text-primary-200 rounded-full">编制：微物联技术</span></div>
+<h1 class="text-3xl md:text-4xl font-bold">${h(title)}</h1>
 <p class="text-primary-200 text-lg mt-2 max-w-3xl">${h(sd.sub)}</p>
-<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">${sd.stats.map(s=>`<div class="bg-white/10 rounded-xl p-4 text-center"><div class="text-2xl md:text-3xl font-bold text-white">${h(s.v)}</div><div class="text-primary-200 text-sm mt-1">${h(s.l)}</div></div>`).join('')}</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">${sd.stats.map(s=>`<div class="bg-white/10 rounded-xl p-4 text-center border border-white/5"><div class="text-2xl md:text-3xl font-bold text-white">${h(s.v)}</div><div class="text-primary-200 text-sm mt-1">${h(s.l)}</div></div>`).join('')}</div>
 </div></div>
 
-<section class="py-12 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<h2 class="text-2xl font-bold mb-8">方案目标与价值</h2>
-<div class="grid md:grid-cols-3 gap-6">${sd.goals.map(g=>`<div class="bg-gray-50 rounded-xl p-6"><div class="text-3xl mb-3">${g.ico}</div><h3 class="font-bold text-gray-900 mb-2">${h(g.t)}</h3><p class="text-sm text-gray-600 leading-relaxed">${h(g.d)}</p></div>`).join('')}</div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="flex flex-wrap gap-3 text-sm">${[
+  {id:'overview',l:'项目概述'},
+  {id:'analysis',l:'现状分析'},
+  {id:'architecture',l:'系统架构'},
+  {id:'products',l:'产品构成'},
+  {id:'features',l:'核心功能'},
+  {id:'implementation',l:'实施部署'},
+  {id:'benefits',l:'投资回报'},
+  {id:'service',l:'售后服务'},
+].map(s=>`<a href="#sol-${s.id}" class="px-3 py-1.5 bg-gray-100 hover:bg-primary-50 hover:text-primary-600 rounded-full text-gray-600 no-underline transition-colors">${s.l}</a>`).join('')}</div>
+</div>
+
+<!-- 1. 项目概述 -->
+<section id="sol-overview" class="scroll-mt-20 py-12 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center gap-3 mb-8"><span class="text-sm font-semibold text-primary-600">01</span><h2 class="text-2xl font-bold">项目概述</h2></div>
+<div class="grid md:grid-cols-3 gap-6 mb-10">${sd.goals.map(g=>`<div class="bg-gray-50 rounded-xl p-6 border border-gray-100"><div class="text-2xl mb-2">${g.ico}</div><h3 class="font-bold text-gray-900 mb-2">${h(g.t)}</h3><p class="text-sm text-gray-600 leading-relaxed">${h(g.d)}</p></div>`).join('')}</div>
+<p class="text-gray-600 leading-relaxed">${h(sd.sub)}。本方案覆盖从需求调研、方案设计、设备选型、安装调试到运维管理的全生命周期服务，确保项目落地效果。</p>
 </div></section>
 
-<section class="py-12 bg-gray-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<h2 class="text-2xl font-bold mb-8">系统架构</h2>
-<div class="flex flex-col md:flex-row justify-center items-stretch gap-4 md:gap-2">${sd.arch.map((a,i)=>`<div class="flex-1 bg-white rounded-xl p-5 shadow-sm border border-gray-100"><div class="text-2xl mb-2">${a.ico}</div><h3 class="font-semibold text-sm text-primary-600 mb-1">${h(a.t)}</h3><p class="text-xs text-gray-500 leading-relaxed">${h(a.d)}</p></div>${i<sd.arch.length-1?'<div class="hidden md:flex items-center text-gray-300 text-xl">→</div>':''}`).join('')}</div>
+<!-- 2. 现状分析 -->
+${probRows?`<section id="sol-analysis" class="scroll-mt-20 py-12 bg-gray-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center gap-3 mb-8"><span class="text-sm font-semibold text-primary-600">02</span><h2 class="text-2xl font-bold">现状分析与需求</h2></div>
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"><table class="w-full text-sm"><thead><tr class="bg-gray-50"><th class="py-3 px-3 text-left font-semibold text-gray-700">现状问题</th><th class="py-3 px-3 text-left font-semibold text-gray-700">解决方案</th><th class="py-3 px-3 text-left font-semibold text-gray-700">实现价值</th></tr></thead><tbody>${probRows}</tbody></table></div>
+${reqRows?`<div class="mt-8 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"><table class="w-full text-sm"><thead><tr class="bg-gray-50"><th class="py-3 px-3 text-left font-semibold text-gray-700">需求项</th><th class="py-3 px-3 text-left font-semibold text-gray-700">说明</th><th class="py-3 px-3 text-center font-semibold text-gray-700 w-24">来源</th></tr></thead><tbody>${reqRows}</tbody></table></div>`:''}
+</div></section>`:''}
+
+<!-- 3. 系统架构 -->
+<section id="sol-architecture" class="scroll-mt-20 py-12 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center gap-3 mb-8"><span class="text-sm font-semibold text-primary-600">03</span><h2 class="text-2xl font-bold">系统架构</h2></div>
+<div class="bg-gray-50 rounded-xl p-6 md:p-10 border border-gray-200">${sd.arch.map((a,i)=>`<div class="flex items-center gap-4 py-3 ${i>0?'border-t border-gray-200':''}"><span class="text-2xl w-10 flex-shrink-0">${a.ico}</span><div class="flex-1"><h3 class="font-semibold text-gray-900 text-sm">${h(a.t)}</h3><p class="text-xs text-gray-500">${h(a.d)}</p></div></div>`).join('')}</div>
 </div></section>
 
-<section class="py-12 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<h2 class="text-2xl font-bold mb-8">核心功能</h2>
-<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">${sd.feats.map(f=>`<div class="bg-gray-50 rounded-xl p-5"><div class="flex items-center gap-2 mb-3"><span class="text-xl">${f.ico}</span><h3 class="font-semibold text-gray-900 text-sm">${h(f.t)}</h3></div><p class="text-xs text-gray-500 leading-relaxed">${h(f.d)}</p></div>`).join('')}</div>
+<!-- 4. 产品构成 -->
+<section id="sol-products" class="scroll-mt-20 py-12 bg-gray-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center gap-3 mb-8"><span class="text-sm font-semibold text-primary-600">04</span><h2 class="text-2xl font-bold">产品构成</h2></div>
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">${sd.prods.map(pn=>`<a href="${pfx}/products/${slug(pn)}" class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:shadow-md hover:border-primary-200 transition-all no-underline flex items-center gap-3"><span class="w-8 h-8 bg-primary-50 rounded-lg flex items-center justify-center text-primary-600 text-sm font-bold flex-shrink-0">P</span><div><p class="text-sm font-medium text-gray-900">${h(pn)}</p></div></a>`).join('')}</div>
 </div></section>
 
-<section class="py-12 bg-gray-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<h2 class="text-2xl font-bold mb-8">适用产品</h2>
-<div class="grid md:grid-cols-3 gap-4">${sd.prods.map(pn=>`<a href="${pfx}/products/${slug(pn)}" class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-shadow no-underline flex items-center gap-3"><span class="text-primary-600 text-lg">🔹</span><span class="text-sm font-medium text-gray-900">${h(pn)}</span></a>`).join('')}</div>
+<!-- 5. 核心功能 -->
+<section id="sol-features" class="scroll-mt-20 py-12 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center gap-3 mb-8"><span class="text-sm font-semibold text-primary-600">05</span><h2 class="text-2xl font-bold">核心功能</h2></div>
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">${sd.feats.map(f=>`<div class="bg-gray-50 rounded-xl p-5 border border-gray-100"><div class="flex items-center gap-2 mb-3"><span class="text-xl">${f.ico}</span><h3 class="font-semibold text-gray-900 text-sm">${h(f.t)}</h3></div><p class="text-sm text-gray-500 leading-relaxed">${h(f.d)}</p></div>`).join('')}</div>
 </div></section>
 
-<section class="py-12 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<h2 class="text-2xl font-bold mb-8">典型应用场景</h2>
-<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">${sd.scenes.map(s=>`<div class="flex items-center gap-3 p-4 border border-gray-100 rounded-xl"><span class="w-2 h-2 bg-primary-500 rounded-full flex-shrink-0"></span><span class="text-sm text-gray-700">${h(s)}</span></div>`).join('')}</div>
+<!-- 6. 实施部署 -->
+<section id="sol-implementation" class="scroll-mt-20 py-12 bg-gray-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center gap-3 mb-8"><span class="text-sm font-semibold text-primary-600">06</span><h2 class="text-2xl font-bold">实施部署</h2></div>
+<div class="grid md:grid-cols-4 gap-4">${phases.map((p,i)=>`<div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100"><div class="text-xs font-semibold text-primary-600 mb-1">${h(p.p)}</div><h3 class="font-bold text-gray-900 text-sm mb-2">${h(p.t)}</h3><p class="text-xs text-gray-500 mb-3">${h(p.d||'')}</p><div class="w-full bg-gray-100 rounded-full h-1.5"><div class="bg-primary-500 h-1.5 rounded-full" style="width:${(i+1)*25}%"></div></div></div>`).join('')}</div>
 </div></section>
 
-<section class="py-12 bg-gray-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<h2 class="text-2xl font-bold mb-8">方案收益</h2>
-<div class="grid md:grid-cols-3 gap-5">${sd.benefits.map((b,i)=>`<div class="bg-white rounded-xl p-5 text-center shadow-sm border border-gray-100"><div class="sol-progress mb-3"><div class="sol-progress-fill" style="width:${(i+1)*(100/sd.benefits.length)}%"></div></div><p class="text-sm font-semibold text-gray-800">${h(b)}</p></div>`).join('')}</div>
+<!-- 7. 投资回报 -->
+<section id="sol-benefits" class="scroll-mt-20 py-12 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center gap-3 mb-8"><span class="text-sm font-semibold text-primary-600">07</span><h2 class="text-2xl font-bold">投资回报</h2></div>
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">${sd.benefits.map((b,i)=>`<div class="bg-gray-50 rounded-xl p-5 shadow-sm border border-gray-100"><div class="sol-progress mb-3"><div class="sol-progress-fill" style="width:${(i+1)*(100/sd.benefits.length)}%"></div></div><p class="text-sm font-semibold text-gray-800">${h(b)}</p></div>`).join('')}</div>
+${sd.scenes.length?`<div class="mt-10 pt-8 border-t border-gray-200"><h3 class="text-lg font-bold mb-4">典型应用场景</h3><div class="grid md:grid-cols-2 lg:grid-cols-3 gap-3">${sd.scenes.map(s=>`<div class="flex items-center gap-2 p-3 bg-gray-50 rounded-lg"><span class="w-2 h-2 bg-primary-500 rounded-full flex-shrink-0"></span><span class="text-sm text-gray-700">${h(s)}</span></div>`).join('')}</div></div>`:''}
+</div></section>
+
+<!-- 8. 售后服务 -->
+<section id="sol-service" class="scroll-mt-20 py-12 bg-gray-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center gap-3 mb-8"><span class="text-sm font-semibold text-primary-600">08</span><h2 class="text-2xl font-bold">售后服务与支持</h2></div>
+<div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">${[
+  {ico:'📞',t:'技术支持',d:'7×24小时热线支持，即时响应'},
+  {ico:'🔧',t:'故障处理',d:'紧急故障4小时内响应，24小时到场'},
+  {ico:'📋',t:'定期巡检',d:'季度设备巡检与健康评估'},
+  {ico:'🆙',t:'软件升级',d:'平台功能终身免费升级'},
+].map(s=>`<div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100"><div class="text-2xl mb-2">${s.ico}</div><h3 class="font-semibold text-gray-900 text-sm mb-1">${h(s.t)}</h3><p class="text-xs text-gray-500">${h(s.d)}</p></div>`).join('')}</div>
+${standards.length?`<div class="mt-8 bg-white rounded-xl p-6 shadow-sm border border-gray-100"><h3 class="font-semibold text-gray-900 mb-4">相关标准</h3><div class="flex flex-wrap gap-2">${standards.map(s=>`<span class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">${h(s)}</span>`).join('')}</div></div>`:''}
 </div></section>
 
 <section class="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-12"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
 <h2 class="text-2xl font-bold mb-3">获取完整方案文档</h2>
-<p class="text-primary-100 mb-6">联系我们获取详细技术方案书、配置清单及项目报价</p>
+<p class="text-primary-100 mb-6">联系我们获取详细技术方案书、产品配置清单及项目报价</p>
 <a href="${pfx}/contact" class="inline-flex items-center gap-2 px-8 py-3 bg-white text-primary-700 font-semibold rounded-xl hover:bg-gray-100 transition-colors shadow-lg no-underline">📞 立即咨询</a>
 </div></section>${ft(pp,c,pfx)}`;
   return lay(title+' - '+c.name,desc,bd,c);
@@ -699,7 +776,7 @@ for(const d of defs){
     if(!sd) continue;
     const dir = join(out,'solutions',sk);
     if(!existsSync(dir)) mkdirSync(dir,{recursive:true});
-    writeFileSync(join(dir,'index.html'),solDetailPage(sk,s.title,s.description||'',pp,c,pfx));
+    writeFileSync(join(dir,'index.html'),solDetailPage(sk,s.title,s.description||'',pp,c,pfx,sls));
   }
 
   console.log(`  ${d.n}${d.main?' (main)':''} → ${pp.length} pages + product details + solutions`);
