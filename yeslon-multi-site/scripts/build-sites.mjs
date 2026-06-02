@@ -28,6 +28,7 @@ function cfg(site) {
     addr: re(c,/address:\s*'([^']+)'/,1),
     feat: reList(c,/features:\s*\[([\s\S]*?)\]/),
     color: re(c,/primaryColor:\s*'([^']+)'/,1)||'#1E40AF',
+    kw: (()=>{try{const m=readFileSync(c,'utf-8').match(/keywords:\s*\[([^\]]+)\]/);return m?[...m[1].matchAll(/'([^']+)'/g)].map(x=>x[1]).join(', '):'';}catch{return '';}})(),
   };
 }
 function pages(site) {
@@ -37,7 +38,7 @@ function pages(site) {
 
 const TW=`<script src="https://cdn.tailwindcss.com"></script><script>tailwind.config={theme:{extend:{colors:{primary:{50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a'}},fontFamily:{sans:['Inter','Noto Sans SC','system-ui','sans-serif']}}}}</script>`;
 function h(t){return(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function lay(t,d,b,c){return'<!DOCTYPE html>\n<html lang="zh-CN">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width,initial-scale=1.0">\n<title>'+h(t)+'</title>\n<meta name="description" content="'+h(d||'')+'">\n'+TW+'\n</head>\n<body class="bg-gray-50 text-gray-900 font-sans antialiased">\n'+b+'\n</body>\n</html>';}
+function lay(t,d,b,c){const base='https://'+(c.sub?c.sub+'.'+c.dom:c.dom);const u=arguments[5]||base;const i=(arguments[6]||'/og-image.jpg').startsWith('http')?arguments[6]:base+(arguments[6]||'/og-image.jpg');const kw=c.kw||'微物联,工业物联网,电气安全,智能防雷,PLC';return'<!DOCTYPE html>\n<html lang="zh-CN">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width,initial-scale=1.0">\n<title>'+h(t)+'</title>\n<meta name="description" content="'+h(d||c.desc||'')+'">\n<meta name="keywords" content="'+h(kw)+'">\n<link rel="canonical" href="'+h(u)+'">\n<meta name="robots" content="index,follow">\n<meta property="og:type" content="website">\n<meta property="og:title" content="'+h(t)+'">\n<meta property="og:description" content="'+h(d||c.desc||'')+'">\n<meta property="og:image" content="'+h(i)+'">\n<meta property="og:url" content="'+h(u)+'">\n<meta property="og:site_name" content="'+h(c.name||'')+'">\n<meta name="twitter:card" content="summary_large_image">\n<meta name="twitter:title" content="'+h(t)+'">\n<meta name="twitter:description" content="'+h(d||c.desc||'')+'">\n<meta name="twitter:image" content="'+h(i)+'">\n<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"'+h(c.name||'')+'","url":"'+h(u.replace(/\/[^/]*$/,'')||'')+'","description":"'+h(c.desc||'')+'","contactPoint":{"@type":"ContactPoint","telephone":"'+h(c.phone||'')+'","contactType":"customer service"}}</script>\n'+TW+'\n<script>if(typeof window!="undefined"&&window.location){var _h=_h||{};_h.c=_h.c||function(i){return document.cookie.match(new RegExp("(^| )"+i+"=([^;]*)"))?unescape(RegExp.$2):null};var reg=_h.c("region")||"CN";fetch("https://ipapi.co/json/",{timeout:3000}).then(function(r){return r.json()}).then(function(d){if(d.country_code&&d.country_code!==reg&&d.country_code=="CN"){document.cookie="region=CN;path=/;max-age=2592000";var b=document.getElementById("geo-banner");if(b)b.style.display="flex"}}).catch(function(){})}</script>\n</head>\n<body class="bg-gray-50 text-gray-900 font-sans antialiased">\n<div id="geo-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:999;background:#2563eb;color:white;padding:12px 20px;align-items:center;justify-content:center;gap:16px;font-size:14px">\n  <span>🌏 检测到您可能在中国，是否切换到中文站点？</span>\n  <a href="javascript:void(0)" onclick="document.getElementById(\'geo-banner\').style.display=\'none\'" style="padding:4px 16px;background:white;color:#2563eb;border-radius:6px;text-decoration:none;font-weight:500;font-size:13px">确定</a>\n  <a href="javascript:void(0)" onclick="document.getElementById(\'geo-banner\').style.display=\'none\'" style="color:rgba(255,255,255,0.7);font-size:13px;text-decoration:none">关闭</a>\n</div>\n'+b+'\n</body>\n</html>';}
 function slug(s){return s.replace(/[\/\s]+/g,'-').replace(/[()（）]/g,'').replace(/-+/g,'-').replace(/^-|-$/g,'')||'p';}
 
 function nav(pp, c, cur, prefix='') {
@@ -442,9 +443,8 @@ function genHome(pp, c, sls, cs, feat, sn, pfx) {
 ${sls.length?`<section class="py-16 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="text-center mb-12"><h2 class="text-3xl font-bold">解决方案</h2></div><div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">${solCards}</div></div></section>`:''}
 ${cs.length?`<section class="py-16 bg-gray-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="text-center mb-12"><h2 class="text-3xl font-bold">成功案例</h2></div><div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">${caseCards}</div></div></section>`:''}
 <section class="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-16"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"><h2 class="text-3xl font-bold mb-3">需要详细方案？</h2><p class="text-primary-100 text-lg mb-8">联系我们获取产品资料、技术方案与报价</p><a href="mailto:${h(c.email)}" class="inline-flex items-center gap-2 px-8 py-3 bg-white text-primary-700 font-semibold rounded-xl hover:bg-gray-100 transition-colors shadow-lg no-underline">✉️ 立即咨询</a></div></section>${ft(pp,c,pfx)}`;
-  return lay('首页 - '+c.name,c.desc,bd,c);
+  const siteUrl='https://'+(c.sub?c.sub+'.'+c.dom:c.dom)+'/';return lay('首页 - '+c.name,c.desc,bd,c,siteUrl);
 }
-
 function prodsPage(pp, c, sn, pfx) {
   const cats = PROD[sn] || PROD.yeslon;
   const tabLinks = cats.map((cat,i)=>`<button onclick="location.href='#${slug(cat.cat)}'" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors border border-gray-200 hover:border-primary-300 hover:text-primary-600 ${i===0?'bg-primary-50 text-primary-600 border-primary-200':'bg-white text-gray-600'}">${cat.ico} ${h(cat.cat)}</button>`).join('');
@@ -489,7 +489,7 @@ function prodsPage(pp, c, sn, pfx) {
 </table></div></div></div>
 
 ${catSections}${ft(pp,c,pfx)}`;
-  return lay('产品中心 - '+c.name,c.name+'产品中心',bd,c);
+  const siteU='https://'+(c.sub?c.sub+'.'+c.dom:c.dom)+'/';return lay('产品中心 - '+c.name,c.name+'产品中心',bd,c,siteU);
 }
 
 function aboutPage(pp,c,pfx){
@@ -576,7 +576,7 @@ ${['新能源充电站','工业园区','机场/交通枢纽','数据中心','商
   ['📍','地址',c.addr],
 ].map(a=>'<div class="flex items-center gap-4 p-3 bg-gray-50 rounded-lg"><span class="text-xl w-8">'+a[0]+'</span><div><p class="text-xs text-gray-400">'+a[1]+'</p><p class="font-medium text-gray-900">'+a[2]+'</p></div></div>').join('')}</div>
 </div></div></section>${ft(pp,c,pfx)}`;
-  return lay('关于我们 - '+c.name,'',bd,c);
+  const siteU='https://'+(c.sub?c.sub+'.'+c.dom:c.dom)+'/';return lay('关于我们 - '+c.name,'',bd,c,siteU);
 }
 function contactPage(pp,c,pfx){
   const bd=`${nav(pp,c,pfx+'/contact',pfx)}
@@ -586,7 +586,7 @@ function contactPage(pp,c,pfx){
 <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg"><span class="text-2xl">✉️</span><div><p class="text-sm text-gray-500">邮箱</p><p class="font-semibold text-gray-900"><a href="mailto:${h(c.email)}" class="text-primary-600 no-underline hover:underline">${h(c.email)}</a></p></div></div>
 <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg"><span class="text-2xl">📍</span><div><p class="text-sm text-gray-500">地址</p><p class="font-semibold text-gray-900">${h(c.addr)}</p></div></div>
 </div></div></div></section>${ft(pp,c,pfx)}`;
-  return lay('联系我们 - '+c.name,'',bd,c);
+  const siteU='https://'+(c.sub?c.sub+'.'+c.dom:c.dom)+'/';return lay('联系我们 - '+c.name,'',bd,c,siteU);
 }
 function listPage(t, pp, c, items, path, pfx){
   const bd=`${nav(pp,c,pfx+'/'+path,pfx)}
