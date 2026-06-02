@@ -5,7 +5,7 @@ export const yeslonConfig: SiteConfig = {
   domain: 'yeslon.com',
   siteName: '微物联技术（深圳）有限公司',
   siteNameEn: 'Yeslon Technologies',
-  description: '微物联技术（深圳）有限公司（Yeslon）专注工业分布式可编程控制器PLC、电气安全监测、智能防雷及工业物联网领域，为新能源充电站、工业园区、基础设施等提供设备智能化和电气安全整体解决方案。',
+  description: '微物联技术（深圳）有限公司成立于2016年，专注工业物联网与电气安全领域，拥有智能传感器、边缘计算网关、AI分析平台全栈自研能力。产品覆盖工业PLC、电气安全监测（ESA/ESB/EST/ESE/ESF等系列）、智能防雷（FS/FSS/FL/FR/FG系列）、智能断路器及FEXLINK云平台，为新能源充电站、工业园区、机场、数据中心等提供"端-边-云"一体化电气安全与能效管理解决方案。公司坚持"让每一度电都可见、可懂、可优化"的使命，以"有电，就有微物联"为品牌愿景。',
   keywords: ['PLC', '可编程控制器', '电气安全监测', '智能防雷', '电涌保护器监测', '接地电阻监测', '三相不平衡监测', '工业物联网', '设备大脑', '谐波分析', '配电监测', '微物联', 'Yeslon'],
   industry: 'technology',
   region: 'CN',

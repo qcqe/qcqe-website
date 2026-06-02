@@ -240,8 +240,88 @@ ${cats.map((cat,i)=>`<section class="py-12 ${i===0?'bg-white':'bg-gray-50'}"><di
 
 function aboutPage(pp,c,pfx){
   const bd=`${nav(pp,c,pfx+'/about',pfx)}
-<div class="bg-gradient-to-r from-primary-700 to-primary-900 text-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16"><h1 class="text-3xl font-bold">关于我们</h1></div></div>
-<section class="py-16 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="max-w-3xl mx-auto"><p class="text-lg text-gray-600 leading-relaxed mb-8">${h(c.desc)}</p><div class="bg-gray-50 rounded-xl p-8"><h3 class="text-xl font-semibold mb-4">联系方式</h3><div class="space-y-3 text-gray-600"><p>📞 ${h(c.phone)}</p><p>✉️ ${h(c.email)}</p><p>📍 ${h(c.addr)}</p></div></div></div></div></section>${ft(pp,c,pfx)}`;
+<div class="bg-gradient-to-r from-primary-700 to-primary-900 text-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16"><h1 class="text-3xl font-bold">关于我们</h1><p class="text-primary-200 mt-2 text-lg max-w-2xl">有电，就有微物联．用数据重构能源效率</p></div></div>
+
+<section class="py-16 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid md:grid-cols-2 gap-16 items-center mb-20">
+<div><span class="text-sm font-semibold text-primary-600 tracking-wider">COMPANY OVERVIEW</span>
+<h2 class="text-3xl font-bold mt-3 mb-6">微物联技术（深圳）有限公司</h2>
+<p class="text-gray-600 leading-relaxed mb-4">微物联技术成立于2016年，总部位于深圳市福田深港科技合作区，是一家专注于<span class="font-semibold text-gray-900">工业物联网、电气安全监测、智能防雷及工业分布式控制</span>领域的国家高新技术企业。</p>
+<p class="text-gray-600 leading-relaxed mb-4">公司拥有从智能传感器、边缘计算网关到AI分析平台、云平台的完整产品体系，是国内少数具备<span class="font-semibold text-gray-900">"端-边-云"全栈自主研发能力</span>的工业物联网企业之一。</p>
+<p class="text-gray-600 leading-relaxed">公司以"让每一度电都可见、可懂、可优化"为使命，致力于为新能源充电站、工业园区、机场、高速公路、商业综合体、数据中心等场景提供电气安全与能源管理的整体解决方案。</p></div>
+<div class="bg-gray-50 rounded-2xl p-8">
+<div class="grid grid-cols-2 gap-6">
+<div class="text-center"><div class="text-4xl font-bold text-primary-600">2016</div><p class="text-sm text-gray-500 mt-1">公司成立</p></div>
+<div class="text-center"><div class="text-4xl font-bold text-primary-600">200+</div><p class="text-sm text-gray-500 mt-1">服务客户</p></div>
+<div class="text-center"><div class="text-4xl font-bold text-primary-600">60+</div><p class="text-sm text-gray-500 mt-1">算法模型</p></div>
+<div class="text-center"><div class="text-4xl font-bold text-primary-600">40+</div><p class="text-sm text-gray-500 mt-1">产品系列</p></div>
+</div></div></div>
+</div></section>
+
+<section class="py-16 bg-gray-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-12"><span class="text-sm font-semibold text-primary-600 tracking-wider">BRAND & MISSION</span><h2 class="text-3xl font-bold mt-3">品牌与使命</h2></div>
+<div class="grid md:grid-cols-3 gap-8">
+<div class="bg-white rounded-xl p-8 text-center"><div class="text-4xl mb-4">⚡</div><h3 class="font-bold text-lg mb-3">企业使命</h3><p class="text-gray-500 text-sm leading-relaxed">让每一度电都可见、可懂、可优化．通过物联网+AI技术，让用电安全从"被动报警"走向"主动预防"。</p></div>
+<div class="bg-white rounded-xl p-8 text-center"><div class="text-4xl mb-4">🎯</div><h3 class="font-bold text-lg mb-3">品牌理念</h3><p class="text-gray-500 text-sm leading-relaxed">"有电，就有微物联"——我们相信电气安全是每个企业、每个家庭的刚需，微物联致力于成为电气安全与能效管理领域的首选品牌。</p></div>
+<div class="bg-white rounded-xl p-8 text-center"><div class="text-4xl mb-4">🔬</div><h3 class="font-bold text-lg mb-3">技术理念</h3><p class="text-gray-500 text-sm leading-relaxed">"用数据重构能源效率"——以物联网感知层为基础，以AI算法为核心，实现从数据采集到智能决策的完整闭环。</p></div>
+</div></div></section>
+
+<section class="py-16 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-12"><span class="text-sm font-semibold text-primary-600 tracking-wider">TECHNOLOGY</span><h2 class="text-3xl font-bold mt-3">核心技术能力</h2></div>
+<div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="p-6 border border-gray-100 rounded-xl"><span class="text-3xl">🔌</span><h3 class="font-bold mt-3 mb-2">全栈自研硬件</h3><p class="text-sm text-gray-500">覆盖智能传感器、分布式PLC、边缘计算网关、智能断路器等全套硬件产品线</p></div>
+<div class="p-6 border border-gray-100 rounded-xl"><span class="text-3xl">🤖</span><h3 class="font-bold mt-3 mb-2">AI算法引擎</h3><p class="text-sm text-gray-500">千知/万象/天衍三大AI模型体系，60+专业算法模型，408项国标红线AI规则引擎</p></div>
+<div class="p-6 border border-gray-100 rounded-xl"><span class="text-3xl">☁️</span><h3 class="font-bold mt-3 mb-2">云边协同平台</h3><p class="text-sm text-gray-500">FEXLINK工业互联网平台，支持设备管理、数据分析、告警联动、远程运维</p></div>
+<div class="p-6 border border-gray-100 rounded-xl"><span class="text-3xl">📊</span><h3 class="font-bold mt-3 mb-2">电气隐患AI分析</h3><p class="text-sm text-gray-500">谐波指纹识别技术，256点/周期高频采样，隐患提前30天预警，准确率97.3%</p></div>
+</div></div></section>
+
+<section class="py-16 bg-gray-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-12"><span class="text-sm font-semibold text-primary-600 tracking-wider">PRODUCTS</span><h2 class="text-3xl font-bold mt-3">产品矩阵</h2></div>
+<div class="grid md:grid-cols-3 gap-6">
+<div class="bg-white rounded-xl p-6 shadow-sm"><span class="text-2xl">⚙️</span><h3 class="font-bold mt-2 mb-2">工业智控</h3><p class="text-sm text-gray-500">CC/CR系列PLC、CX工业手环、CW边缘网关、HMI、I/O模块</p></div>
+<div class="bg-white rounded-xl p-6 shadow-sm"><span class="text-2xl">⚡</span><h3 class="font-bold mt-2 mb-2">电气安全监测</h3><p class="text-sm text-gray-500">ESA智能电表、ESB三相不平衡、EST温度监测、FA电弧探测、FAP故障电弧</p></div>
+<div class="bg-white rounded-xl p-6 shadow-sm"><span class="text-2xl">🌩️</span><h3 class="font-bold mt-2 mb-2">智能防雷</h3><p class="text-sm text-gray-500">FS/FSS/FSP电涌保护器监测、FL雷电峰值、FR/FRP接地电阻、FG网关</p></div>
+<div class="bg-white rounded-xl p-6 shadow-sm"><span class="text-2xl">🔌</span><h3 class="font-bold mt-2 mb-2">智能配电</h3><p class="text-sm text-gray-500">FECB2P智能断路器、FECB2LP漏电断路器、FECM2网关、配电监测系统</p></div>
+<div class="bg-white rounded-xl p-6 shadow-sm"><span class="text-2xl">🖥️</span><h3 class="font-bold mt-2 mb-2">软件平台</h3><p class="text-sm text-gray-500">FEXLINK工业互联网平台、设备管理云平台、太一智能大模型AI分析平台</p></div>
+<div class="bg-white rounded-xl p-6 shadow-sm"><span class="text-2xl">🔋</span><h3 class="font-bold mt-2 mb-2">新能源安全</h3><p class="text-sm text-gray-500">充电站电气安全监测、电动自行车充电棚安全、储能电站安全监测</p></div>
+</div></div></section>
+
+<section class="py-16 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-12"><span class="text-sm font-semibold text-primary-600 tracking-wider">TEAM</span><h2 class="text-3xl font-bold mt-3">核心团队</h2></div>
+<div class="grid md:grid-cols-3 gap-8">
+<div class="text-center"><div class="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-3xl">👤</span></div><h3 class="font-bold">崔灿</h3><p class="text-sm text-gray-500">创始人/CEO</p><p class="text-xs text-gray-400 mt-1">郑州航院 · 北师大</p></div>
+<div class="text-center"><div class="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-3xl">👤</span></div><h3 class="font-bold">毛继科</h3><p class="text-sm text-gray-500">联合创始人</p><p class="text-xs text-gray-400 mt-1">清华大学 · 可编程逻辑控制</p></div>
+<div class="text-center"><div class="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-3xl">👤</span></div><h3 class="font-bold">厉宪宇</h3><p class="text-sm text-gray-500">联合创始人</p><p class="text-xs text-gray-400 mt-1">清华大学 · 嵌入式系统</p></div>
+</div></div></section>
+
+<section class="py-16 bg-gray-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-12"><span class="text-sm font-semibold text-primary-600 tracking-wider">HONORS</span><h2 class="text-3xl font-bold mt-3">荣誉与里程碑</h2></div>
+<div class="max-w-3xl mx-auto space-y-4">
+${[
+  ['2016','深圳市最具投资价值企业50强'],
+  ['2017','福田之星全国创业大赛第一名 · 创IN中国人工智能大赛深圳赛区第一名'],
+  ['2018','全国高校校友创业大赛企业组第一名 · 全国工业互联网比赛第三名 · 入围物联网行业创新产品奖'],
+  ['2019','航天云网杯工业互联网大赛一等奖 · 中国最具颠覆式创新潜力榜（腾讯/阿里/百度/赛迪/德勤/国网等联合评选）'],
+  ['2020','科技部部长王志刚、深圳市委书记王伟中、市长陈如桂等领导莅临视察'],
+  ['2021-至今','发布太一智能大模型 · 谐波指纹AI分析技术 · 服务客户200+ · 产品覆盖全国30+省市'],
+].map(([y,t])=>'<div class="flex gap-4 p-4 bg-white rounded-lg"><span class="text-primary-600 font-bold text-sm w-16 flex-shrink-0">'+y+'</span><p class="text-sm text-gray-600">'+t+'</p></div>').join('')}
+</div></div></section>
+
+<section class="py-16 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-12"><span class="text-sm font-semibold text-primary-600 tracking-wider">INDUSTRIES</span><h2 class="text-3xl font-bold mt-3">服务行业</h2></div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+${['新能源充电站','工业园区','机场/交通枢纽','数据中心','商业综合体','石油化工','市政工程','建筑楼宇'].map(i=>'<div class="p-4 bg-gray-50 rounded-xl text-center text-sm font-medium text-gray-700">'+i+'</div>').join('')}
+</div></div></section>
+
+<section class="py-16 bg-gray-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="max-w-3xl mx-auto bg-white rounded-2xl p-8 shadow-sm">
+<h3 class="text-xl font-bold mb-6 text-center">联系方式</h3>
+<div class="space-y-4">${[
+  ['📞','电话',c.phone],
+  ['✉️','邮箱','<a href="mailto:'+h(c.email)+'" class="text-primary-600 hover:underline">'+h(c.email)+'</a>'],
+  ['📍','地址',c.addr],
+].map(a=>'<div class="flex items-center gap-4 p-3 bg-gray-50 rounded-lg"><span class="text-xl w-8">'+a[0]+'</span><div><p class="text-xs text-gray-400">'+a[1]+'</p><p class="font-medium text-gray-900">'+a[2]+'</p></div></div>').join('')}</div>
+</div></div></section>${ft(pp,c,pfx)}`;
   return lay('关于我们 - '+c.name,'',bd,c);
 }
 function contactPage(pp,c,pfx){
