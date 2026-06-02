@@ -230,11 +230,48 @@ ${cs.length?`<section class="py-16 bg-gray-50"><div class="max-w-7xl mx-auto px-
 
 function prodsPage(pp, c, sn, pfx) {
   const cats = PROD[sn] || PROD.yeslon;
+  const tabLinks = cats.map((cat,i)=>`<button onclick="location.href='#${slug(cat.cat)}'" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors border border-gray-200 hover:border-primary-300 hover:text-primary-600 ${i===0?'bg-primary-50 text-primary-600 border-primary-200':'bg-white text-gray-600'}">${cat.ico} ${h(cat.cat)}</button>`).join('');
+
+  // Quick reference table for all products
+  const tableRows = cats.flatMap(cat=>cat.items.map(item=>`<tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+    <td class="py-3 px-4"><a href="${pfx}/products/${slug(item.n)}" class="text-primary-600 hover:text-primary-700 font-medium text-sm no-underline">${h(item.n)}</a></td>
+    <td class="py-3 px-4 text-sm text-gray-500">${item.m||'-'}</td>
+    <td class="py-3 px-4"><span class="text-xs px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full">${h(cat.cat)}</span></td>
+    <td class="py-3 px-4 text-right"><a href="${pfx}/products/${slug(item.n)}" class="text-xs text-primary-600 hover:text-primary-700 font-medium no-underline">查看 →</a></td>
+  </tr>`)).join('');
+
+  const catSections = cats.map(cat=>`<section id="${slug(cat.cat)}" class="py-12 scroll-mt-20 ${cats.indexOf(cat)%2===0?'bg-white':'bg-gray-50'}">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center gap-3"><span class="text-3xl">${cat.ico}</span><h2 class="text-2xl font-bold">${h(cat.cat)}</h2><span class="text-sm text-gray-400">（${cat.items.length}款）</span></div>
+<a href="${pfx}/products" class="text-sm text-primary-600 hover:text-primary-700 no-underline">↑ 返回顶部</a>
+</div>
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">${cat.items.map(item=>`<div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-shadow flex flex-col">
+<div class="flex-1"><h3 class="font-semibold text-gray-900 text-sm">${h(item.n)}</h3>${item.m?'<p class="text-xs text-gray-400 mt-0.5">'+h(item.m)+'</p>':''}<p class="text-xs text-gray-500 mt-2 leading-relaxed line-clamp-2">${h((item.d||item.desc||'').slice(0,100))}</p></div>
+<a href="${pfx}/products/${slug(item.n)}" class="inline-block mt-3 text-xs text-primary-600 hover:text-primary-700 font-medium no-underline self-start">查看详情 →</a>
+</div>`).join('')}
+</div></div></section>`).join('');
+
   const bd=`${nav(pp,c,pfx+'/products',pfx)}
-<div class="bg-gradient-to-r from-primary-700 to-primary-900 text-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20"><h1 class="text-3xl md:text-4xl font-bold mb-3">产品中心</h1><p class="text-primary-100 text-lg">${h(c.name)} 全系列产品</p></div></div>
-${cats.map((cat,i)=>`<section class="py-12 ${i===0?'bg-white':'bg-gray-50'}"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="flex items-center gap-3 mb-8"><span class="text-3xl">${cat.ico}</span><h2 class="text-2xl font-bold">${h(cat.cat)}</h2><span class="text-sm text-gray-400">（${cat.items.length}款）</span></div>
-<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">${cat.items.map(item=>`<div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition-shadow"><h3 class="font-semibold text-gray-900">${h(item.n)}</h3>${item.m?'<p class="text-xs text-gray-400 mt-1">型号：'+h(item.m)+'</p>':''}<p class="text-sm text-gray-500 mt-2 leading-relaxed">${h((item.d||item.desc||'').slice(0,120))}</p><a href="${pfx}/products/${slug(item.n)}" class="inline-block mt-3 text-xs text-primary-600 hover:text-primary-700 font-medium no-underline">查看详情 →</a></div>`).join('')}
-</div></div></section>`).join('')}${ft(pp,c,pfx)}`;
+<style>.line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.scroll-mt-20{scroll-margin-top:80px}</style>
+<div class="bg-gradient-to-r from-primary-700 to-primary-900 text-white">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+<h1 class="text-3xl md:text-4xl font-bold mb-3">产品中心</h1>
+<p class="text-primary-100 text-lg mb-6">${h(c.name)} 全系列产品 · 点击分类快速定位</p>
+<div class="flex flex-wrap gap-2">${tabLinks}</div>
+</div></div>
+
+<!-- Quick Reference Table -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-10">
+<div class="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
+<div class="p-4 border-b border-gray-100 bg-gray-50"><h3 class="font-semibold text-sm text-gray-700">📋 全部产品速查表</h3></div>
+<div class="overflow-x-auto"><table class="w-full text-sm">
+<thead><tr class="bg-gray-50 text-left text-xs text-gray-500 uppercase tracking-wider">
+<th class="py-3 px-4 font-medium">产品名称</th><th class="py-3 px-4 font-medium">型号</th><th class="py-3 px-4 font-medium">分类</th><th class="py-3 px-4 font-medium text-right">详情</th>
+</tr></thead><tbody>${tableRows}</tbody>
+</table></div></div></div>
+
+${catSections}${ft(pp,c,pfx)}`;
   return lay('产品中心 - '+c.name,c.name+'产品中心',bd,c);
 }
 
@@ -289,9 +326,9 @@ function aboutPage(pp,c,pfx){
 <section class="py-16 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="text-center mb-12"><span class="text-sm font-semibold text-primary-600 tracking-wider">TEAM</span><h2 class="text-3xl font-bold mt-3">核心团队</h2></div>
 <div class="grid md:grid-cols-3 gap-8">
-<div class="text-center"><div class="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-3xl">👤</span></div><h3 class="font-bold">崔灿</h3><p class="text-sm text-gray-500">创始人/CEO</p><p class="text-xs text-gray-400 mt-1">郑州航院 · 北师大</p></div>
-<div class="text-center"><div class="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-3xl">👤</span></div><h3 class="font-bold">毛继科</h3><p class="text-sm text-gray-500">联合创始人</p><p class="text-xs text-gray-400 mt-1">清华大学 · 可编程逻辑控制</p></div>
-<div class="text-center"><div class="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-3xl">👤</span></div><h3 class="font-bold">厉宪宇</h3><p class="text-sm text-gray-500">联合创始人</p><p class="text-xs text-gray-400 mt-1">清华大学 · 嵌入式系统</p></div>
+<div class="text-center"><div class="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-3xl">👤</span></div><h3 class="font-bold">崔灿</h3><p class="text-sm text-gray-500">创始人/CEO</p><p class="text-xs text-gray-400 mt-1">香港城市大学 · BGS全球终身会员</p></div>
+<div class="text-center"><div class="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-3xl">👤</span></div><h3 class="font-bold">邓博士</h3><p class="text-sm text-gray-500">联合创始人</p><p class="text-xs text-gray-400 mt-1">清华大学 · 可编程逻辑控制</p></div>
+<div class="text-center"><div class="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-3xl">👤</span></div><h3 class="font-bold">李博士</h3><p class="text-sm text-gray-500">联合创始人</p><p class="text-xs text-gray-400 mt-1">清华大学 · 嵌入式系统</p></div>
 </div></div></section>
 
 <section class="py-16 bg-gray-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
