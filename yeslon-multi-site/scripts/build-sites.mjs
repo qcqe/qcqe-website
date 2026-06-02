@@ -431,18 +431,53 @@ ${rel?`<section class="py-12 bg-gray-50"><div class="max-w-7xl mx-auto px-4 sm:p
 
 function genHome(pp, c, sls, cs, feat, sn, pfx) {
   const cats = PROD[sn] || PROD.yeslon;
-  const featCards = (feat.length?feat:['工业PLC控制','电气安全监测','智能防雷系统','工业物联网平台']).map(f=>`<div class="p-6 bg-gray-50 rounded-xl text-center hover:shadow-md transition-shadow"><div class="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center mx-auto mb-4"><span class="text-primary-600 text-xl">◆</span></div><h3 class="font-semibold">${h(f)}</h3></div>`).join('');
-  const catCards = cats.map(cat=>`<div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow" onclick="location.href='${pfx}/products'"><span class="text-3xl">${cat.ico}</span><h3 class="font-semibold mt-3 mb-1">${h(cat.cat)}</h3><p class="text-sm text-gray-500">${cat.items.length}款产品</p></div>`).join('');
-  const solCards = sls.slice(0,6).map(s=>{const ss=s.slug||slug(s.title);return `<a href="${pfx}/solutions/${ss}" class="block bg-gray-50 rounded-xl p-6 hover:shadow-md hover:border-primary-200 transition-all no-underline border border-transparent"><h3 class="font-semibold text-gray-900 mb-2">${h(s.title)}</h3>${s.description?'<p class="text-sm text-gray-500 leading-relaxed">'+h(s.description.slice(0,120))+'</p>':''}<span class="text-xs text-primary-600 font-medium mt-2 inline-block">查看详情 →</span></a>`;}).join('');
-  const caseCards = cs.slice(0,3).map(c=>`<a href="/cases" class="block bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all no-underline"><h3 class="font-semibold text-gray-900 mb-2">${h(c.title)}</h3>${c.description?'<p class="text-sm text-gray-500">'+h(c.description.slice(0,120))+'</p>':''}${c.client?'<span class="inline-block mt-2 text-xs px-2 py-1 bg-gray-100 rounded-full text-gray-600">'+h(c.client)+'</span>':''}</a>`).join('');
+  const featColors = ['from-blue-500 to-blue-600','from-emerald-500 to-emerald-600','from-amber-500 to-orange-600','from-cyan-500 to-cyan-600','from-violet-500 to-violet-600','from-rose-500 to-rose-600'];
+  const featIcons = ['⚙️','⚡','🌩️','📡','🤖','🔬'];
+  const featCards = (feat.length?feat:['工业PLC控制','电气安全监测','智能防雷系统','工业物联网平台']).map((f,i)=>
+    `<div class="group relative bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-500 hover:-translate-y-1 overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br ${featColors[i%featColors.length]} opacity-0 group-hover:opacity-5 transition-opacity duration-500"></div>
+      <div class="relative"><div class="w-14 h-14 bg-gradient-to-br ${featColors[i%featColors.length]} rounded-2xl flex items-center justify-center mb-5 shadow-lg shadow-blue-500/20 text-2xl">${featIcons[i%featIcons.length]}</div>
+      <h3 class="text-lg font-bold text-gray-900 group-hover:text-primary-700 transition-colors">${h(f)}</h3></div>
+    </div>`).join('');
+  const catCards = cats.map(cat=>`<div class="group bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-500 hover:-translate-y-1 cursor-pointer" onclick="location.href='${pfx}/products'"><span class="text-4xl block mb-4">${cat.ico}</span><h3 class="text-lg font-bold text-gray-900 group-hover:text-primary-700 transition-colors">${h(cat.cat)}</h3><p class="text-sm text-gray-400 mt-1">${cat.items.length}款产品</p><div class="mt-4 w-8 h-0.5 bg-primary-200 group-hover:w-12 group-hover:bg-primary-500 transition-all duration-500"></div></div>`).join('');
+  const solIcons = ['🎯','🔋','🔍','🌍','🌩️','📊'];
+  const solCards = sls.slice(0,6).map((s,i)=>{const ss=s.slug||slug(s.title);return `<a href="${pfx}/solutions/${ss}" class="group block bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-500 hover:-translate-y-1 no-underline"><div class="flex items-center gap-3 mb-3"><span class="text-2xl">${solIcons[i%6]||'📋'}</span><h3 class="font-bold text-gray-900 group-hover:text-primary-700 transition-colors text-base">${h(s.title)}</h3></div>${s.description?'<p class="text-sm text-gray-500 leading-relaxed line-clamp-2">'+h(s.description.slice(0,120))+'</p>':''}<span class="text-sm text-primary-600 font-medium mt-3 inline-flex items-center gap-1 group-hover:gap-2 transition-all">查看详情 <span>→</span></span></a>`;}).join('');
+  const caseCards = cs.slice(0,3).map(c=>`<a href="/cases" class="group block bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-500 hover:-translate-y-1 no-underline"><div class="flex items-center gap-3 mb-3"><span class="w-10 h-10 bg-primary-50 rounded-xl flex items-center justify-center text-primary-600 font-bold text-sm flex-shrink-0">案</span><div><h3 class="font-bold text-gray-900 group-hover:text-primary-700 transition-colors">${h(c.title)}</h3>${c.client?'<span class="text-xs text-gray-400">'+h(c.client)+'</span>':''}</div></div>${c.description?'<p class="text-sm text-gray-500 leading-relaxed line-clamp-2">'+h(c.description.slice(0,120))+'</p>':''}</a>`).join('');
 
   const bd=`${nav(pp,c,pfx+'/',pfx)}
-<div class="bg-gradient-to-br from-gray-900 via-primary-900 to-primary-800 text-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28"><div class="max-w-3xl"><h1 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">${h(c.name)}</h1><p class="text-lg md:text-xl text-primary-100 leading-relaxed mb-8">${h(c.desc)}</p><div class="flex gap-4"><a href="${pfx}/products" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-primary-700 font-semibold rounded-xl hover:bg-gray-100 transition-colors shadow-lg no-underline">查看产品 →</a><a href="${pfx}/contact" class="inline-flex items-center gap-2 px-6 py-3 border-2 border-white/30 text-white font-semibold rounded-xl hover:bg-white/10 transition-colors no-underline">联系我们</a></div></div></div></div>
-<section class="py-16 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="text-center mb-12"><h2 class="text-3xl font-bold">核心业务</h2><p class="text-lg text-gray-500 mt-2">专注工业物联网与电气安全领域</p></div><div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">${featCards}</div></div></section>
-<section class="py-16 bg-gray-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="text-center mb-12"><h2 class="text-3xl font-bold">产品系列</h2><p class="text-lg text-gray-500 mt-2">自主研发、工业级品质</p></div><div class="grid md:grid-cols-3 gap-6">${catCards}</div></div></section>
-${sls.length?`<section class="py-16 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="text-center mb-12"><h2 class="text-3xl font-bold">解决方案</h2></div><div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">${solCards}</div></div></section>`:''}
-${cs.length?`<section class="py-16 bg-gray-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="text-center mb-12"><h2 class="text-3xl font-bold">成功案例</h2></div><div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">${caseCards}</div><div class="text-center mt-8"><a href="/cases" class="inline-flex items-center gap-1 text-primary-600 hover:text-primary-700 font-medium no-underline">查看全部案例 <span>→</span></a></div></div></section>`:''}
-<section class="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-16"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"><h2 class="text-3xl font-bold mb-3">需要详细方案？</h2><p class="text-primary-100 text-lg mb-8">联系我们获取产品资料、技术方案与报价</p><a href="mailto:${h(c.email)}" class="inline-flex items-center gap-2 px-8 py-3 bg-white text-primary-700 font-semibold rounded-xl hover:bg-gray-100 transition-colors shadow-lg no-underline">✉️ 立即咨询</a></div></section>${ft(pp,c,pfx)}`;
+<style>.line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}</style>
+<div class="relative overflow-hidden bg-gradient-to-br from-gray-900 via-primary-900 to-primary-800 text-white">
+  <div class="absolute inset-0 opacity-5" style="background-image:radial-gradient(circle at 20% 30%,white 0%,transparent 40%),radial-gradient(circle at 80% 70%,white 0%,transparent 30%)"></div>
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
+    <div class="max-w-3xl"><div class="flex items-center gap-2 text-primary-200 text-sm font-mono tracking-widest mb-4"><span class="w-8 h-px bg-primary-400"></span>WELCOME TO YESLON</div>
+    <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight tracking-tight">${h(c.name)}</h1>
+    <p class="text-lg md:text-xl text-blue-100/80 leading-relaxed mb-10 max-w-2xl">${h(c.desc)}</p>
+    <div class="flex flex-wrap gap-4"><a href="${pfx}/products" class="inline-flex items-center gap-2 px-8 py-3.5 bg-white text-primary-700 font-semibold rounded-xl hover:bg-gray-100 hover:shadow-2xl hover:shadow-blue-500/30 transition-all duration-300 no-underline">探索产品 <span class="text-lg">→</span></a><a href="${pfx}/contact" class="inline-flex items-center gap-2 px-8 py-3.5 border-2 border-white/20 text-white font-semibold rounded-xl hover:bg-white/10 hover:border-white/40 transition-all duration-300 no-underline">联系我们</a></div>
+  </div></div>
+</div>
+
+<section class="py-20 md:py-28 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-16"><span class="text-xs font-semibold text-primary-600 tracking-[0.2em] uppercase bg-primary-50 px-4 py-1.5 rounded-full">核心业务</span><h2 class="text-3xl md:text-4xl font-bold mt-4 mb-3">以技术驱动能源安全</h2><p class="text-gray-400 max-w-xl mx-auto">从感知到决策，全栈自研构建工业物联网核心能力</p></div>
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">${featCards}</div>
+</div></section>
+
+<section class="py-20 md:py-28 bg-gradient-to-b from-gray-50 to-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-16"><span class="text-xs font-semibold text-primary-600 tracking-[0.2em] uppercase bg-primary-50 px-4 py-1.5 rounded-full">产品系列</span><h2 class="text-3xl md:text-4xl font-bold mt-4 mb-3">全栈产品矩阵</h2><p class="text-gray-400 max-w-xl mx-auto">覆盖工业控制、电气安全、智能防雷、软件平台全链路</p></div>
+<div class="grid md:grid-cols-3 lg:grid-cols-3 gap-5">${catCards}</div>
+</div></section>
+
+${sls.length?`<section class="py-20 md:py-28 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-16"><span class="text-xs font-semibold text-primary-600 tracking-[0.2em] uppercase bg-primary-50 px-4 py-1.5 rounded-full">解决方案</span><h2 class="text-3xl md:text-4xl font-bold mt-4 mb-3">行业解决方案</h2><p class="text-gray-400 max-w-xl mx-auto">针对各行业场景的深度技术方案</p></div>
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">${solCards}</div>
+</div></section>`:''}
+
+${cs.length?`<section class="py-20 md:py-28 bg-gradient-to-b from-gray-50 to-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-16"><span class="text-xs font-semibold text-primary-600 tracking-[0.2em] uppercase bg-primary-50 px-4 py-1.5 rounded-full">成功案例</span><h2 class="text-3xl md:text-4xl font-bold mt-4 mb-3">客户成功实践</h2><p class="text-gray-400 max-w-xl mx-auto">服务200+客户，覆盖12大行业</p></div>
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">${caseCards}</div>
+<div class="text-center mt-10"><a href="/cases" class="inline-flex items-center gap-2 px-6 py-3 border-2 border-primary-200 text-primary-700 font-semibold rounded-xl hover:bg-primary-50 hover:border-primary-400 transition-all no-underline group">查看全部案例 <span class="group-hover:translate-x-1 transition-transform">→</span></a></div>
+</div></section>`:''}
+
+<section class="relative overflow-hidden bg-gradient-to-br from-primary-600 via-primary-700 to-primary-900 text-white py-20"><div class="absolute inset-0 opacity-10" style="background-image:radial-gradient(circle at 30% 20%,white 0%,transparent 50%),radial-gradient(circle at 70% 80%,white 0%,transparent 40%)"></div><div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"><h2 class="text-3xl md:text-4xl font-bold mb-4">需要定制化方案？</h2><p class="text-blue-100/80 text-lg mb-10 max-w-xl mx-auto">联系我们获取产品资料、技术方案及项目报价</p><a href="mailto:${h(c.email)}" class="inline-flex items-center gap-2 px-8 py-3.5 bg-white text-primary-700 font-semibold rounded-xl hover:bg-gray-100 hover:shadow-2xl transition-all duration-300 shadow-lg no-underline group">📧 立即咨询 <span class="group-hover:translate-x-1 transition-transform">→</span></a></div></section>${ft(pp,c,pfx)}`;
   const siteUrl='https://'+(c.sub?c.sub+'.'+c.dom:c.dom)+'/';return lay('首页 - '+c.name,c.desc,bd,c,siteUrl);
 }
 function prodsPage(pp, c, sn, pfx) {
