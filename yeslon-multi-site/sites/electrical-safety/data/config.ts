@@ -2,7 +2,7 @@ import { SiteConfig } from '@shared/types';
 
 export const electricalSafetyConfig: SiteConfig = {
   subdomain: 'electrical-safety',
-  domain: 'yeslon.com',
+  domain: 'qcqe.com',
   siteName: '电气安全监测系统',
   siteNameEn: 'Electrical Safety Monitoring',
   description: '专注于电气安全领域的智能监测解决方案，提供ESA全要素智能电表、ESB三相不平衡监测器、EST无线温度监测等产品，实现电气隐患的全面感知与AI智能分析。',

@@ -43,8 +43,10 @@ git push -u origin main
 
 | 域名 | 类型 |
 |------|------|
-| `www.yeslon.com` | 主域名 |
-| `yeslon.com` | 别名（在 DNS 页配置） |
+| `www.qcqe.com` | 主域名 |
+| `qcqe.com` | 别名（在 DNS 页配置） |
+| `www.yeslon.com` | 旧域名（已配置301跳转） |
+| `yeslon.com` | 旧域名（已配置301跳转） |
 
 ### 4. 配置 DNS
 

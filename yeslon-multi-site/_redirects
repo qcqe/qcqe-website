@@ -1,6 +1,16 @@
 # Cloudflare Pages Redirects
-# yeslon.com → www.yeslon.com (SEO canonical)
-https://yeslon.com/*  https://www.yeslon.com/:splat  301
+# qcqe.com → www.qcqe.com (SEO canonical)
+https://qcqe.com/*  https://www.qcqe.com/:splat  301
+
+# Legacy yeslon.com redirects
+https://yeslon.com/*  https://www.qcqe.com/:splat  301
+https://www.yeslon.com/*  https://www.qcqe.com/:splat  301
+
+# Subdomain legacy redirects
+https://energy.yeslon.com/*  https://energy.qcqe.com/:splat  301
+https://electrical-safety.yeslon.com/*  https://electrical-safety.qcqe.com/:splat  301
+https://lightning-protection.yeslon.com/*  https://lightning-protection.qcqe.com/:splat  301
+https://industrial-plc.yeslon.com/*  https://industrial-plc.qcqe.com/:splat  301
 
 # Custom 404
 /*  /404.html  404

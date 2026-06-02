@@ -2,7 +2,7 @@ import { SiteConfig } from '@shared/types';
 
 export const energyConfig: SiteConfig = {
   subdomain: 'energy',
-  domain: 'yeslon.com',
+  domain: 'qcqe.com',
   siteName: '新能源充电与电气安全',
   siteNameEn: 'EV Charging & Electrical Safety',
   description: '微物联技术专注新能源充电站电气安全监测与电气隐患预警，提供充电站谐波分析、电动自行车充电棚安全监测、储能电站安全监测等一站式电气安全数字化解决方案。',
