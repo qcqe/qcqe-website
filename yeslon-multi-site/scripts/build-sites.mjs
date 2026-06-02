@@ -655,8 +655,29 @@ ${reqRows?`<div class="mt-8 bg-white rounded-xl shadow-sm border border-gray-100
 <!-- 3. 系统架构 -->
 <section id="sol-architecture" class="scroll-mt-20 py-12 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="flex items-center gap-3 mb-8"><span class="text-sm font-semibold text-primary-600">03</span><h2 class="text-2xl font-bold">系统架构</h2></div>
-<div class="bg-gray-50 rounded-xl p-6 md:p-10 border border-gray-200">${sd.arch.map((a,i)=>`<div class="flex items-center gap-4 py-3 ${i>0?'border-t border-gray-200':''}"><span class="text-2xl w-10 flex-shrink-0">${a.ico}</span><div class="flex-1"><h3 class="font-semibold text-gray-900 text-sm">${h(a.t)}</h3><p class="text-xs text-gray-500">${h(a.d)}</p></div></div>`).join('')}</div>
-</div></section>
+<div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-8 md:p-12 shadow-xl border border-gray-700 overflow-hidden relative">
+<div class="absolute inset-0 opacity-[0.03]" style="background-image:radial-gradient(circle at 1px 1px,white 1px,transparent 0);background-size:24px 24px"></div>
+<div class="relative z-10 flex flex-col items-center gap-1">
+${sd.arch.map((a,i)=>{
+  const colors=['from-blue-500 to-blue-600','from-cyan-500 to-cyan-600','from-amber-500 to-amber-600','from-emerald-500 to-emerald-600'];
+  const c=colors[i%colors.length];
+  return `<div class="w-full max-w-2xl">
+    ${i>0?`<div class="flex justify-center py-1"><div class="flex flex-col items-center text-gray-500"><svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M10 3v14M5 12l5 5 5-5"/></svg><span class="text-[10px] tracking-widest uppercase">数据流</span></div></div>`:''}
+    <div class="bg-gradient-to-r ${c} rounded-xl p-5 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all cursor-default">
+      <div class="flex items-center gap-4">
+        <span class="text-3xl w-12 h-12 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center flex-shrink-0">${a.ico}</span>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2 mb-0.5">
+            <h3 class="font-bold text-white text-base">${h(a.t)}</h3>
+            <span class="text-[10px] px-2 py-0.5 bg-white/20 text-white/90 rounded-full font-mono">L${sd.arch.length-i}</span>
+          </div>
+          <p class="text-white/80 text-sm leading-relaxed">${h(a.d)}</p>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}).join('')}
+</div></div></div></section>
 
 <!-- 4. 产品构成 -->
 <section id="sol-products" class="scroll-mt-20 py-12 bg-gray-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
