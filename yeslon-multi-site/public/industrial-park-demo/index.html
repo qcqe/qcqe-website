@@ -351,6 +351,11 @@ setTimeout(function(){drawCarbonChart()},300);setTimeout(function(){drawLoad();d
 
 // Clock
 setInterval(function(){var t=document.getElementById('tclock');if(t)t.textContent=new Date().toLocaleString('zh-CN',{hour12:false})},1000);
+// Real-time data refresh
+setInterval(function(){
+  var v=document.getElementById('v-alm');if(v){var c=4+Math.floor(Math.random()*3);v.textContent=c;document.getElementById('acnt').textContent=c}
+  var pw=document.getElementById('v-pw');if(pw){var p=Math.floor(2800+Math.random()*100);pw.innerHTML=p.toLocaleString()+'<span class=ku>kW</span>'}
+},5000);
 </script>
 </body>
 </html>
