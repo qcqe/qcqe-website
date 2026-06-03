@@ -1,0 +1,1811 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>母线智能监测系统 · 完整解决方案</title>
+  <style>
+    :root {
+      --primary: #0d2b52;
+      --primary2: #1a4a8a;
+      --accent: #f04d2b;
+      --accent2: #0090d9;
+      --accent3: #00b894;
+      --light: #f0f5fb;
+      --border: #d4dde9;
+      --text: #1c2a3a;
+      --muted: #566b82;
+      --success: #00804a;
+      --warning: #c07800;
+      --danger: #c0202a;
+      --sidebar-w: 240px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+      background: #e8eef6;
+      color: var(--text);
+      line-height: 1.75;
+    }
+
+    /* ===== 侧边导航 ===== */
+    .sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: var(--sidebar-w);
+      height: 100vh;
+      background: var(--primary);
+      color: #fff;
+      overflow-y: auto;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar-logo {
+      padding: 24px 20px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .sidebar-logo .logo-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #1a6aff, #00d4e8);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+      box-shadow: 0 4px 12px rgba(26,106,255,.4);
+    }
+    .sidebar-logo .logo-icon svg {
+      width: 30px;
+      height: 30px;
+    }
+    .sidebar-logo .logo-name {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    .sidebar-logo .logo-sub {
+      font-size: 11px;
+      opacity: 0.55;
+      margin-top: 2px;
+    }
+    .sidebar-nav {
+      padding: 16px 0;
+      flex: 1;
+    }
+    .nav-group-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      padding: 14px 20px 6px;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 20px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.72);
+      text-decoration: none;
+      transition: all 0.2s;
+      border-left: 3px solid transparent;
+      cursor: pointer;
+    }
+    .nav-item:hover, .nav-item.active {
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+      border-left-color: var(--accent2);
+    }
+    .nav-item .nav-icon { font-size: 16px; width: 20px; text-align: center; }
+    .nav-item .nav-num {
+      margin-left: auto;
+      font-size: 10px;
+      background: rgba(255,255,255,0.15);
+      padding: 1px 6px;
+      border-radius: 8px;
+      opacity: 0.7;
+    }
+    .sidebar-footer {
+      padding: 14px 20px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 11px;
+      color: rgba(255,255,255,0.35);
+    }
+
+    /* ===== 主内容区 ===== */
+    .main {
+      margin-left: var(--sidebar-w);
+      min-height: 100vh;
+    }
+
+    /* ===== 顶栏 ===== */
+    .topbar {
+      background: linear-gradient(135deg, #0a1e3d 0%, #0d2b52 40%, #1460a8 100%);
+      color: #fff;
+      padding: 56px 60px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .topbar::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -100px;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,144,217,0.2) 0%, transparent 70%);
+    }
+    .topbar::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: 20%;
+      width: 600px; height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,184,148,0.12) 0%, transparent 70%);
+    }
+    .topbar-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(240,77,43,0.9);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 18px;
+      letter-spacing: 1px;
+      position: relative; z-index: 1;
+    }
+    .topbar h1 {
+      font-size: 38px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 12px;
+      letter-spacing: 2px;
+      position: relative; z-index: 1;
+    }
+    .topbar h1 span { color: #5dd3f5; }
+    .topbar .desc {
+      font-size: 15px;
+      color: #ffffff;
+      max-width: 680px;
+      margin-bottom: 36px;
+      position: relative; z-index: 1;
+      line-height: 1.8;
+    }
+    .kpi-row {
+      display: flex;
+      gap: 32px;
+      position: relative; z-index: 1;
+      flex-wrap: wrap;
+    }
+    .kpi-item {
+      text-align: center;
+    }
+    .kpi-num {
+      font-size: 30px;
+      font-weight: 800;
+      color: #5dd3f5;
+      line-height: 1;
+    }
+    .kpi-unit {
+      font-size: 13px;
+      color: #5dd3f5;
+      opacity: 0.8;
+    }
+    .kpi-label {
+      font-size: 11px;
+      opacity: 0.6;
+      margin-top: 4px;
+    }
+    .kpi-divider {
+      width: 1px;
+      background: rgba(255,255,255,0.15);
+      align-self: stretch;
+    }
+    .topbar-meta {
+      margin-top: 28px;
+      font-size: 12px;
+      opacity: 0.45;
+      position: relative; z-index: 1;
+    }
+
+    /* ===== 内容容器 ===== */
+    .content {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 36px 32px 60px;
+    }
+
+    /* ===== 章节卡片 ===== */
+    .section {
+      background: #fff;
+      border-radius: 14px;
+      margin-bottom: 28px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(13,43,82,0.07);
+    }
+    .section-header {
+      padding: 20px 28px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-header.blue { background: linear-gradient(90deg, #0d2b52 0%, #0090d9 100%); color: #fff; }
+    .section-header.teal { background: linear-gradient(90deg, #006b5a 0%, #00b894 100%); color: #fff; }
+    .section-header.orange { background: linear-gradient(90deg, #7a2300 0%, #f04d2b 100%); color: #fff; }
+    .section-header.purple { background: linear-gradient(90deg, #3b1f6e 0%, #7c3aed 100%); color: #fff; }
+    .section-header.gray { background: linear-gradient(90deg, #1c2a3a 0%, #566b82 100%); color: #fff; }
+    .section-num {
+      width: 38px; height: 38px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 10px;
+      font-size: 17px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .section-title { font-size: 19px; font-weight: 700; letter-spacing: 1px; }
+    .section-sub { font-size: 13px; opacity: 0.7; margin-top: 2px; }
+    .section-body { padding: 28px; }
+
+    h3 {
+      font-size: 15.5px;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 24px 0 12px;
+      padding-left: 12px;
+      border-left: 4px solid var(--accent2);
+    }
+    h3:first-child { margin-top: 0; }
+    h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent2);
+      margin: 16px 0 8px;
+    }
+    p { font-size: 14.5px; line-height: 1.85; margin-bottom: 10px; color: var(--text); }
+    ul, ol { padding-left: 20px; margin-bottom: 10px; }
+    li { font-size: 14px; line-height: 1.9; color: var(--text); }
+
+    /* ===== 提示框 ===== */
+    .callout {
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin: 14px 0;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .callout-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+    .callout-text { font-size: 13.5px; line-height: 1.75; }
+    .callout.info { background: #e8f4fd; border-left: 4px solid var(--accent2); }
+    .callout.warn { background: #fdf5e6; border-left: 4px solid var(--warning); }
+    .callout.danger { background: #fdecea; border-left: 4px solid var(--danger); }
+    .callout.success { background: #e6f9f1; border-left: 4px solid var(--success); }
+
+    /* ===== 卡片网格 ===== */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 14px;
+      margin: 14px 0;
+    }
+    .card-grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 16px;
+      background: var(--light);
+      transition: box-shadow 0.2s;
+    }
+    .card:hover { box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
+    .card-icon { font-size: 28px; margin-bottom: 10px; }
+    .card-title { font-size: 14px; font-weight: 700; color: var(--primary); margin-bottom: 6px; }
+    .card-text { font-size: 12.5px; color: var(--muted); line-height: 1.65; }
+
+    /* ===== 表格 ===== */
+    .table-wrap { overflow-x: auto; margin: 12px 0; border-radius: 8px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    thead tr { background: var(--primary); color: #fff; }
+    thead th { padding: 11px 14px; text-align: left; font-weight: 600; white-space: nowrap; }
+    tbody tr:nth-child(even) { background: #f5f8fc; }
+    tbody tr:hover { background: #e6f0fa; }
+    td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.6; }
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .tag-green { background: #d1fae5; color: #065f46; }
+    .tag-blue { background: #dbeafe; color: #1d4ed8; }
+    .tag-orange { background: #fff3cd; color: #854d0e; }
+    .tag-red { background: #fee2e2; color: #991b1b; }
+    .tag-purple { background: #ede9fe; color: #5b21b6; }
+    .tag-cyan { background: #cffafe; color: #0e7490; }
+
+    /* ===== 流程图 ===== */
+    .flow {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+      margin: 16px 0;
+    }
+    .flow-box {
+      background: var(--primary);
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      text-align: center;
+      min-width: 88px;
+      line-height: 1.4;
+    }
+    .flow-box.b2 { background: var(--accent2); }
+    .flow-box.b3 { background: var(--accent3); }
+    .flow-box.b4 { background: var(--accent); }
+    .flow-box.b5 { background: #7c3aed; }
+    .flow-arrow { color: #999; font-size: 20px; padding: 0 4px; }
+
+    /* ===== 架构图 ===== */
+    .arch {
+      background: var(--light);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 16px 0;
+    }
+    .arch-layer {
+      border: 2px dashed var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+    }
+    .arch-layer-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .arch-nodes {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .arch-node {
+      background: #fff;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+    .arch-node.blue { border-color: var(--accent2); color: var(--accent2); }
+    .arch-node.green { border-color: var(--accent3); color: var(--success); }
+    .arch-node.red { border-color: var(--accent); color: var(--accent); }
+    .arch-node.purple { border-color: #7c3aed; color: #5b21b6; }
+    .arch-arrow {
+      text-align: center;
+      color: var(--muted);
+      font-size: 20px;
+      margin: 2px 0;
+    }
+
+    /* ===== 进度条 ===== */
+    .progress-bar {
+      height: 8px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 4px 0;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 1s ease;
+    }
+
+    /* ===== 时间线 ===== */
+    .timeline { padding: 4px 0; }
+    .tl-item {
+      display: flex;
+      gap: 16px;
+      padding-bottom: 20px;
+      position: relative;
+    }
+    .tl-item::after {
+      content: '';
+      position: absolute;
+      left: 16px;
+      top: 34px;
+      bottom: 0;
+      width: 2px;
+      background: var(--border);
+    }
+    .tl-item:last-child::after { display: none; }
+    .tl-dot {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(13,43,82,0.2);
+    }
+    .tl-content { flex: 1; }
+    .tl-title { font-size: 14.5px; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+    .tl-text { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+    /* ===== 告警级别 ===== */
+    .alarm-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 14px 0;
+    }
+    .alarm-card {
+      border-radius: 10px;
+      padding: 16px 14px;
+      text-align: center;
+    }
+    .alarm-card.l1 { background: #fffbeb; border: 2px solid #fde68a; }
+    .alarm-card.l2 { background: #fff7ed; border: 2px solid #fed7aa; }
+    .alarm-card.l3 { background: #fef3c7; border: 2px solid #fbbf24; }
+    .alarm-card.l4 { background: #fee2e2; border: 2px solid #f87171; }
+    .alarm-level { font-size: 20px; margin-bottom: 6px; }
+    .alarm-name { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .alarm-temp { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+    .alarm-action { font-size: 11.5px; color: var(--muted); line-height: 1.5; }
+
+    /* ===== 对比矩阵 ===== */
+    .compare-header {
+      display: grid;
+      grid-template-columns: 1.6fr repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 8px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .compare-row {
+      display: grid;
+      grid-template-columns: 1.6fr repeat(4, 1fr);
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+      font-size: 13px;
+    }
+    .compare-label { font-weight: 600; color: var(--text); }
+    .compare-cell { text-align: center; }
+    .star { color: #f59e0b; }
+    .cross { color: var(--danger); }
+
+    /* ===== 平台截图模拟 ===== */
+    .platform-demo {
+      background: #0d1a2e;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+      margin: 16px 0;
+    }
+    .demo-topbar {
+      background: #162640;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #243654;
+    }
+    .demo-title { color: #fff; font-size: 14px; font-weight: 700; }
+    .demo-status {
+      display: flex; align-items: center; gap: 16px;
+    }
+    .demo-status-item {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; color: #8faac4;
+    }
+    .dot-green { width: 8px; height: 8px; border-radius: 50%; background: #00e87a; display: inline-block; box-shadow: 0 0 6px #00e87a; }
+    .dot-red { width: 8px; height: 8px; border-radius: 50%; background: #ff4444; display: inline-block; box-shadow: 0 0 6px #ff4444; }
+    .dot-yellow { width: 8px; height: 8px; border-radius: 50%; background: #ffaa00; display: inline-block; box-shadow: 0 0 6px #ffaa00; }
+    .demo-body {
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+    .demo-kpi {
+      background: #162640;
+      border-radius: 8px;
+      padding: 14px;
+      text-align: center;
+      border: 1px solid #243654;
+    }
+    .demo-kpi-val { font-size: 26px; font-weight: 800; color: #5dd3f5; }
+    .demo-kpi-unit { font-size: 11px; color: #5dd3f5; opacity: 0.7; }
+    .demo-kpi-label { font-size: 11px; color: #8faac4; margin-top: 4px; }
+    .demo-chart {
+      background: #162640;
+      border-radius: 8px;
+      padding: 14px;
+      border: 1px solid #243654;
+    }
+    .demo-chart-title { font-size: 11px; color: #8faac4; margin-bottom: 8px; font-weight: 600; letter-spacing: 1px; }
+    .demo-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+      height: 60px;
+    }
+    .demo-bar {
+      flex: 1;
+      border-radius: 3px 3px 0 0;
+      min-height: 4px;
+    }
+    .demo-alarm-list { grid-column: span 2; }
+    .alarm-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 0;
+      border-bottom: 1px solid #243654;
+      font-size: 12px;
+      color: #adc4d8;
+    }
+    .alarm-item:last-child { border-bottom: none; }
+    .alarm-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    /* ===== 来源标注 ===== */
+    .source-tag {
+      display: inline-block;
+      background: #f0f5ff;
+      border: 1px solid #c7d8f5;
+      color: #3355a0;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin: 2px 3px;
+    }
+
+    /* ===== 分割线 ===== */
+    .divider {
+      border: none;
+      border-top: 1px dashed var(--border);
+      margin: 20px 0;
+    }
+
+    /* ===== ROI计算 ===== */
+    .roi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin: 14px 0;
+    }
+    .roi-card {
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+    }
+    .roi-card.cost { background: #fef3c7; border: 1px solid #fde68a; }
+    .roi-card.save { background: #d1fae5; border: 1px solid #a7f3d0; }
+    .roi-card.roi { background: #dbeafe; border: 1px solid #bfdbfe; }
+    .roi-icon { font-size: 24px; margin-bottom: 8px; }
+    .roi-val { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+    .roi-label { font-size: 12px; color: var(--muted); }
+
+    /* ===== 响应式 ===== */
+    @media (max-width: 900px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; }
+      .topbar { padding: 36px 24px 32px; }
+      .topbar h1 { font-size: 26px; }
+      .content { padding: 20px 16px 40px; }
+      .alarm-row { grid-template-columns: repeat(2, 1fr); }
+      .demo-body { grid-template-columns: repeat(2, 1fr); }
+      .roi-grid, .card-grid-3 { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ===== 章节回到顶部 ===== */
+    .back-top {
+      display: block;
+      text-align: right;
+      font-size: 12px;
+      color: var(--accent2);
+      text-decoration: none;
+      margin-top: 4px;
+    }
+    .back-top:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<!-- ===== 侧边导航 ===== -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon"><svg viewBox="0 0 40 40"><defs><linearGradient id="wl2" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:rgba(255,255,255,.3)"/><stop offset="50%" style="stop-color:#fff"/><stop offset="100%" style="stop-color:rgba(255,255,255,.3)"/></linearGradient></defs><path d="M5 20 Q10 10,15 20 T25 20 T35 20" stroke="url(#wl2)" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M5 25 Q10 15,15 25 T25 25 T35 25" stroke="rgba(255,255,255,.5)" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M5 15 Q10 5,15 15 T25 15 T35 15" stroke="rgba(255,255,255,.5)" stroke-width="1.5" fill="none" stroke-linecap="round"/><circle cx="20" cy="20" r="2" fill="#fff"/></svg></div>
+    <div class="logo-name">微物联母线智能监测系统</div>
+    <div class="logo-sub">FEXLINK-BMS · 解决方案 v2.0</div>
+  </div>
+  <div class="sidebar-nav">
+    <div class="nav-group-title">方案概述</div>
+    <a class="nav-item active" href="#sec01"><span class="nav-icon">📌</span>行业背景与痛点</a>
+    <a class="nav-item" href="#sec02"><span class="nav-icon">💡</span>系统价值与目标</a>
+    <div class="nav-group-title">技术体系</div>
+    <a class="nav-item" href="#sec03"><span class="nav-icon">🏗️</span>整体架构</a>
+    <a class="nav-item" href="#sec04"><span class="nav-icon">🔩</span>硬件体系</a>
+    <a class="nav-item" href="#sec05"><span class="nav-icon">📡</span>通讯方式</a>
+    <a class="nav-item" href="#sec06"><span class="nav-icon">🖥️</span>监测平台</a>
+    <div class="nav-group-title">运营保障</div>
+    <a class="nav-item" href="#sec07"><span class="nav-icon">🚨</span>预警与响应</a>
+    <a class="nav-item" href="#sec08"><span class="nav-icon">📐</span>标准规范</a>
+    <a class="nav-item" href="#sec09"><span class="nav-icon">🏭</span>应用场景</a>
+    <a class="nav-item" href="#sec10"><span class="nav-icon">📊</span>投资分析</a>
+    <a class="nav-item" href="#sec11"><span class="nav-icon">🗺️</span>实施路线</a>
+  </div>
+  <div class="sidebar-footer">
+    母线监测系统技术白皮书<br>2026年 第一版
+  </div>
+</nav>
+
+<!-- ===== 主内容 ===== -->
+<div class="main" id="top">
+
+  <!-- 顶栏封面 -->
+  <div class="topbar">
+    <div class="topbar-badge">🔒 电气安全 · 智能运维</div>
+    <h1>母线<span>智能监测系统</span><br>整体解决方案</h1>
+    <p class="desc">
+      基于物联网（IoT）+ 边缘计算 + AI预测性维护技术，构建从感知层到应用层的全链路母线在线监测体系，
+      实现配电系统由"故障后抢修"向"故障前预警"的根本性转变。
+    </p>
+    <div class="kpi-row">
+      <div class="kpi-item">
+        <div class="kpi-num">85<span class="kpi-unit">%↓</span></div>
+        <div class="kpi-label">电气事故率降低</div>
+      </div>
+      <div class="kpi-divider"></div>
+      <div class="kpi-item">
+        <div class="kpi-num">72h</div>
+        <div class="kpi-label">最早可提前预警</div>
+      </div>
+      <div class="kpi-divider"></div>
+      <div class="kpi-item">
+        <div class="kpi-num">18~24</div>
+        <div class="kpi-label">月投资回收期（月）</div>
+      </div>
+      <div class="kpi-divider"></div>
+      <div class="kpi-item">
+        <div class="kpi-num">99.8<span class="kpi-unit">%</span></div>
+        <div class="kpi-label">数据采集可靠性</div>
+      </div>
+      <div class="kpi-divider"></div>
+      <div class="kpi-item">
+        <div class="kpi-num">60<span class="kpi-unit">%↓</span></div>
+        <div class="kpi-label">人工巡检工时减少</div>
+      </div>
+    </div>
+    <div class="topbar-meta">版本：v2.0 · 日期：2026-03-25 · 适用范围：工业/商业/数据中心配电系统</div>
+  </div>
+
+  <!-- 内容 -->
+  <div class="content">
+
+    <!-- ===== 01 行业背景与痛点 ===== -->
+    <div class="section" id="sec01">
+      <div class="section-header blue">
+        <div class="section-num">01</div>
+        <div>
+          <div class="section-title">行业背景与核心痛点</div>
+          <div class="section-sub">为什么需要母线在线监测</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="callout danger">
+          <div class="callout-icon">🔥</div>
+          <div class="callout-text">
+            <strong>数据警示：</strong>据应急管理部统计，电气火灾占各类火灾总量的 <strong>34.6%</strong>，其中因电气线路及接触不良引发的占比超过 <strong>60%</strong>。
+            母线作为配电系统的"主动脉"，其接头、连接器的过热故障是最主要诱因。
+          </div>
+        </div>
+
+        <h3>母线系统典型故障分布</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>故障类型</th>
+                <th>占比</th>
+                <th>根本原因</th>
+                <th>发展规律</th>
+                <th>危害等级</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>接头/连接器过热</td>
+                <td><span class="tag tag-red">45.3%</span></td>
+                <td>接触电阻增大、连接松动、氧化腐蚀</td>
+                <td>渐变型，72h内可检出</td>
+                <td>极高 🔴</td>
+              </tr>
+              <tr>
+                <td>导体过载发热</td>
+                <td><span class="tag tag-orange">22.6%</span></td>
+                <td>超额定电流持续运行</td>
+                <td>随负载变化，可实时监控</td>
+                <td>高 🟠</td>
+              </tr>
+              <tr>
+                <td>绝缘老化/局放</td>
+                <td><span class="tag tag-orange">18.2%</span></td>
+                <td>绝缘材料老化、受潮、机械损伤</td>
+                <td>缓变型，数月可检出</td>
+                <td>高 🟠</td>
+              </tr>
+              <tr>
+                <td>散热不良</td>
+                <td><span class="tag tag-blue">9.5%</span></td>
+                <td>通风堵塞、环境温度过高</td>
+                <td>可通过环境监测预判</td>
+                <td>中 🟡</td>
+              </tr>
+              <tr>
+                <td>外力损伤与腐蚀</td>
+                <td><span class="tag tag-blue">4.4%</span></td>
+                <td>施工碰撞、化学腐蚀、水汽侵入</td>
+                <td>偶发型，难以预判</td>
+                <td>中 🟡</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>传统运维模式的五大痛点</h3>
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-icon">🦯</div>
+            <div class="card-title">监测盲区大</div>
+            <div class="card-text">母线接头、插接箱内部等关键点位无法实时感知，设备状态完全依赖人工判断</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">📋</div>
+            <div class="card-title">巡检效率低</div>
+            <div class="card-text">人工定期巡检间隔长（通常1周~1月），无法捕捉突发异常，且耗费大量人力</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🚒</div>
+            <div class="card-title">被动救火式运维</div>
+            <div class="card-text">故障发生后才进行抢修，停电损失大，重要场所（数据中心、医院）影响尤为严重</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🏝️</div>
+            <div class="card-title">数据孤岛问题</div>
+            <div class="card-text">各楼层、各区域设备数据分散，无法统一管理和关联分析，形成信息孤岛</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🔒</div>
+            <div class="card-title">带电作业风险</div>
+            <div class="card-text">母线不停电状态下人工检测存在安全风险，且受距离和位置限制，无法精确测温</div>
+          </div>
+        </div>
+
+        <div class="callout info">
+          <div class="callout-icon">📊</div>
+          <div class="callout-text">
+            <strong>市场背景：</strong>全球母线测温监测市场2024年规模达 <strong>4.15亿美元</strong>，预计2030年达 <strong>8.3亿美元</strong>，
+            年复合增长率 <strong>11.2%</strong>。中国市场占全球38%份额，在"双碳"目标和智慧电力驱动下加速增长。
+          </div>
+        </div>
+        <a class="back-top" href="#top">↑ 返回顶部</a>
+      </div>
+    </div>
+
+    <!-- ===== 02 价值与目标 ===== -->
+    <div class="section" id="sec02">
+      <div class="section-header teal">
+        <div class="section-num">02</div>
+        <div>
+          <div class="section-title">系统价值与建设目标</div>
+          <div class="section-sub">构建智能电力安全保障体系的核心驱动力</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <h3>六大核心价值</h3>
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-icon">🛡️</div>
+            <div class="card-title">本质安全提升</div>
+            <div class="card-text">7×24小时不间断在线监测，将故障从"事后发现"提前到"事前预警"，电气事故率降低85%以上</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">⚙️</div>
+            <div class="card-title">预测性维护</div>
+            <div class="card-text">基于AI算法分析趋势，在设备健康恶化前输出维护建议，将计划外停机减少90%，维护成本降低50%</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🏃</div>
+            <div class="card-title">运维效率倍增</div>
+            <div class="card-text">自动化数据采集替代人工巡检，运维工时减少60%，同时提供精确的故障定位（精度到具体测点）</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">⚡</div>
+            <div class="card-title">能耗优化</div>
+            <div class="card-text">实时监测各回路负载电流和功率，发现超载和不平衡运行，协助能效管理，降低线路损耗</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">📱</div>
+            <div class="card-title">数字化赋能</div>
+            <div class="card-text">构建设备全生命周期数字档案，为资产管理、合规审计、保险核查提供完整数据支撑</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">💰</div>
+            <div class="card-title">可量化ROI</div>
+            <div class="card-text">投资回收期通常为18~24个月，通过降低事故损失、减少停电损失、节省运维人力获得持续回报</div>
+          </div>
+        </div>
+
+        <h3>五大建设目标</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>建设目标</th><th>具体指标</th><th>实现路径</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>全面感知</strong></td>
+                <td>100%覆盖始端箱、插接箱、连接器等关键点位</td>
+                <td>密集布置温度/电流传感器，无线组网消除盲区</td>
+              </tr>
+              <tr>
+                <td><strong>实时监控</strong></td>
+                <td>数据采集周期 ≤60秒，异常响应 ≤30秒</td>
+                <td>边缘计算本地处理 + 4G/LoRa实时上报</td>
+              </tr>
+              <tr>
+                <td><strong>智能预警</strong></td>
+                <td>故障预警提前量 ≥24小时，误报率 ≤3%</td>
+                <td>多参数融合AI模型 + 四级告警阈值体系</td>
+              </tr>
+              <tr>
+                <td><strong>联动控制</strong></td>
+                <td>支持与BMS/BAS/消防系统联动，响应时间 ≤5秒</td>
+                <td>标准API接口 + 开放协议集成</td>
+              </tr>
+              <tr>
+                <td><strong>可视管理</strong></td>
+                <td>Web+移动端双平台，支持历史回溯、报表导出</td>
+                <td>云端SaaS平台 + 本地部署选项</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <a class="back-top" href="#top">↑ 返回顶部</a>
+      </div>
+    </div>
+
+    <!-- ===== 03 整体架构 ===== -->
+    <div class="section" id="sec03">
+      <div class="section-header blue">
+        <div class="section-num">03</div>
+        <div>
+          <div class="section-title">系统整体架构</div>
+          <div class="section-sub">端·边·云三层分布式架构</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="callout info">
+          <div class="callout-icon">🏗️</div>
+          <div class="callout-text">
+            本系统采用"<strong>端-边-云</strong>"三层分布式架构，确保感知全面、传输可靠、分析智能。
+            边缘层本地处理减少云端依赖，即使断网也可持续存储30天数据，保障关键场所的连续性。
+          </div>
+        </div>
+
+        <div class="arch">
+          <div class="arch-layer" style="border-color:#f04d2b;">
+            <div class="arch-layer-title" style="color:#f04d2b;">☁️ 应用层（云端 / 本地服务器）</div>
+            <div class="arch-nodes">
+              <div class="arch-node red">🖥️ Web管理平台</div>
+              <div class="arch-node red">📱 移动APP</div>
+              <div class="arch-node red">🤖 AI分析引擎</div>
+              <div class="arch-node red">📊 数字孪生模型</div>
+              <div class="arch-node red">🔔 多通道告警中心</div>
+              <div class="arch-node red">📋 报表中心</div>
+            </div>
+          </div>
+          <div class="arch-arrow">⬆️⬇️ MQTT / HTTPS / API</div>
+          <div class="arch-layer" style="border-color:#0090d9;">
+            <div class="arch-layer-title" style="color:#0090d9;">🔌 传输层（网络通讯）</div>
+            <div class="arch-nodes">
+              <div class="arch-node blue">📡 LoRa 网关</div>
+              <div class="arch-node blue">📶 4G/NB-IoT DTU</div>
+              <div class="arch-node blue">🔗 RS485 汇聚器</div>
+              <div class="arch-node blue">🌐 以太网交换机</div>
+              <div class="arch-node blue">💾 边缘计算网关（本地存储≥30天）</div>
+            </div>
+          </div>
+          <div class="arch-arrow">⬆️⬇️ LoRa / ZigBee / RS485 / PLC载波</div>
+          <div class="arch-layer" style="border-color:#00b894;">
+            <div class="arch-layer-title" style="color:#00b894;">📡 感知层（现场设备）</div>
+            <div class="arch-nodes">
+              <div class="arch-node green">🌡️ 无线测温节点</div>
+              <div class="arch-node green">⚡ 电流互感器（CT）</div>
+              <div class="arch-node green">🌊 湿度/环境传感器</div>
+              <div class="arch-node green">🔍 局放检测探头</div>
+              <div class="arch-node green">📷 红外热成像（可选）</div>
+              <div class="arch-node green">🔦 光纤测温DTS（可选）</div>
+            </div>
+          </div>
+        </div>
+
+        <h3>数据处理流程</h3>
+        <div class="flow">
+          <div class="flow-box">现场传感器<br>数据采集</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box b2">边缘网关<br>本地预处理</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box b3">加密传输<br>上云</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box b4">AI模型<br>分析诊断</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box b5">告警推送<br>+联动控制</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box" style="background:#065f46">报表归档<br>+寿命预测</div>
+        </div>
+        <a class="back-top" href="#top">↑ 返回顶部</a>
+      </div>
+    </div>
+
+    <!-- ===== 04 硬件体系 ===== -->
+    <div class="section" id="sec04">
+      <div class="section-header orange">
+        <div class="section-num">04</div>
+        <div>
+          <div class="section-title">硬件体系与技术参数</div>
+          <div class="section-sub">感知层核心设备规格</div>
+        </div>
+      </div>
+      <div class="section-body">
+
+        <h3>硬件选型策略</h3>
+        <div class="callout info">
+          <div class="callout-icon">💡</div>
+          <div class="callout-text">
+            硬件选型遵循"<strong>精度优先、安装便捷、长期可靠</strong>"原则。主力方案采用<strong>无线LoRa测温节点</strong>，
+            免施工穿线，适应高压带电环境；大型设施可选配<strong>光纤分布式测温（DTS）</strong>实现连续段测温；
+            重要节点配置<strong>红外热成像</strong>辅助巡检，三种方案互为补充。
+          </div>
+        </div>
+
+        <h3>① 无线测温节点（主力方案）</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>参数项</th><th>规格指标</th><th>备注</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>测温范围</td><td>-40℃ ~ +125℃</td><td>覆盖极端工况</td></tr>
+              <tr><td>测温精度</td><td>±0.5℃（常温段±0.3℃）</td><td>NTC/PT100双传感器方案</td></tr>
+              <tr><td>温度分辨率</td><td>0.1℃</td><td>可识别早期微小温升</td></tr>
+              <tr><td>采集周期</td><td>10s ~ 300s 可配置</td><td>报警时自动加密至5s</td></tr>
+              <tr><td>通讯协议</td><td>LoRa（ISM 470MHz）/ ZigBee 2.4GHz</td><td>可选，适配现场环境</td></tr>
+              <tr><td>通讯距离</td><td>室内100~300m（LoRa），穿墙3~5堵</td><td>工业遮挡环境实测值</td></tr>
+              <tr><td>供电方式</td><td>CT取电（5A以上回路）/ 3.6V锂电池</td><td>电池寿命≥5年</td></tr>
+              <tr><td>防护等级</td><td>IP67</td><td>防尘防水，适合竖井安装</td></tr>
+              <tr><td>安装方式</td><td>夹持式，无需断电，5分钟/个</td><td>支持带电安装</td></tr>
+              <tr><td>认证</td><td>CCC / CE / RoHS</td><td>符合国内外标准</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>② 边缘智能网关</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>参数项</th><th>规格指标</th><th>备注</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>下行接口</td><td>LoRa（≤512个节点）/ RS485（≤32路）/ ZigBee</td><td>多协议融合</td></tr>
+              <tr><td>上行接口</td><td>4G LTE + 以太网双链路</td><td>主备切换，保障可靠性</td></tr>
+              <tr><td>本地存储</td><td>≥32GB eMMC，断网续传≥30天</td><td>防止数据丢失</td></tr>
+              <tr><td>边缘计算</td><td>内置ARM Cortex-A53，支持本地规则引擎</td><td>本地告警响应&lt;1s</td></tr>
+              <tr><td>加密方式</td><td>AES-128传输加密 + TLS 1.3</td><td>数据安全合规</td></tr>
+              <tr><td>工作温度</td><td>-20℃ ~ +70℃</td><td>适应工业现场</td></tr>
+              <tr><td>防护等级</td><td>IP40（标配），IP65（可选）</td><td>根据安装位置选配</td></tr>
+              <tr><td>供电</td><td>AC 220V / DC 12~48V 宽压输入</td><td>支持UPS备电</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>③ 电流互感器（CT）</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>参数项</th><th>规格指标</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>量程</td><td>5A ~ 6000A（分档选型，精度0.5级）</td></tr>
+              <tr><td>类型</td><td>开口式CT（免穿线，带电安装）</td></tr>
+              <tr><td>输出</td><td>0~5mA / 0~333mV（与测温节点集成）</td></tr>
+              <tr><td>频率</td><td>50/60Hz</td></tr>
+              <tr><td>过载能力</td><td>10倍额定电流持续30s</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>④ 光纤分布式测温系统（DTS，大型设施可选）</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>参数项</th><th>规格指标</th><th>适用场景</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>单根光纤测温长度</td><td>最长10km</td><td>超长母线槽、隧道电缆</td></tr>
+              <tr><td>空间分辨率</td><td>≤1m</td><td>精确定位热点位置</td></tr>
+              <tr><td>测温精度</td><td>±1℃</td><td>需配专用感温光缆</td></tr>
+              <tr><td>响应时间</td><td>≤60s（全线扫描）</td><td>实时性略低，适合连续监测</td></tr>
+              <tr><td>优势</td><td>本质安全（光纤无电信号）、抗电磁干扰强</td><td>高压开关室、地下电缆廊道</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>⑤ 红外测温模块（辅助巡检）</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>参数项</th><th>规格指标</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>测温范围</td><td>-20℃ ~ +550℃</td></tr>
+              <tr><td>热成像分辨率</td><td>320×240 ~ 640×480 像素</td></tr>
+              <tr><td>测温精度</td><td>±2℃ 或 ±2%（取较大值）</td></tr>
+              <tr><td>输出</td><td>HDMI视频 + RS485 + Ethernet</td></tr>
+              <tr><td>部署方式</td><td>固定安装（关键节点常态监测）/ 手持巡检两用</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>技术方案对比（三种主流技术路线）</h3>
+        <div class="compare-header">
+          <div>对比维度</div>
+          <div>无线测温节点</div>
+          <div>光纤DTS</div>
+          <div>红外测温</div>
+          <div>RS485有线方案</div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-label">安装难度</div>
+          <div class="compare-cell"><span class="star">★★★★★</span></div>
+          <div class="compare-cell"><span class="star">★★★</span></div>
+          <div class="compare-cell"><span class="star">★★★★</span></div>
+          <div class="compare-cell"><span class="star">★★</span></div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-label">抗电磁干扰</div>
+          <div class="compare-cell"><span class="star">★★★</span></div>
+          <div class="compare-cell"><span class="star">★★★★★</span></div>
+          <div class="compare-cell"><span class="star">★★★</span></div>
+          <div class="compare-cell"><span class="star">★★★★</span></div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-label">测温精度</div>
+          <div class="compare-cell"><span class="star">★★★★</span></div>
+          <div class="compare-cell"><span class="star">★★★★</span></div>
+          <div class="compare-cell"><span class="star">★★★</span></div>
+          <div class="compare-cell"><span class="star">★★★★★</span></div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-label">建设成本</div>
+          <div class="compare-cell"><span class="star">★★★★</span></div>
+          <div class="compare-cell"><span class="star">★★</span></div>
+          <div class="compare-cell"><span class="star">★★★</span></div>
+          <div class="compare-cell"><span class="star">★★★</span></div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-label">改造难度</div>
+          <div class="compare-cell"><span class="star">★★★★★</span></div>
+          <div class="compare-cell"><span class="star">★★★</span></div>
+          <div class="compare-cell"><span class="star">★★★★</span></div>
+          <div class="compare-cell"><span class="star">★★</span></div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-label">适用规模</div>
+          <div class="compare-cell">中小型</div>
+          <div class="compare-cell">大型/超长</div>
+          <div class="compare-cell">补充巡检</div>
+          <div class="compare-cell">新建项目</div>
+        </div>
+
+        <div class="callout success">
+          <div class="callout-icon">✅</div>
+          <div class="callout-text">
+            <strong>推荐方案：</strong>大多数项目采用"<strong>LoRa无线测温节点（主）+ CT电流互感器（辅）</strong>"组合，
+            改造工程量最小，性价比最高。新建大型数据中心可考虑"DTS光纤 + LoRa节点"双方案互补。
+          </div>
+        </div>
+        <a class="back-top" href="#top">↑ 返回顶部</a>
+      </div>
+    </div>
+
+    <!-- ===== 05 通讯方式 ===== -->
+    <div class="section" id="sec05">
+      <div class="section-header purple">
+        <div class="section-num">05</div>
+        <div>
+          <div class="section-title">通讯方式与组网方案</div>
+          <div class="section-sub">多协议融合的可靠数据传输体系</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <h3>各层通讯协议选型</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>通讯层级</th>
+                <th>推荐协议</th>
+                <th>速率/距离</th>
+                <th>优势</th>
+                <th>适用场景</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>传感器→网关（本地）</strong></td>
+                <td><span class="tag tag-blue">LoRa 470MHz</span></td>
+                <td>0.3~50kbps，室内300m</td>
+                <td>穿墙性强、低功耗、免布线</td>
+                <td>多楼层、地下室、竖井</td>
+              </tr>
+              <tr>
+                <td><strong>传感器→网关（密集）</strong></td>
+                <td><span class="tag tag-cyan">ZigBee 2.4GHz</span></td>
+                <td>250kbps，100m，Mesh自组网</td>
+                <td>大量节点自组网、成本低</td>
+                <td>同楼层密集布点</td>
+              </tr>
+              <tr>
+                <td><strong>传感器→汇聚（有线）</strong></td>
+                <td><span class="tag tag-green">RS485 Modbus</span></td>
+                <td>9.6k~115kbps，1200m</td>
+                <td>可靠性极高、抗干扰强</td>
+                <td>新建项目、高压开关室</td>
+              </tr>
+              <tr>
+                <td><strong>网关→云平台（广域）</strong></td>
+                <td><span class="tag tag-orange">4G/5G LTE</span></td>
+                <td>50~200Mbps，全网覆盖</td>
+                <td>无需专网、即插即用</td>
+                <td>分散站点、改造项目</td>
+              </tr>
+              <tr>
+                <td><strong>网关→云平台（低功耗）</strong></td>
+                <td><span class="tag tag-blue">NB-IoT</span></td>
+                <td>26kbps，全网覆盖</td>
+                <td>超低功耗、低成本流量</td>
+                <td>偏远站点、电池供电</td>
+              </tr>
+              <tr>
+                <td><strong>平台内部通讯</strong></td>
+                <td><span class="tag tag-purple">MQTT / HTTP</span></td>
+                <td>毫秒级延迟</td>
+                <td>轻量级、发布-订阅模式</td>
+                <td>IoT标准协议，兼容性最佳</td>
+              </tr>
+              <tr>
+                <td><strong>平台→第三方集成</strong></td>
+                <td><span class="tag tag-green">Modbus TCP / IEC61850</span></td>
+                <td>标准协议</td>
+                <td>与SCADA/BMS/EMS无缝集成</td>
+                <td>工厂SCADA、楼宇BMS</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>典型组网拓扑（多层建筑场景）</h3>
+        <div class="arch">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;">
+            <div class="arch-node green">🌡️ 测温节点×N</div>
+            <div style="align-self:center;color:#999;">──LoRa──</div>
+            <div class="arch-node blue">📡 LoRa网关（每层1台）</div>
+            <div style="align-self:center;color:#999;">──RS485/以太网──</div>
+            <div class="arch-node blue">💾 楼宇边缘网关</div>
+            <div style="align-self:center;color:#999;">──4G/专线──</div>
+            <div class="arch-node red">☁️ 云端平台</div>
+          </div>
+          <div style="font-size:12px;color:#888;border-top:1px dashed #ddd;padding-top:10px;">
+            💡 说明：每台LoRa网关可接入最多512个节点；边缘网关提供本地存储和断网续传；4G为主，专线/以太网为备；
+            云端平台支持多站点统一管理。
+          </div>
+        </div>
+
+        <h3>通讯可靠性保障机制</h3>
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-icon">🔁</div>
+            <div class="card-title">双链路冗余</div>
+            <div class="card-text">4G主链路 + 以太网/WiFi备链路，主路断线自动秒切</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">💾</div>
+            <div class="card-title">断网续传</div>
+            <div class="card-text">边缘网关本地缓存≥30天数据，恢复连接后自动补传，零数据丢失</td>
+          </div>
+          <div class="card">
+            <div class="card-icon">🔐</div>
+            <div class="card-title">端到端加密</div>
+            <div class="card-text">AES-128加密 + TLS 1.3，防止数据篡改和中间人攻击</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">📡</div>
+            <div class="card-title">自愈网络</div>
+            <div class="card-text">ZigBee Mesh支持节点故障时自动绕路，网络不因单点失效而中断</div>
+          </div>
+        </div>
+        <a class="back-top" href="#top">↑ 返回顶部</a>
+      </div>
+    </div>
+
+    <!-- ===== 06 监测平台 ===== -->
+    <div class="section" id="sec06">
+      <div class="section-header teal">
+        <div class="section-num">06</div>
+        <div>
+          <div class="section-title">智能监测管理平台</div>
+          <div class="section-sub">全功能可视化运维中台 · 系统核心</div>
+        </div>
+      </div>
+      <div class="section-body">
+
+        <div class="callout success">
+          <div class="callout-icon">🖥️</div>
+          <div class="callout-text">
+            监测平台是整个系统的"大脑"，集数据汇聚、实时可视化、AI分析、告警管理、资产管理于一体。
+            支持<strong>B/S架构（Web浏览器访问）</strong>，无需安装客户端；提供<strong>iOS/Android移动端APP</strong>，
+            支持<strong>SaaS云端</strong>和<strong>本地私有化部署</strong>两种模式。
+          </div>
+        </div>
+
+        <!-- 平台界面DEMO预览 -->
+        <h3>平台界面预览（实时监控大屏）</h3>
+        <div class="platform-demo">
+          <div class="demo-topbar">
+            <div class="demo-title">⚡ BusBMS · 母线智能监测管理平台</div>
+            <div class="demo-status">
+              <div class="demo-status-item"><span class="dot-green"></span>系统运行正常</div>
+              <div class="demo-status-item"><span class="dot-yellow"></span>1个预警</div>
+              <div class="demo-status-item">🕐 2026-03-25 11:35:22</div>
+            </div>
+          </div>
+          <div class="demo-body">
+            <div class="demo-kpi">
+              <div class="demo-kpi-val">248</div>
+              <div class="demo-kpi-unit">个</div>
+              <div class="demo-kpi-label">在线监测节点</div>
+            </div>
+            <div class="demo-kpi">
+              <div class="demo-kpi-val" style="color:#00e87a;">62.4</div>
+              <div class="demo-kpi-unit" style="color:#00e87a;">℃ MAX</div>
+              <div class="demo-kpi-label">当前最高温度</div>
+            </div>
+            <div class="demo-kpi">
+              <div class="demo-kpi-val" style="color:#ffaa00;">1</div>
+              <div class="demo-kpi-unit" style="color:#ffaa00;">条</div>
+              <div class="demo-kpi-label">黄色预警</div>
+            </div>
+            <div class="demo-kpi">
+              <div class="demo-kpi-val" style="color:#00e87a;">99.6</div>
+              <div class="demo-kpi-unit" style="color:#00e87a;">%</div>
+              <div class="demo-kpi-label">系统在线率</div>
+            </div>
+            <div class="demo-chart" style="grid-column:span 2;">
+              <div class="demo-chart-title">过去24小时温度趋势（主要测点）</div>
+              <div class="demo-bars">
+                <div class="demo-bar" style="height:35%;background:#0090d9;"></div>
+                <div class="demo-bar" style="height:40%;background:#0090d9;"></div>
+                <div class="demo-bar" style="height:38%;background:#0090d9;"></div>
+                <div class="demo-bar" style="height:45%;background:#0090d9;"></div>
+                <div class="demo-bar" style="height:42%;background:#0090d9;"></div>
+                <div class="demo-bar" style="height:55%;background:#f59e0b;"></div>
+                <div class="demo-bar" style="height:68%;background:#f59e0b;"></div>
+                <div class="demo-bar" style="height:72%;background:#f59e0b;"></div>
+                <div class="demo-bar" style="height:65%;background:#0090d9;"></div>
+                <div class="demo-bar" style="height:58%;background:#0090d9;"></div>
+                <div class="demo-bar" style="height:50%;background:#0090d9;"></div>
+                <div class="demo-bar" style="height:47%;background:#0090d9;"></div>
+              </div>
+              <div style="font-size:10px;color:#5a7a9a;margin-top:4px;">00:00 ——————————————————— 24:00</div>
+            </div>
+            <div class="demo-chart" style="grid-column:span 2;" class="demo-alarm-list">
+              <div class="demo-chart-title">最近告警记录</div>
+              <div class="alarm-item">
+                <div class="alarm-dot" style="background:#ffaa00;box-shadow:0 0 6px #ffaa00;"></div>
+                <div style="flex:1">3F-B插接箱-A相 温度65℃ &gt; 预警阈值60℃</div>
+                <div style="color:#5a7a9a;font-size:11px;">11:28</div>
+              </div>
+              <div class="alarm-item">
+                <div class="alarm-dot" style="background:#00e87a;box-shadow:0 0 6px #00e87a;"></div>
+                <div style="flex:1">2F-C插接箱 温度恢复正常（已处理）</div>
+                <div style="color:#5a7a9a;font-size:11px;">09:14</div>
+              </div>
+              <div class="alarm-item">
+                <div class="alarm-dot" style="background:#00e87a;box-shadow:0 0 6px #00e87a;"></div>
+                <div style="flex:1">系统自检完成，248/248节点在线</div>
+                <div style="color:#5a7a9a;font-size:11px;">08:00</div>
+              </div>
+              <div class="alarm-item">
+                <div class="alarm-dot" style="background:#5a7a9a;"></div>
+                <div style="flex:1">日报已自动生成并发送至运维邮箱</div>
+                <div style="color:#5a7a9a;font-size:11px;">07:30</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h3>八大核心功能模块</h3>
+
+        <h4>① 实时监控中心</h4>
+        <ul>
+          <li>GIS/平面图可视化：将测点状态叠加在楼层平面图上，过温测点自动高亮变色</li>
+          <li>数字孪生视图：三维建筑模型展示母线槽路径和测点分布</li>
+          <li>实时温度热力图：直观显示各区域温度分布</li>
+          <li>多屏大屏模式：支持监控室大屏投放，支持自定义仪表盘布局</li>
+        </ul>
+
+        <h4>② 历史数据分析</h4>
+        <ul>
+          <li>任意时间段历史曲线查询，支持多测点对比显示</li>
+          <li>历史告警回溯：快速定位某次告警的前后数据变化</li>
+          <li>季节性对比分析：同期温度对比，识别异常趋势</li>
+          <li>数据导出：支持Excel/CSV/PDF格式报表导出</li>
+        </ul>
+
+        <h4>③ AI智能诊断引擎</h4>
+        <ul>
+          <li><strong>故障预测模型：</strong>基于LSTM长短时记忆网络，对温度趋势建模，提前24~72小时预测过热风险</li>
+          <li><strong>异常检测：</strong>同回路横向比较（同类接头温差&gt;5℃即触发预警）</li>
+          <li><strong>寿命预测：</strong>基于温度-寿命Arrhenius方程估算绝缘剩余寿命</li>
+          <li><strong>根因分析：</strong>融合温度+电流+环境数据，自动判断故障可能原因（过载/接触不良/散热不良）</li>
+          <li><strong>维护计划建议：</strong>基于状态数据输出最优维护时间窗口建议</li>
+        </ul>
+
+        <h4>④ 多级告警管理</h4>
+        <ul>
+          <li>四级告警体系（蓝/黄/橙/红），告警阈值可按测点独立配置</li>
+          <li>告警推送：短信、微信公众号、APP推送、邮件、声光报警器联动</li>
+          <li>告警升级机制：预警未处理自动升级，15分钟未响应升级通知上级负责人</li>
+          <li>告警工单：自动生成维护工单，支持运维人员确认、处理、闭环</li>
+        </ul>
+
+        <h4>⑤ 资产台账管理</h4>
+        <ul>
+          <li>母线槽设备档案：型号、额定参数、安装日期、供应商等完整记录</li>
+          <li>全生命周期数据：从安装到退役的完整运行记录</li>
+          <li>维护记录：每次检修记录自动关联设备档案</li>
+          <li>二维码/NFC快速查看：扫码即看设备详情和历史数据</li>
+        </ul>
+
+        <h4>⑥ 报表与合规管理</h4>
+        <ul>
+          <li>自动生成日报/周报/月报/年报，PDF邮件定时发送</li>
+          <li>安全运行报告：满足消防验收、电气安全检查的合规报告模板</li>
+          <li>告警统计：MTBF（平均无故障时间）、告警频次等KPI统计</li>
+        </ul>
+
+        <h4>⑦ 能耗管理模块</h4>
+        <ul>
+          <li>各回路实时功率和累计电量统计，负荷均衡度分析</li>
+          <li>超载提醒：电流超过额定值80%时预警，超100%立即告警</li>
+          <li>用电趋势分析：峰谷用电分析，协助制定错峰策略</li>
+        </ul>
+
+        <h4>⑧ 第三方系统集成</h4>
+        <ul>
+          <li><strong>开放API接口：</strong>RESTful API + WebSocket，支持与BMS/SCADA/EMS对接</li>
+          <li><strong>标准协议：</strong>支持Modbus TCP、OPC-UA、IEC61850等工业协议输出</li>
+          <li><strong>消防联动：</strong>当红色告警触发时，可联动消防系统启动预案</li>
+          <li><strong>门禁/楼控集成：</strong>告警时自动解锁相关区域门禁，便于快速响应</li>
+        </ul>
+
+        <h3>平台部署模式</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>部署方式</th><th>适用客户</th><th>优势</th><th>备注</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="tag tag-blue">SaaS云端</span></td>
+                <td>中小型企业、连锁商业</td>
+                <td>免维护、快速上线、按需付费</td>
+                <td>数据存储在服务商云端，建议合同约定数据所有权</td>
+              </tr>
+              <tr>
+                <td><span class="tag tag-purple">私有化部署</span></td>
+                <td>大型企业、政府、金融机构</td>
+                <td>数据安全可控、满足等保要求</td>
+                <td>需自备服务器，建议双机热备</td>
+              </tr>
+              <tr>
+                <td><span class="tag tag-green">混合云</span></td>
+                <td>数据中心、大型园区</td>
+                <td>关键数据本地，统计数据上云</td>
+                <td>兼顾安全性和运维便利性</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <a class="back-top" href="#top">↑ 返回顶部</a>
+      </div>
+    </div>
+
+    <!-- ===== 07 预警与响应 ===== -->
+    <div class="section" id="sec07">
+      <div class="section-header orange">
+        <div class="section-num">07</div>
+        <div>
+          <div class="section-title">预警机制与应急响应</div>
+          <div class="section-sub">四级告警体系 · 闭环处置流程</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <h3>四级告警阈值体系</h3>
+        <div class="alarm-row">
+          <div class="alarm-card l1">
+            <div class="alarm-level">🔵</div>
+            <div class="alarm-name">蓝色·注意</div>
+            <div class="alarm-temp" style="color:#1d4ed8;">T＞55℃</div>
+            <div class="alarm-action">系统记录 + 日报提示<br>运维关注，加密采集频率</div>
+          </div>
+          <div class="alarm-card l2">
+            <div class="alarm-level">🟡</div>
+            <div class="alarm-name">黄色·预警</div>
+            <div class="alarm-temp" style="color:#d97706;">T＞65℃</div>
+            <div class="alarm-action">APP/短信推送<br>运维人员24h内现场确认</div>
+          </div>
+          <div class="alarm-card l3">
+            <div class="alarm-level">🟠</div>
+            <div class="alarm-name">橙色·告警</div>
+            <div class="alarm-temp" style="color:#c2410c;">T＞80℃</div>
+            <div class="alarm-action">电话+APP紧急通知<br>4小时内处置，负荷调整</div>
+          </div>
+          <div class="alarm-card l4">
+            <div class="alarm-level">🔴</div>
+            <div class="alarm-name">红色·紧急</div>
+            <div class="alarm-temp" style="color:#dc2626;">T＞100℃</div>
+            <div class="alarm-action">全员通知+消防联动<br>立即降负荷/断路，人员疏散</div>
+          </div>
+        </div>
+        <div class="callout warn">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-text">上述阈值为典型参考值，实际部署时需根据<strong>设备额定温度、绝缘等级（A/B/F/H级）、安装环境温度</strong>进行个性化校准。
+          例如H级绝缘允许更高温度运行，而老旧设备应适当降低阈值。</div>
+        </div>
+
+        <h3>告警处置闭环流程</h3>
+        <div class="flow">
+          <div class="flow-box">传感器<br>触发阈值</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box b2">边缘网关<br>本地判断</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box b4">多通道<br>告警推送</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box b3">运维人员<br>接收确认</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box b5">现场处置<br>/联动控制</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box" style="background:#065f46">告警闭环<br>归档记录</div>
+        </div>
+        <a class="back-top" href="#top">↑ 返回顶部</a>
+      </div>
+    </div>
+
+    <!-- ===== 08 标准规范 ===== -->
+    <div class="section" id="sec08">
+      <div class="section-header gray">
+        <div class="section-num">08</div>
+        <div>
+          <div class="section-title">遵循标准与规范体系</div>
+          <div class="section-sub">国标 · 行标 · 国际标准</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>标准编号</th><th>标准名称</th><th>应用范围</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>GB 7251.6—2015</td><td>低压成套开关设备和控制设备 母线干线系统</td><td>母线槽产品技术规范</td></tr>
+              <tr><td>GB 16895.6—2014</td><td>低压电气装置 第5-52部分：电气设备的选择和安装</td><td>导体温度限值规定</td></tr>
+              <tr><td>IEC 61439-6:2012</td><td>低压成套开关设备和控制设备 母线干线系统</td><td>国际等同标准</td></tr>
+              <tr><td>IEC 61850</td><td>变电站通信网络和系统</td><td>平台与SCADA集成通讯协议</td></tr>
+              <tr><td>GB/T 38590—2020</td><td>智能低压成套开关设备和控制设备通用技术规范</td><td>智能监测设备规范</td></tr>
+              <tr><td>GB 50303—2015</td><td>建筑电气工程施工质量验收规范</td><td>安装施工验收</td></tr>
+              <tr><td>GB/T 51408—2021</td><td>建筑能耗监测系统技术标准</td><td>能耗数据采集标准</td></tr>
+              <tr><td>等保2.0（GB/T 22239—2019）</td><td>信息安全技术 网络安全等级保护基本要求</td><td>平台网络安全合规</td></tr>
+              <tr><td>GA/T 1131—2014</td><td>消防安全防范工程技术规范</td><td>消防联动接口规范</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <a class="back-top" href="#top">↑ 返回顶部</a>
+      </div>
+    </div>
+
+    <!-- ===== 09 应用场景 ===== -->
+    <div class="section" id="sec09">
+      <div class="section-header blue">
+        <div class="section-num">09</div>
+        <div>
+          <div class="section-title">典型应用场景</div>
+          <div class="section-sub">行业差异化解决方案</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="card-grid" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
+          <div class="card">
+            <div class="card-icon">🏢</div>
+            <div class="card-title">数据中心 IDC</div>
+            <div class="card-text">
+              <strong>核心需求：</strong>极高连续性，SLA 99.999%<br>
+              <strong>典型规模：</strong>每排机柜母线槽接头≥20个<br>
+              <strong>推荐方案：</strong>DTS光纤 + 无线节点双覆盖 + 与DCIM系统集成<br>
+              <strong>特殊需求：</strong>PUE优化、动力环境联动、IT负载动态调度
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🏥</div>
+            <div class="card-title">医院与医疗机构</div>
+            <div class="card-text">
+              <strong>核心需求：</strong>手术室/ICU零停电容忍<br>
+              <strong>推荐方案：</strong>高密度无线节点 + 与楼控/BMS集成<br>
+              <strong>特殊需求：</strong>应急电源监测、医疗IT系统集成<br>
+              <strong>合规：</strong>满足JCI医疗设施安全要求
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🏭</div>
+            <div class="card-title">工业制造工厂</div>
+            <div class="card-text">
+              <strong>核心需求：</strong>生产线不停机，防爆要求<br>
+              <strong>推荐方案：</strong>本地私有化部署 + 与MES/SCADA集成<br>
+              <strong>特殊需求：</strong>防爆区域认证，生产班次负荷分析<br>
+              <strong>额外价值：</strong>停机损失量化，保险理赔数据
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🛒</div>
+            <div class="card-title">大型商业综合体</div>
+            <div class="card-text">
+              <strong>核心需求：</strong>消防安全、电气合规<br>
+              <strong>推荐方案：</strong>SaaS平台 + 与消防/楼控集成<br>
+              <strong>特殊需求：</strong>多租户能耗分摊、消防报备<br>
+              <strong>特点：</strong>多楼层、多回路、季节性负荷变化大
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🏘️</div>
+            <div class="card-title">产业园区/写字楼群</div>
+            <div class="card-text">
+              <strong>核心需求：</strong>多楼统一运维、降低人力成本<br>
+              <strong>推荐方案：</strong>混合云部署 + 集中监控中心<br>
+              <strong>特殊需求：</strong>分区计量、物业收费管理<br>
+              <strong>价值：</strong>以一套平台管理所有楼宇设备
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon">⚡</div>
+            <div class="card-title">智慧变电站/配电室</div>
+            <div class="card-text">
+              <strong>核心需求：</strong>无人值守、远程巡检<br>
+              <strong>推荐方案：</strong>RS485有线 + 4G上云 + IEC61850集成<br>
+              <strong>特殊需求：</strong>局放检测、绝缘监测、接地监测<br>
+              <strong>合规：</strong>满足国网/南网技术规范
+            </div>
+          </div>
+        </div>
+        <a class="back-top" href="#top">↑ 返回顶部</a>
+      </div>
+    </div>
+
+    <!-- ===== 10 投资分析 ===== -->
+    <div class="section" id="sec10">
+      <div class="section-header purple">
+        <div class="section-num">10</div>
+        <div>
+          <div class="section-title">投资分析与ROI测算</div>
+          <div class="section-sub">以100个监测点位为参考基准</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="roi-grid">
+          <div class="roi-card cost">
+            <div class="roi-icon">💸</div>
+            <div class="roi-val" style="color:#854d0e;">¥15~25万</div>
+            <div class="roi-label">典型建设成本<br>（100点位，含硬件+平台+安装）</div>
+          </div>
+          <div class="roi-card save">
+            <div class="roi-icon">💰</div>
+            <div class="roi-val" style="color:#065f46;">¥12~18万/年</div>
+            <div class="roi-label">年综合节省<br>（人工+事故损失+维护费）</div>
+          </div>
+          <div class="roi-card roi">
+            <div class="roi-icon">📈</div>
+            <div class="roi-val" style="color:#1d4ed8;">18~24月</div>
+            <div class="roi-label">静态投资回收期<br>（典型场景）</div>
+          </div>
+        </div>
+
+        <h3>成本构成参考</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>项目</th><th>单价参考</th><th>100点规模</th><th>占比</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>无线测温节点（含CT）</td><td>350~600元/个</td><td>3.5~6万元</td><td>约25%</td></tr>
+              <tr><td>边缘网关（按楼层部署）</td><td>3000~8000元/台</td><td>1.5~4万元</td><td>约15%</td></tr>
+              <tr><td>软件平台授权（SaaS年费）</td><td>1.5~3万元/年</td><td>1.5~3万元/年</td><td>约15%</td></tr>
+              <tr><td>施工安装调试</td><td>150~300元/点</td><td>1.5~3万元</td><td>约15%</td></tr>
+              <tr><td>系统集成与定制开发</td><td>按需</td><td>2~5万元</td><td>约20%</td></tr>
+              <tr><td>运营维护（年费）</td><td>建设费用10~15%</td><td>1.5~3万元/年</td><td>约10%</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>效益来源分析</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>效益类型</th><th>典型量化</th><th>说明</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>减少运维人工成本</td>
+                <td><span class="tag tag-green">节省2~4人工/年</span></td>
+                <td>巡检工时减少60%，折算约6~12万元/年</td>
+              </tr>
+              <tr>
+                <td>避免电气事故损失</td>
+                <td><span class="tag tag-green">单次事故损失10~500万</span></td>
+                <td>数据中心/工厂停机1小时损失极高，预防一次即回本</td>
+              </tr>
+              <tr>
+                <td>延长设备使用寿命</td>
+                <td><span class="tag tag-blue">寿命延长20~30%</span></td>
+                <td>及时处置过热，减少绝缘老化加速</td>
+              </tr>
+              <tr>
+                <td>降低能耗损失</td>
+                <td><span class="tag tag-blue">降低1~3%能耗</span></td>
+                <td>优化负荷均衡，减少接触电阻热损耗</td>
+              </tr>
+              <tr>
+                <td>保险费率优惠</td>
+                <td><span class="tag tag-orange">部分保险公司5~15%优惠</span></td>
+                <td>投保时提供监测系统证明可获降费</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <a class="back-top" href="#top">↑ 返回顶部</a>
+      </div>
+    </div>
+
+    <!-- ===== 11 实施路线 ===== -->
+    <div class="section" id="sec11">
+      <div class="section-header teal">
+        <div class="section-num">11</div>
+        <div>
+          <div class="section-title">项目实施路线图</div>
+          <div class="section-sub">五阶段落地方法论</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-dot" style="background:#0d2b52;">1</div>
+            <div class="tl-content">
+              <div class="tl-title">需求调研与点位设计（第1~2周）</div>
+              <div class="tl-text">
+                现场勘查母线槽路径，清点始端箱、插接箱、连接器数量；评估通讯环境（LoRa/有线可行性）；
+                确定监测点位清单和硬件选型；与客户确认平台部署方式（SaaS/私有化）；
+                出具施工图纸和设备清单。
+              </div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:#0090d9;">2</div>
+            <div class="tl-content">
+              <div class="tl-title">设备采购与平台准备（第2~4周）</div>
+              <div class="tl-text">
+                按点位清单采购传感器、网关设备；云端账户开通/私有服务器部署；
+                平台基础配置（组织架构、楼层图、告警联系人）；传感器出厂检测与标定。
+              </div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:#00b894;">3</div>
+            <div class="tl-content">
+              <div class="tl-title">现场安装与调试（第4~6周）</div>
+              <div class="tl-text">
+                带电安装测温节点（CT夹持，免断电）；网关上架并配置无线信道；
+                逐点数据验证（实测温度与传感器数值比对）；通讯链路测试（本地→边缘→云端）；
+                告警阈值配置与验证性测试。
+              </div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:#f04d2b;">4</div>
+            <div class="tl-content">
+              <div class="tl-title">系统联调与集成（第6~8周）</div>
+              <div class="tl-text">
+                与BMS/SCADA/消防系统对接联调；移动APP配置与人员账户分配；
+                告警推送测试（短信/APP/声光报警器）；运维人员培训；
+                平台客户化配置（报表模板、仪表盘布局）。
+              </div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:#7c3aed;">5</div>
+            <div class="tl-content">
+              <div class="tl-title">竣工验收与持续运营（第8周+）</div>
+              <div class="tl-text">
+                系统整体验收（点位在线率≥99%、通讯可靠性测试）；文档移交（竣工图、操作手册、硬件资产清单）；
+                正式上线，后期提供7×24小时技术支持；SLA保障（平台可用性≥99.9%）；
+                每季度出具系统健康状态报告。
+              </div>
+            </div>
+          </div>
+        </div>
+        <a class="back-top" href="#top">↑ 返回顶部</a>
+      </div>
+    </div>
+
+
+
+  </div>
+</div>
+
+<script>
+  // 侧边栏高亮当前章节
+  const sections = document.querySelectorAll('.section[id]');
+  const navItems = document.querySelectorAll('.nav-item');
+
+  function updateActiveNav() {
+    let current = '';
+    sections.forEach(sec => {
+      const rect = sec.getBoundingClientRect();
+      if (rect.top <= 120) current = sec.id;
+    });
+    navItems.forEach(item => {
+      item.classList.toggle('active', item.getAttribute('href') === '#' + current);
+    });
+  }
+
+  document.addEventListener('scroll', updateActiveNav, { passive: true });
+  updateActiveNav();
+</script>
+</body>
+</html>

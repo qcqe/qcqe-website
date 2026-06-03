@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, mkdirSync, existsSync, copyFileSync, readdirSync } from 'fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, copyFileSync, readdirSync, statSync } from 'fs';
 import { join, dirname, posix } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -355,6 +355,32 @@ const SOLS = {
   problems:[{p:'配电系统"盲管"，无实时数据',s:'ESA电表全回路覆盖',a:'全参数实时采集'},{p:'能耗数据人工抄表，滞后出错',s:'自动采集+分项统计',a:'数据准确率100%'},{p:'缺少能效分析手段',s:'太一AI能源模型',a:'节能建议自动生成'},{p:'碳排放核算困难',s:'自动碳排计算+报告',a:'ISO 14064标准报告'}],
   implementation:[{p:'Phase 1',t:'体系设计',d:'2周·计量体系设计'},{p:'Phase 2',t:'设备部署',d:'4周·电表+网关安装'},{p:'Phase 3',t:'平台上线',d:'3周·FEXLINK部署'},{p:'Phase 4',t:'试运行',d:'2周·验收+培训'}],
   standards:['GB 17167','GB/T 23331','ISO 50001','GB/T 31960','GB 50116'],
+},
+'busbar-monitoring-system': {
+  sub:'母线智能监测管理系统（BusBMS）', stats:[
+    {v:'99.95%',l:'系统可用性'},{v:'52个',l:'在线监测节点'},{v:'94.7%',l:'AI预测精度'},{v:'48h',l:'隐患提前预警'},
+  ],
+  goals:[{ico:'🎯',t:'建设目标',d:'基于物联网感知+边缘计算+AI预测技术，构建母线槽全生命周期智能监测管理系统，实现母线温度、电流、绝缘状态的全天候在线监测与早期预警。'},{ico:'📈',t:'核心价值',d:'替代传统人工红外巡检方式，将母线安全从"定期巡检、事后抢修"转变为"实时感知、预测维护"，电气事故降低85%，运维效率提升60%。'},{ico:'🚀',t:'技术优势',d:'采用LoRa无线+RS485双模通信架构、LSTM神经网络AI预测模型（精度94.7%），支持三维可视化数字孪生，是国内少数具备"端-边-云"全栈能力的母线监测方案。'}],
+  arch:[
+    {ico:'🌡️',t:'感知层',d:'部署温度传感器（EST-A3）、电流传感器（EST-B2）、红外测温模块、光纤测温等52个监测节点，覆盖母线槽全回路。'},
+    {ico:'📡',t:'通信层',d:'LoRa无线自组网 + RS485有线双模冗余通信，确保数据不中断。'},
+    {ico:'🖥️',t:'边缘计算层',d:'边缘网关本地处理数据、断网缓存、毫秒级响应；支持本地告警与联动保护。'},
+    {ico:'☁️',t:'云平台层',d:'BusBMS云平台：实时监测大屏、AI趋势预测（LSTM）、告警中心、能耗统计、碳足迹追踪。'},
+  ],
+  feats:[
+    {ico:'🌡️',t:'实时温度在线监测',d:'覆盖母线槽接头、主干、分支全节点，测温精度±0.3℃，数据刷新≤30s，支持温度异常秒级告警。'},
+    {ico:'⚡',t:'电流与负载监测',d:'穿心式CT高精度电流采集（0.1%精度），实时计算负载率，三相不平衡度智能分析。'},
+    {ico:'🔮',t:'AI趋势预测（LSTM）',d:'基于LSTM神经网络的历史数据训练，预测未来72小时温度趋势，提前48~72小时发现隐患，MAE误差仅±0.8℃。'},
+    {ico:'📊',t:'三维可视化数字孪生',d:'建筑三维立体视图，直观展示楼层母线布局与节点状态，点击节点查看实时数据，快速定位异常位置。'},
+    {ico:'🔔',t:'智能告警与工单闭环',d:'四级告警机制（预警/警告/严重/紧急），多渠道推送（短信/微信/APP），自动生成维修工单，形成告警-工单-维修-闭环全流程。'},
+    {ico:'💡',t:'能耗管理与碳足迹',d:'分楼层分回路能耗统计、同比环比分析、AI节能建议，自动核算碳排放并追踪减排效果。'},
+  ],
+  prods:['EST温度监测模组','ESA全要素智能电表','ESB三相不平衡监测器','FG智能防雷网关','FEXLINK工业互联网软件'],
+  scenes:['政府办公楼母线槽温度与负载监测','数据中心精密配电柜温度在线监控','商业综合体母线安全运行管理','医院/学校关键配电回路监测','工业园区母线系统预测性维护'],
+  benefits:['电气事故降低85%','运维效率提升60%','隐患平均提前48小时发现','能耗降低15-25%','投资回收期18-24个月'],
+  problems:[{p:'母线温度靠人工红外巡检，周期长有盲区',s:'布设52个温度/电流感知节点，7×24h在线',a:'全覆盖实时监测'},{p:'故障发现滞后，往往起火才知道',s:'AI预测+四级告警，提前48h预警',a:'隐患提前发现'},{p:'能耗数据靠总表，无法分楼层统计',s:'回路级计量+分项能耗统计',a:'精细化能源管理'},{p:'设备台账混乱，维护记录缺失',s:'设备全生命周期管理+自动工单',a:'数字化运维管理'}],
+  implementation:[{p:'Phase 1',t:'现场勘察设计',d:'2周·母线槽布线勘测+节点设计'},{p:'Phase 2',t:'设备安装部署',d:'3周·传感器+网关+通信调试'},{p:'Phase 3',t:'平台配置联调',d:'2周·云平台部署+AI模型训练'},{p:'Phase 4',t:'验收培训交付',d:'1周·系统联调+运维培训'}],
+  standards:['GB 7251','GB 50054','GB 50116','GB/T 21431','IEC 60439'],
 },
 };
 
@@ -754,6 +780,32 @@ ${sd.scenes.length?`<div class="mt-10 pt-8 border-t border-gray-200"><h3 class="
 ${standards.length?`<div class="mt-8 bg-white rounded-xl p-6 shadow-sm border border-gray-100"><h3 class="font-semibold text-gray-900 mb-4">相关标准</h3><div class="flex flex-wrap gap-2">${standards.map(s=>`<span class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">${h(s)}</span>`).join('')}</div></div>`:''}
 </div></section>
 
+${sk==='busbar-monitoring-system'?`<section class="py-12 bg-gradient-to-br from-blue-50 to-indigo-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="bg-white rounded-2xl shadow-lg border border-blue-100 overflow-hidden">
+<div class="grid md:grid-cols-2">
+<div class="p-10 flex flex-col justify-center">
+<div class="text-xs font-semibold text-primary-600 tracking-wider uppercase mb-2">🖥️ 在线体验</div>
+<h2 class="text-2xl font-bold text-gray-900 mb-3">BusBMS 母线监测平台 DEMO</h2>
+<p class="text-gray-500 mb-6">实时体验母线智能监测管理平台的全部功能：温度监测、AI趋势预测、三维可视化、告警中心、能耗统计等。</p>
+<div class="flex gap-3">
+<a href="/busbms-demo/" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 transition-all no-underline shadow-lg shadow-primary-200">🚀 打开在线演示</a>
+<a href="/busbms-demo/solution.html" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 border-2 border-primary-200 text-primary-700 font-semibold rounded-xl hover:bg-primary-50 transition-all no-underline">📄 完整方案文档</a>
+</div>
+</div>
+<div class="bg-gradient-to-br from-gray-900 via-primary-900 to-primary-800 p-8 flex items-center justify-center">
+<div class="text-center text-white">
+<div class="text-5xl mb-4">📊</div>
+<div class="text-lg font-bold mb-2">实时数据监控面板</div>
+<div class="flex gap-4 justify-center text-sm text-blue-200">
+<div>🌡️ 48个在线节点</div>
+<div>⚡ 847kW总负载</div>
+<div>🎯 94.7%预测精度</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div></section>`:''}
 <section class="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-12"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
 <h2 class="text-2xl font-bold mb-3">获取完整方案文档</h2>
 <p class="text-primary-100 mb-6">联系我们获取详细技术方案书、产品配置清单及项目报价</p>
@@ -842,4 +894,6 @@ for(const d of defs){
 }
 
 for(const f of['_redirects','_headers','_routes.json']){const s=join(root,f);if(existsSync(s))copyFileSync(s,join(DIST,f));}
+// Copy public/ directory (demos, etc.)
+(function(){try{var d=join(root,'public');if(!existsSync(d))return;var go=function(s,t){try{var ee=readdirSync(s)}catch{return};for(var i=0;i<ee.length;i++){var sp=join(s,ee[i]);try{var st=statSync(sp)}catch{continue};if(st.isDirectory()){var tp=join(t,ee[i]);if(!existsSync(tp))mkdirSync(tp,{recursive:true});go(sp,tp)}else{copyFileSync(sp,join(t,ee[i]))}}};go(d,DIST);console.log('  📁 public/ copied');}catch(e){console.log('  ℹ️ copy public error:',e.message);}})();
 console.log('\n✅ Build complete');

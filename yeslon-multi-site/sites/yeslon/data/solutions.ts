@@ -102,5 +102,22 @@ export const solutions: Solution[] = [
     category: 'energy',
     image: '/images/solutions/power-monitoring.jpg',
     publishedAt: '2024-04-25'
+  },
+  {
+    id: '7',
+    slug: 'busbar-monitoring-system',
+    title: '母线智能监测管理系统（BusBMS）',
+    description: '基于物联网感知+边缘计算+AI预测技术，构建母线槽全生命周期智能监测管理系统，实现母线温度、电流、绝缘状态的全天候在线监测、早期预警与预测性维护。',
+    features: [
+      '实时温度在线监测（±0.3℃精度）',
+      '电流与负载率实时监测',
+      'LSTM神经网络AI趋势预测（94.7%精度）',
+      '三维可视化数字孪生',
+      '四级智能告警与工单闭环',
+      '分回路能耗管理与碳足迹追踪'
+    ],
+    category: 'safety',
+    image: '/images/solutions/busbar-monitoring.jpg',
+    publishedAt: '2026-03-25'
   }
 ];
