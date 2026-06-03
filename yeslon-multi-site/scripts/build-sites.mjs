@@ -806,26 +806,23 @@ ${sd.scenes.length?`<div class="mt-10 pt-8 border-t border-gray-200"><h3 class="
 ${standards.length?`<div class="mt-8 bg-white rounded-xl p-6 shadow-sm border border-gray-100"><h3 class="font-semibold text-gray-900 mb-4">相关标准</h3><div class="flex flex-wrap gap-2">${standards.map(s=>`<span class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">${h(s)}</span>`).join('')}</div></div>`:''}
 </div></section>
 
-${sk==='busbar-monitoring-system'?`<section class="py-12 bg-gradient-to-br from-blue-50 to-indigo-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+ ${sk==='busbar-monitoring-system'||sk==='industrial-park-smart-energy'?`<section class="py-12 ${sk==='busbar-monitoring-system'?'bg-gradient-to-br from-blue-50 to-indigo-50':'bg-gradient-to-br from-emerald-50 to-cyan-50'}"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="bg-white rounded-2xl shadow-lg border border-blue-100 overflow-hidden">
 <div class="grid md:grid-cols-2">
 <div class="p-10 flex flex-col justify-center">
 <div class="text-xs font-semibold text-primary-600 tracking-wider uppercase mb-2">🖥️ 在线体验</div>
-<h2 class="text-2xl font-bold text-gray-900 mb-3">BusBMS 母线监测平台 DEMO</h2>
-<p class="text-gray-500 mb-6">实时体验母线智能监测管理平台的全部功能：温度监测、AI趋势预测、三维可视化、告警中心、能耗统计等。</p>
+<h2 class="text-2xl font-bold text-gray-900 mb-3">${sk==='busbar-monitoring-system'?'BusBMS 母线监测平台 DEMO':'🏭 智慧园区能源管理 DEMO'}</h2>
+<p class="text-gray-500 mb-6">${sk==='busbar-monitoring-system'?'实时体验母线智能监测管理平台的全部功能：温度监测、AI趋势预测、三维可视化、告警中心、能耗统计等。':'实时体验工业园区智慧能源管理平台的全部功能：多楼栋监控、配电室监测、能耗统计、AI分析、告警中心等。'}</p>
 <div class="flex gap-3">
-<a href="/busbms-demo/" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 transition-all no-underline shadow-lg shadow-primary-200">🚀 打开在线演示</a>
-<a href="/busbms-demo/solution.html" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 border-2 border-primary-200 text-primary-700 font-semibold rounded-xl hover:bg-primary-50 transition-all no-underline">📄 完整方案文档</a>
+<a href="/${sk==='busbar-monitoring-system'?'busbms-demo':'industrial-park-demo'}/" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 transition-all no-underline shadow-lg shadow-primary-200">🚀 打开在线演示</a>
 </div>
 </div>
-<div class="bg-gradient-to-br from-gray-900 via-primary-900 to-primary-800 p-8 flex items-center justify-center">
+<div class="${sk==='busbar-monitoring-system'?'bg-gradient-to-br from-gray-900 via-primary-900 to-primary-800':'bg-gradient-to-br from-gray-900 via-emerald-900 to-teal-800'} p-8 flex items-center justify-center">
 <div class="text-center text-white">
-<div class="text-5xl mb-4">📊</div>
-<div class="text-lg font-bold mb-2">实时数据监控面板</div>
+<div class="text-5xl mb-4">${sk==='busbar-monitoring-system'?'📊':'🏭'}</div>
+<div class="text-lg font-bold mb-2">${sk==='busbar-monitoring-system'?'实时数据监控面板':'园区能源总览看板'}</div>
 <div class="flex gap-4 justify-center text-sm text-blue-200">
-<div>🌡️ 48个在线节点</div>
-<div>⚡ 847kW总负载</div>
-<div>🎯 94.7%预测精度</div>
+${sk==='busbar-monitoring-system'?'<div>🌡️ 48个在线节点</div><div>⚡ 847kW总负载</div><div>🎯 94.7%预测精度</div>':'<div>🏢 7栋建筑</div><div>⚡ 2,847kW总功率</div><div>🎯 84分健康评分</div>'}
 </div>
 </div>
 </div>
