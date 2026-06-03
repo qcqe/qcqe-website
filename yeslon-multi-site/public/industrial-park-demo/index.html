@@ -226,7 +226,7 @@ function rf(){var a=document.querySelector('.page.act');var i=P.indexOf(a.id);do
 function rc(c){c.width=c.parentElement.clientWidth-36}
 
 // Chart: load curve
-function c0(){var c=document.getElementById('c0');if(!c)return;rc(c);c.height=165;var ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,165);
+function drawLoad(){var c=document.getElementById('c0');if(!c)return;rc(c);c.height=165;var ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,165);
 var pad={l:40,r:12,t:12,b:20},iw=c.width-pad.l-pad.r,ih=165-pad.t-pad.b;
 for(var i=0;i<=4;i++){ctx.strokeStyle='rgba(42,64,104,.4)';ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(pad.l,pad.t+ih*i/4);ctx.lineTo(c.width-pad.r,pad.t+ih*i/4);ctx.stroke()}
 var pts=[];var v=2847;for(var i=0;i<60;i++){v+=(Math.random()-0.48)*50;pts.push(v)}ctx.strokeStyle='#3b82f6';ctx.lineWidth=2.5;ctx.lineJoin='round';ctx.beginPath();
@@ -244,7 +244,7 @@ function al(){var di=document.getElementById('al');if(!di)return;
 di.innerHTML='<div style="display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid rgba(42,64,104,.35)"><div style="width:7px;height:7px;border-radius:50%;background:var(--amber);flex-shrink:0;margin-top:5px"></div><div style="flex:1"><div style="font-size:12px;color:#fff;font-weight:500">B栋P03柜温度偏高(L3)</div><div style="font-size:10px;color:var(--muted);margin-top:2px">58.6℃ · 天衍模型预警</div></div></div><div style="display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid rgba(42,64,104,.35)"><div style="width:7px;height:7px;border-radius:50%;background:var(--orange);flex-shrink:0;margin-top:5px"></div><div style="flex:1"><div style="font-size:12px;color:#fff;font-weight:500">D栋P02柜接地偏高(L3)</div><div style="font-size:10px;color:var(--muted);margin-top:2px">4.8Ω · 万象模型分析</div></div></div><div style="display:flex;align-items:flex-start;gap:8px;padding:8px 0"><div style="width:7px;height:7px;border-radius:50%;background:var(--orange);flex-shrink:0;margin-top:5px"></div><div style="flex:1"><div style="font-size:12px;color:#fff;font-weight:500">E栋宿舍P01离线(L2)</div><div style="font-size:10px;color:var(--muted);margin-top:2px">通信中断 · 千知模型诊断</div></div></div>'};
 
 // AI heatmap
-function c2a(){var c=document.getElementById('c2a');if(!c)return;rc(c);c.height=180;var ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,180);
+function drawHeatmap(){var c=document.getElementById('c2a');if(!c)return;rc(c);c.height=180;var ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,180);
 var lb=['温度','电流','负载','绝缘','不平衡'];var fl=['6F','5F','4F','3F','2F','1F'];var dt=[[20,15,18,10,12],[85,88,75,65,70],[45,48,50,40,42],[78,82,80,72,68],[35,38,40,28,30],[18,20,22,15,16]];
 var gw=(c.width-60)/5,gh=(180-30)/6;
 for(var fi=0;fi<6;fi++){ctx.fillStyle='rgba(138,172,204,.6)';ctx.font='10px sans-serif';ctx.textAlign='right';ctx.fillText(fl[fi],52,28+fi*gh+gh/2+4);
@@ -252,7 +252,7 @@ for(var pi=0;pi<5;pi++){var v=dt[fi][pi];var r=Math.min(255,Math.round(v*2.5)),g
 for(var pi=0;pi<5;pi++){ctx.fillStyle='rgba(138,172,204,.6)';ctx.font='9.5px sans-serif';ctx.textAlign='center';ctx.fillText(lb[pi],60+pi*gw+gw/2,14)}}
 
 // Energy 4-layer chart
-function c3a(){var c=document.getElementById('c3a');if(!c)return;rc(c);c.height=180;var ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,180);
+function drawEn4layer(){var c=document.getElementById('c3a');if(!c)return;rc(c);c.height=180;var ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,180);
 var pad={l:30,r:10,t:12,b:20},iw=c.width-pad.l-pad.r,ih=180-pad.t-pad.b;
 var layers=[{n:'L1企业',c:'rgba(59,130,246,'},{n:'L2楼宇',c:'rgba(139,92,246,'},{n:'L3产线',c:'rgba(34,211,238,'},{n:'L4设备',c:'rgba(34,197,94,'}];
 var d=[];for(var i=0;i<30;i++){var row=[];var base=[14000,32000,18000,6000];for(var l=0;l<4;l++){var v=base[l]+Math.random()*base[l]*0.3;row.push(Math.round(v))}d.push(row)}
@@ -263,14 +263,14 @@ for(var l=3;l>=0;l--){var h=d[i][l]/maxV*ih*1.3;ctx.fillStyle=layers[l].c+(l===3
 layers.forEach(function(l,i){ctx.fillStyle=l.c+'0.8)';ctx.fillRect(10,6+i*18,12,10);ctx.fillStyle='#dce8f2';ctx.font='10px sans-serif';ctx.textAlign='left';ctx.fillText(l.n,26,6+i*18+10)})}
 
 // Energy pie
-function c3b(){var c=document.getElementById('c3b');if(!c)return;rc(c);c.height=180;var ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,180);
+function drawEnPie(){var c=document.getElementById('c3b');if(!c)return;rc(c);c.height=180;var ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,180);
 var ls=[{n:'B栋车间',v:40,c:'#eab308'},{n:'A栋综合',v:22,c:'#3b82f6'},{n:'C栋研发',v:17,c:'#22d3ee'},{n:'D栋仓储',v:11,c:'#8b5cf6'},{n:'E栋宿舍',v:7,c:'#22c55e'},{n:'F栋动力',v:3,c:'#f97316'}];
 ctx.clearRect(0,0,c.width,180);var cx=100,cy=90,r=55,ang=-Math.PI/2;
 ls.forEach(function(l){var sl=2*Math.PI*l.v/100;ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,ang,ang+sl);ctx.closePath();ctx.fillStyle=l.c;ctx.fill();ctx.strokeStyle='#080d17';ctx.lineWidth=2;ctx.stroke();ang+=sl});
 ls.forEach(function(l,i){ctx.fillStyle=l.c;ctx.fillRect(c.width-120,4+i*21,12,12);ctx.fillStyle='#dce8f2';ctx.font='10px sans-serif';ctx.textAlign='left';ctx.fillText(l.n+' '+l.v+'%',c.width-104,4+i*21+10)})}
 
 // Carbon
-function c4a(){var c=document.getElementById('c4a');if(!c)return;rc(c);c.height=180;var ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,180);
+function drawCarbon(){var c=document.getElementById('c4a');if(!c)return;rc(c);c.height=180;var ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,180);
 var t=[32.1,30.8,35.2,38.6,40.2,36.5,33.8,31.2,34.5,29.8,27.3,28.5];var pad={l:30,t:12,r:10,b:18},iw=c.width-pad.l-pad.r,ih=180-pad.t-pad.b;
 ctx.fillStyle='rgba(34,197,94,.08)';ctx.beginPath();ctx.moveTo(pad.l,pad.t+ih*(1-32/45));
 for(var i=0;i<t.length;i++){var x=pad.l+iw*i/(t.length-1),y=pad.t+ih*(1-t[i]/45);ctx.lineTo(x,y)}
@@ -286,23 +286,28 @@ for(var i=0;i<=4;i++){ctx.fillText(Math.round(45*(1-i/4)),pad.l-4,pad.t+ih*i/4+4
 function ad(){var di=document.getElementById('ad');if(!di)return;
 di.innerHTML='<div style="margin-bottom:5px;font-size:11px;color:var(--muted)">过温告警 42%<div style="height:6px;background:rgba(255,255,255,.06);border-radius:3px;margin-top:3px;overflow:hidden"><div style="height:100%;width:42%;background:var(--red);border-radius:3px"></div></div></div><div style="margin-bottom:5px;font-size:11px;color:var(--muted)">接地故障 25%<div style="height:6px;background:rgba(255,255,255,.06);border-radius:3px;margin-top:3px;overflow:hidden"><div style="height:100%;width:25%;background:var(--amber);border-radius:3px"></div></div></div><div style="margin-bottom:5px;font-size:11px;color:var(--muted)">通信中断 18%<div style="height:6px;background:rgba(255,255,255,.06);border-radius:3px;margin-top:3px;overflow:hidden"><div style="height:100%;width:18%;background:var(--orange);border-radius:3px"></div></div></div><div style="font-size:11px;color:var(--muted)">其他 15%<div style="height:6px;background:rgba(255,255,255,.06);border-radius:3px;margin-top:3px;overflow:hidden"><div style="height:100%;width:15%;background:var(--purple);border-radius:3px"></div></div></div>'}
 
-function c5a(){var c=document.getElementById('c5a');if(!c)return;rc(c);c.height=130;var ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,130);
+function drawAlarmBar(){var c=document.getElementById('c5a');if(!c)return;rc(c);c.height=130;var ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,130);
 var d=[5,4,6,5,3,7,5];var pad={l:30,r:10,t:10,b:18},iw=c.width-pad.l-pad.r,ih=130-pad.t-pad.b;
 var maxV=Math.max.apply(null,d)*1.3;d.forEach(function(v,i){var bw=Math.max(4,iw/d.length-5),x=pad.l+i*iw/d.length+2,h=v/maxV*ih;
 ctx.fillStyle=i===d.length-1?'#3b82f6':'rgba(59,130,246,.25)';ctx.beginPath();ctx.roundRect(x,pad.t+ih-h,bw,h,2);ctx.fill()});
 ctx.fillStyle='rgba(138,172,204,.6)';ctx.font='9px sans-serif';ctx.textAlign='center';['','一','','三','','五','今'].forEach(function(l,i){ctx.fillText(l,pad.l+i*iw/d.length+iw/d.length/2-2,130-3)})}
 
 function r(i){
-if(i===0){c0();bd();ki();al()}
-if(i===1){c0();setTimeout(function(){var c=document.getElementById('c0');if(c){var h=c.height;c.height=0;setTimeout(function(){c.height=h;c0()},50)},100)}
-if(i===2){c2a()}
-if(i===3){c3a();c3b()}
-if(i===4){c4a()}
-if(i===5){ad();c5a()}
+if(i===0){drawLoad();bd();ki();al()}
+if(i===1){drawLoad();setTimeout(function(){var c=document.getElementById('c0');if(c){var h=c.height;c.height=0;setTimeout(function(){c.height=h;c0()},50)},100)}
+if(i===2){drawHeatmap()}
+if(i===3){drawEn4layer();drawEnPie()}
+if(i===4){drawCarbon()}
+if(i===5){ad();drawAlarmBar()}
 }
 
 setInterval(function(){var t=document.getElementById('tc');if(t)t.textContent=Date().split(' ')[4];},5000);
 setTimeout(function(){document.getElementById('tc').textContent=Date().split(' ')[4];r(0);},200);
+// Virtual data refresh - simulate live changes
+setInterval(function(){
+  var ac=document.getElementById('ma');if(ac){var c=4+Math.floor(Math.random()*3);ac.innerHTML=c+'<span class=ku>条</span>'}
+  var tc=document.querySelector('.tt');if(tc){var t=tc.textContent;if(t.indexOf('刷新')<0)tc.textContent=t.replace(/[✅\s]/g,'').trim()}
+},6000);
 </script>
 </body>
 </html>
