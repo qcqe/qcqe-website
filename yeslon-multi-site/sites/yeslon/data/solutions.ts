@@ -119,5 +119,22 @@ export const solutions: Solution[] = [
     category: 'safety',
     image: '/images/solutions/busbar-monitoring.jpg',
     publishedAt: '2026-03-25'
+  },
+  {
+    id: '8',
+    slug: 'industrial-park-smart-energy',
+    title: '工业园区智慧能源与电气安全整体解决方案',
+    description: '面向工业园区场景，以"端-边-云"架构实现园区配电室、配电柜、用电回路的全维度电气参数实时监测、隐患预警与能效优化，降低电气事故85%，减少运维人力60%。',
+    features: [
+      '全回路电气参数实时采集（260+参数）',
+      '多级智能告警联动（本地+远程）',
+      '7寸嵌入式触控屏本地显示',
+      'FG智能网关边缘计算与断网缓存',
+      'AI能效分析与节能优化',
+      '多站点集中管理与扩展'
+    ],
+    category: 'energy',
+    image: '/images/solutions/industrial-park.jpg',
+    publishedAt: '2026-03-25'
   }
 ];
