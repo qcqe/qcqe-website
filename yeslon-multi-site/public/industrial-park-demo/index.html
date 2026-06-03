@@ -3,359 +3,345 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>微物联 · 工业园区全维度智慧监管平台</title>
-<meta name="description" content="工业园区全维度智慧监管平台在线演示。电气安全、配电监测、能源管理、防雷监测、AI诊断、环境监控。微物联技术（深圳）有限公司">
-<meta name="keywords" content="工业园区,智慧园区,电气安全,配电监测,能源管理,防雷监测,AI诊断,FEXLINK">
+<title>微物联 · 工业园区智慧能源管理平台</title>
+<meta name="description" content="工业园区智慧能源与电气安全管理平台在线演示。电气安全、能源管理、碳排管理、告警中心、设备管理。微物联技术（深圳）有限公司">
+<meta name="keywords" content="工业园区,智慧园区,电气安全,能源管理,碳排管理,告警,FEXLINK">
 <link rel="canonical" href="https://www.yeslon.com/industrial-park-demo/">
-<meta property="og:title" content="工业园区全维度智慧监管平台 DEMO">
-<meta property="og:description" content="工业园区全维度智慧监管平台在线演示">
+<meta property="og:title" content="工业园区智慧能源管理平台 DEMO">
+<meta property="og:description" content="工业园区智慧能源与电气安全管理平台在线演示">
 <meta property="og:image" content="https://www.yeslon.com/og-image.svg">
 <meta name="twitter:card" content="summary_large_image">
 <script>if(typeof window!="undefined"){(function(){var r=document.cookie.match(new RegExp("(^| )region=([^;]*)"));var reg=r?unescape(r[2]):"";fetch("https://ipapi.co/json/",{timeout:3000}).then(function(r2){return r2.json()}).then(function(d){if(d.country_code&&d.country_code!==reg&&d.country_code=="CN"){document.cookie="region=CN;path=/;max-age=2592000";var b=document.getElementById("geo-banner");if(b)b.style.display="flex"}}).catch(function(){})})()}</script>
 <style>
-:root{--bg:#070e18;--bg2:#0c1a2e;--card:#112238;--card2:#163050;--border:#1e3d60;--text:#dce8f2;--soft:#8aaccc;--muted:#5a7d9a;--blue:#3b8bff;--cyan:#00d4e8;--green:#00e676;--amber:#ffc240;--orange:#ff7a2e;--red:#ff3a3a;--purple:#8c6dff;--pink:#ff6b9d}
+:root{--bg:#0a0f1a;--bg2:#0f1a2e;--bg3:#152238;--card:#1a2a42;--card2:#223352;--border:#2a4060;--text:#dce8f2;--soft:#8aaccc;--muted:#5a7d9a;--blue:#3b82f6;--cyan:#06b6d4;--green:#22c55e;--amber:#eab308;--orange:#f97316;--red:#ef4444;--purple:#8b5cf6;--pink:#ec4899}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);overflow:hidden;height:100vh;display:flex}
-.sidebar{width:220px;min-width:220px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;position:fixed;z-index:200;overflow-y:auto}
-.logo{padding:14px 16px;border-bottom:1px solid var(--border)}
-.logo-brand{display:flex;align-items:center;gap:10px}
-.logo-ico{width:38px;height:38px;background:linear-gradient(135deg,#3b8bff,#00d4e8);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;font-weight:700;flex-shrink:0}
-.logo-txt{font-size:13px;font-weight:700;color:#fff;line-height:1.2}
-.logo-sub{font-size:9.5px;color:var(--muted);margin-top:2px}
-.ns{font-size:9px;color:var(--muted);padding:10px 16px 4px;letter-spacing:1px;text-transform:uppercase}
-.ni{display:flex;align-items:center;gap:8px;padding:8px 16px;font-size:12.5px;color:var(--soft);cursor:pointer;border-left:3px solid transparent;transition:all .15s}
-.ni:hover{background:rgba(59,139,255,.07);color:#fff}
-.ni.act{background:rgba(59,139,255,.12);color:var(--blue);border-left-color:var(--blue);font-weight:600}
-.nb{font-size:9px;background:var(--red);color:#fff;border-radius:7px;padding:1px 5px;margin-left:auto}
-.sbf{padding:10px 16px;border-top:1px solid var(--border);font-size:10.5px;color:var(--muted)}
-.main{margin-left:220px;flex:1;display:flex;flex-direction:column;height:100vh}
-.top{height:48px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:10px;flex-shrink:0}
-.tt{font-size:13.5px;font-weight:700;color:#fff;flex:1}
-.ttm{font-size:11px;color:var(--muted)}
-.tbtn{background:rgba(59,139,255,.12);border:1px solid rgba(59,139,255,.22);color:var(--blue);padding:5px 10px;border-radius:5px;font-size:11px;cursor:pointer}
-.talarm{display:flex;align-items:center;gap:4px;background:rgba(255,58,58,.1);border:1px solid rgba(255,58,58,.22);color:var(--red);padding:5px 10px;border-radius:5px;font-size:11px;cursor:pointer}
-.page{display:none;flex:1;overflow-y:auto;padding:14px 18px}.page.act{display:block}
-.kw{display:grid;gap:10px;margin-bottom:12px}.kw5{grid-template-columns:repeat(5,1fr)}.kw6{grid-template-columns:repeat(6,1fr)}
-.kc{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;position:relative;overflow:hidden}
-.kc::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%}
-.kc.bl::before{background:var(--blue)}.kc.gr::before{background:var(--green)}
-.kc.yl::before{background:var(--amber)}.kc.rd::before{background:var(--red)}
-.kc.pu::before{background:var(--purple)}.kc.cy::before{background:var(--cyan)}
-.kc.or::before{background:var(--orange)}
-.kl{font-size:10.5px;color:var(--muted);margin-bottom:4px}
-.kv{font-size:22px;font-weight:700;color:#fff}
-.ku{font-size:10px;color:var(--muted);margin-left:2px;font-weight:400}
-.ks{font-size:10.5px;color:var(--muted);margin-top:4px}
-.ks .up{color:var(--green)}.ks .dn{color:var(--red)}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px}
-.panel{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
-.ph{display:flex;align-items:center;gap:6px;margin-bottom:10px}
-.pt{font-size:12.5px;font-weight:600;color:#fff;flex:1}
-.pst{font-size:10.5px;color:var(--muted)}
-canvas{display:block;width:100%}
-.tbl{width:100%;border-collapse:collapse;font-size:11.5px}
-.tbl th{padding:6px 8px;text-align:left;color:var(--muted);font-weight:500;border-bottom:1px solid var(--border)}
-.tbl td{padding:6px 8px;border-bottom:1px solid rgba(30,61,96,.4);color:var(--text);font-size:11px}
-.tbl tr:hover td{background:rgba(59,139,255,.04)}
-.tg{display:inline-block;padding:1px 6px;border-radius:3px;font-size:9.5px;font-weight:500}
-.tg.ok{background:rgba(0,230,118,.1);color:var(--green);border:1px solid rgba(0,230,118,.18)}
-.tg.wa{background:rgba(255,194,64,.1);color:var(--amber);border:1px solid rgba(255,194,64,.18)}
-.tg.er{background:rgba(255,58,58,.1);color:var(--red);border:1px solid rgba(255,58,58,.18)}
-.tg.in{background:rgba(59,139,255,.1);color:var(--blue);border:1px solid rgba(59,139,255,.18)}
-.al-item{display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid rgba(30,61,96,.35)}
-.al-item:last-child{border-bottom:none}
-.al-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px}
-.al-body{flex:1}.al-t{font-size:11.5px;color:#fff;font-weight:500}.al-m{font-size:10px;color:var(--muted);margin-top:2px}
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+body{font-family:"PingFang SC","Microsoft YaHei","Inter",-apple-system,sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;overflow:hidden}
+.side{width:64px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:4px;flex-shrink:0}
+.slogo{width:40px;height:40px;background:linear-gradient(135deg,var(--blue),var(--cyan));border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;font-weight:700;margin-bottom:16px}
+.sni{width:48px;height:48px;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);font-size:11px;gap:2px;transition:all .2s;border:none;background:transparent}
+.sni:hover{background:rgba(59,130,246,.08);color:var(--text)}
+.sni.act{background:rgba(59,130,246,.15);color:var(--blue)}
+.sni .ic{font-size:20px}
+.sni .lb{font-size:9px;font-weight:500}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.top{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 24px;height:56px;display:flex;align-items:center;gap:16px;flex-shrink:0}
+.tt{font-size:15px;font-weight:700;color:#fff;flex:1}
+.ttm{font-size:12px;color:var(--muted)}
+.tbtn{padding:6px 14px;border-radius:6px;border:1px solid rgba(59,130,246,.25);background:rgba(59,130,246,.1);color:var(--blue);font-size:12px;cursor:pointer;transition:all .2s}
+.tbtn:hover{background:rgba(59,130,246,.2)}
+.content{flex:1;overflow-y:auto;padding:24px}
+.page{display:none}.page.act{display:block}
+.r1{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:20px}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.r3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:20px}
+.kc{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;position:relative}
+.kc .bar{position:absolute;top:0;left:0;width:3px;height:100%;border-radius:2px 0 0 2px}
+.kc .kl{font-size:11px;color:var(--muted);margin-bottom:6px;letter-spacing:.3px}
+.kc .kv{font-size:26px;font-weight:800;color:#fff;line-height:1}
+.kc .ku{font-size:12px;color:var(--muted);font-weight:400}
+.kc .ks{font-size:11px;color:var(--muted);margin-top:6px}
+.kc .ks .u{color:var(--green)}.kc .ks .d{color:var(--red)}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px}
+.phead{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.pt{font-size:13px;font-weight:600;color:#fff;flex:1}
+canvas{width:100%}
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{text-align:left;padding:8px 10px;color:var(--muted);font-weight:500;border-bottom:1px solid var(--border);white-space:nowrap}
+.tbl td{padding:8px 10px;border-bottom:1px solid rgba(42,64,96,.4);color:var(--text);white-space:nowrap}
+.tbl tr:hover td{background:rgba(59,130,246,.04)}
+.tg{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:500}
+.tg.ok{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.2)}
+.tg.wa{background:rgba(234,179,8,.12);color:var(--amber);border:1px solid rgba(234,179,8,.2)}
+.tg.er{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.2)}
+.tg.in{background:rgba(59,130,246,.12);color:var(--blue);border:1px solid rgba(59,130,246,.2)}
+@media(max-width:1200px){.r1{grid-template-columns:repeat(3,1fr)}.r2{grid-template-columns:1fr}}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 </style>
 </head>
 <body>
-<div id=geo-banner style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#2563eb;color:#fff;padding:10px 20px;align-items:center;justify-content:center;gap:16px;font-size:13px;text-align:center">🌏 检测到您可能在中国，是否切换到中文站点？<a href="javascript:void(0)" onclick="this.parentNode.style.display='none'" style="padding:3px 14px;background:#fff;color:#2563eb;border-radius:5px;text-decoration:none;font-weight:500;font-size:12px;margin:0 8px">确定</a><a href="javascript:void(0)" onclick="this.parentNode.style.display='none'" style="color:rgba(255,255,255,0.7);font-size:12px;text-decoration:none">关闭</a></div>
-<div class=sidebar>
-<div class=logo><div class=logo-brand><div class=logo-ico>F</div><div class=logo-txt>FEXLINK 智慧园区<div class=logo-sub>微物联技术（深圳）有限公司</div></div></div></div>
-<div class=ns>综合监控</div>
-<div class="ni act" onclick=sp("园区总览")><span>🏭</span>园区总览</div>
-<div class=ni onclick=sp("电气安全")><span>🛡️</span>电气安全</div>
-<div class=ni onclick=sp("配电监测")><span>⚡</span>配电监测</div>
-<div class=ns>能源管理</div>
-<div class=ni onclick=sp("能源统计")><span>📊</span>能源统计</div>
-<div class=ni onclick=sp("碳排管理")><span>🌍</span>碳排管理</div>
-<div class=ns>智能运维</div>
-<div class=ni onclick=sp("告警中心")><span>🔔</span>告警中心<span class=nb>5</span></div>
-<div class=ni onclick=sp("设备管理")><span>🔧</span>设备管理</div>
-<div class=ns>系统服务</div>
-<div class=ni onclick=sp("视频监控")><span>📹</span>视频监控</div>
-<div class=ni onclick=sp("系统设置")><span>⚙️</span>系统设置</div>
-<div class=sbf>v3.2 · 深圳市福田保税区</div>
+<div id=geo-banner style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#2563eb;color:#fff;padding:12px 24px;align-items:center;justify-content:center;gap:16px;font-size:14px;text-align:center">🌏 检测到您可能在中国，是否切换到中文站点？<a href="javascript:void(0)" onclick="this.parentNode.style.display='none'" style="padding:4px 16px;background:#fff;color:#2563eb;border-radius:6px;text-decoration:none;font-weight:500;font-size:13px;margin:0 8px">确定</a><a href="javascript:void(0)" onclick="this.parentNode.style.display='none'" style="color:rgba(255,255,255,0.7);font-size:13px;text-decoration:none">关闭</a></div>
+
+<div class=side>
+<div class=slogo>F</div>
+<button class="sni act" onclick=sw(0)><span class=ic>🏭</span><span class=lb>总览</span></button>
+<button class=sni onclick=sw(1)><span class=ic>🛡️</span><span class=lb>电气安全</span></button>
+<button class=sni onclick=sw(2)><span class=ic>📊</span><span class=lb>能源</span></button>
+<button class=sni onclick=sw(3)><span class=ic>🌍</span><span class=lb>碳排</span></button>
+<button class=sni onclick=sw(4)><span class=ic>🔔</span><span class=lb>告警</span></button>
+<button class=sni onclick=sw(5)><span class=ic>🔧</span><span class=lb>设备</span></button>
 </div>
+
 <div class=main>
-<div class=top><div class=tt id=ttitle>🏭 园区总览</div><div class=ttm id=tclock></div><button class=tbtn onclick=st()>🔄 刷新</button><div class=talarm onclick=sp("告警中心")>🔔 <span id=acnt>5</span></div></div>
+<div class=top><span class=tt id=tt>🏭 园区总览</span><span class=ttm id=tc></span><button class=tbtn onclick=rf()>🔄 刷新</button></div>
+<div class=content id=content>
+<!-- PAGE 0: 总览 -->
+<div class="page act" id=p0>
+<div class=r1>
+<div class=kc><div class=bar style=background:var(--blue)></div><div class=kl>📡 在线节点</div><div class=kv>186<span class=ku>/206</span></div><div class=ks>在线率 <span class=u>90.3%</span></div></div>
+<div class=kc><div class=bar style=background:var(--green)></div><div class=kl>⚡ 园区总功率</div><div class=kv id=mw>2,847<span class=ku>kW</span></div><div class=ks>额定 4,200kW</div></div>
+<div class=kc><div class=bar style=background:var(--amber)></div><div class=kl>🌡️ 最高温度</div><div class=kv>58.6<span class=ku>℃</span></div><div class=ks>B栋配电室</div></div>
+<div class=kc><div class=bar style=background:var(--red)></div><div class=kl>🔔 活跃告警</div><div class=kv id=ma>5<span class=ku>条</span></div><div class=ks>紧急 1 · 警告 4</div></div>
+<div class=kc><div class=bar style=background:var(--purple)></div><div class=kl>🤖 健康评分</div><div class=kv>84<span class=ku>分</span></div><div class=ks>AI综合评估</div></div>
+</div>
+<div class=r2>
+<div class=panel><div class=phead><span class=pt>📈 园区总负荷曲线（近60min）</span></div><canvas id=c0 height=160></canvas></div>
+<div class=panel><div class=phead><span class=pt>🏢 楼栋负载排行</span></div><div id=bd></div></div>
+</div>
+<div class=r3>
+<div class=panel><div class=phead><span class=pt>⚡ 今日用电</span></div><div style=text-align:center;padding:12px 0><div style=font-size:32px;font-weight:800;color:var(--cyan)>18,624<span style=font-size:13px;color:var(--muted);margin-left:4px>kWh</span></div><div style=font-size:12px;color:var(--muted);margin-top:6px>较昨日 <span style=color:var(--green)>▼5.2%</span> · 本月 <span style=color:var(--green)>▼8.1%</span></div></div><canvas id=me height=70></canvas></div>
+<div class=panel><div class=phead><span class=pt>🌡️ 关键指标</span></div><div id=ki></div></div>
+<div class=panel><div class=phead><span class=pt>🔔 最新告警</span></div><div id=al></div></div>
+</div>
+</div>
 
-<div class="page act" id="p-园区总览">
-<div class="kw kw5">
-<div class="kc bl"><div class=kl>📡 在线节点</div><div class=kv>186<span class=ku>/ 206</span></div><div class=ks>在线率 <span class=up>90.3%</span></div></div>
-<div class="kc gr"><div class=kl>⚡ 园区总功率</div><div class=kv id=v-pw>2,847<span class=ku>kW</span></div><div class=ks>额定 4,200kW</div></div>
-<div class="kc yl"><div class=kl>🌡️ 最高温度</div><div class=kv id=v-tmp>58.6<span class=ku>℃</span></div><div class=ks>B栋配电室</div></div>
-<div class="kc rd"><div class=kl>🔔 活跃告警</div><div class=kv id=v-alm>5<span class=ku>条</span></div><div class=ks>紧急 1 · 警告 4</div></div>
-<div class="kc pu"><div class=kl>🤖 健康评分</div><div class=kv id=v-hl>84<span class=ku>分</span></div><div class=ks>AI综合评估</div></div>
+<!-- PAGE 1: 电气安全 -->
+<div class=page id=p1>
+<div class=r1>
+<div class=kc><div class=bar style=background:var(--green)></div><div class=kl>🛡️ 安全运行</div><div class=kv>1,247<span class=ku>天</span></div><div class=ks>连续无事故</div></div>
+<div class=kc><div class=bar style=background:var(--blue)></div><div class=kl>🔌 漏电监测</div><div class=kv>12.3<span class=ku>mA</span></div><div class=ks>总进线 <span class=u>正常</span></div></div>
+<div class=kc><div class=bar style=background:var(--purple)></div><div class=kl>📊 绝缘电阻</div><div class=kv>520<span class=ku>MΩ</span></div><div class=ks>A相母线</div></div>
+<div class=kc><div class=bar style=background:var(--cyan)></div><div class=kl>⚡ 电弧检测</div><div class=kv>0<span class=ku>次</span></div><div class=ks>本月无电弧</div></div>
+<div class=kc><div class=bar style=background:var(--amber)></div><div class=kl>🔧 接地电阻</div><div class=kv>1.2<span class=ku>Ω</span></div><div class=ks>主接地网</div></div>
 </div>
-<div class=g2>
-<div class=panel><div class=ph><span class=pt>📈 园区总负荷曲线</span><span class=pst>近60分钟</span></div><canvas id=c-load height=155></canvas></div>
-<div class=panel><div class=ph><span class=pt>🏢 楼栋负载概况</span></div><div id=bld-list></div></div>
-</div>
-<div class=g3>
-<div class=panel><div class=ph><span class=pt>⚡ 今日用电</span></div><div style=text-align:center;padding:8px 0><div style=font-size:28px;font-weight:700;color:var(--cyan)>18,624<span style=font-size:12px;color:var(--muted);margin-left:4px>kWh</span></div><div style=font-size:10.5px;color:var(--muted);margin-top:4px>较昨日 <span style=color:var(--green)>▼5.2%</span></div></div></div>
-<div class=panel><div class=ph><span class=pt>🌡️ 关键指标分布</span></div><div id=key-dist></div></div>
-<div class=panel><div class=ph><span class=pt>🔔 最新告警</span></div><div id=ov-alarm></div></div>
-</div>
-</div>
-
-<div class=page id=p-电气安全>
-<div class="kw kw5">
-<div class="kc gr"><div class=kl>🛡️ 安全运行天数</div><div class=kv>1,247<span class=ku>天</span></div><div class=ks>连续无事故</div></div>
-<div class="kc bl"><div class=kl>🔌 漏电监测</div><div class=kv>12.3<span class=ku>mA</span></div><div class=ks>总进线·正常</div></div>
-<div class="kc pu"><div class=kl>📊 绝缘电阻</div><div class=kv>520<span class=ku>MΩ</span></div><div class=ks>A相母线</div></div>
-<div class="kc cy"><div class=kl>⚡ 电弧检测</div><div class=kv>0<span class=ku>次</span></div><div class=ks>本月无电弧</div></div>
-<div class="kc yl"><div class=kl>🔧 接地电阻</div><div class=kv>1.2<span class=ku>Ω</span></div><div class=ks>主接地网</div></div>
-</div>
-<div class=g2>
-<div class=panel><div class=ph><span class=pt>🔌 剩余电流监测</span></div>
-<div style=display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px>
-<div style=background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:10px;text-align:center><div style=font-size:10px;color:var(--muted);margin-bottom:4px>总进线柜</div><div style=font-size:20px;font-weight:700;color:var(--green)>12.3mA</div><div style=margin-top:4px><span class="tg ok">正常</span></div></div>
-<div style=background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:10px;text-align:center><div style=font-size:10px;color:var(--muted);margin-bottom:4px>B栋配电室</div><div style=font-size:20px;font-weight:700;color:var(--green)>8.7mA</div><div style=margin-top:4px><span class="tg ok">正常</span></div></div>
-<div style=background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:10px;text-align:center><div style=font-size:10px;color:var(--muted);margin-bottom:4px>D栋仓储</div><div style=font-size:20px;font-weight:700;color:var(--green)>15.2mA</div><div style=margin-top:4px><span class="tg ok">正常</span></div></div>
-</div>
-</div>
-<div class=panel><div class=ph><span class=pt>📊 绝缘电阻监测</span></div>
+<div class=r2>
+<div class=panel><div class=phead><span class=pt>🔌 剩余电流监测</span></div>
+<div style=display:grid;grid-template-columns:repeat(3,1fr);gap:12px>
+<div style=background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center><div style=font-size:11px;color:var(--muted);margin-bottom:6px>总进线柜</div><div style=font-size:22px;font-weight:700;color:var(--green)>12.3<span style=font-size:11px;color:var(--muted)>mA</span></div><div style=margin-top:6px><span class="tg ok">正常</span></div></div>
+<div style=background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center><div style=font-size:11px;color:var(--muted);margin-bottom:6px>B栋配电室</div><div style=font-size:22px;font-weight:700;color:var(--green)>8.7<span style=font-size:11px;color:var(--muted)>mA</span></div><div style=margin-top:6px><span class="tg ok">正常</span></div></div>
+<div style=background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center><div style=font-size:11px;color:var(--muted);margin-bottom:6px>D栋仓储</div><div style=font-size:22px;font-weight:700;color:var(--green)>15.2<span style=font-size:11px;color:var(--muted)>mA</span></div><div style=margin-top:6px><span class="tg ok">正常</span></div></div>
+</div></div>
+<div class=panel><div class=phead><span class=pt>📊 绝缘电阻监测表</span></div>
 <table class=tbl><thead><tr><th>监测点</th><th>A相</th><th>B相</th><th>C相</th><th>状态</th></tr></thead>
 <tbody>
 <tr><td>进线总柜</td><td style=color:var(--green)>520MΩ</td><td style=color:var(--green)>485MΩ</td><td style=color:var(--green)>510MΩ</td><td><span class="tg ok">正常</span></td></tr>
 <tr><td>B栋车间</td><td style=color:var(--amber)>220MΩ</td><td style=color:var(--green)>285MΩ</td><td style=color:var(--green)>268MΩ</td><td><span class="tg wa">关注</span></td></tr>
 <tr><td>D栋仓储</td><td style=color:var(--green)>450MΩ</td><td style=color:var(--green)>438MΩ</td><td style=color:var(--green)>465MΩ</td><td><span class="tg ok">正常</span></td></tr>
 </tbody></table></div></div>
-<div class=panel><div class=ph><span class=pt>⚡ 电弧故障检测 & 温度过热保护</span></div>
-<div class=g3>
-<div style=background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center><div style=font-size:11px;color:var(--muted);margin-bottom:4px>串联电弧</div><div style=font-size:22px;font-weight:700;color:var(--green)>0</div><div style=font-size:10px;color:var(--muted)>本月检测</div></div>
-<div style=background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center><div style=font-size:11px;color:var(--muted);margin-bottom:4px>并联电弧</div><div style=font-size:22px;font-weight:700;color:var(--green)>0</div><div style=font-size:10px;color:var(--muted)>本月检测</div></div>
-<div style=background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center><div style=font-size:11px;color:var(--muted);margin-bottom:4px>热失控风险</div><div style=font-size:22px;font-weight:700;color:var(--green)>15%</div><div style=font-size:10px;color:var(--muted)>AI评估</div></div>
-</div></div></div>
-
-<div class=page id=p-能源统计>
-<div class="kw kw5">
-<div class="kc bl"><div class=kl>今日用电</div><div class=kv>18,624<span class=ku>kWh</span></div><div class=ks><span class=up>▼5.2%</span></div></div>
-<div class="kc gr"><div class=kl>本月用电</div><div class=kv>485,320<span class=ku>kWh</span></div><div class=ks><span class=up>▼8.1%</span></div></div>
-<div class="kc pu"><div class=kl>功率因数</div><div class=kv>0.93</div><div class=ks>力调奖励 ¥1,240</div></div>
-<div class="kc cy"><div class=kl>碳排放</div><div class=kv>192.5<span class=ku>tCO₂</span></div><div class=ks><span class=up>▼12%</span></div></div>
-<div class="kc rd"><div class=kl>节能收益</div><div class=kv>38.4<span class=ku>万元</span></div><div class=ks>年度累计</div></div>
+<div class=panel><div class=phead><span class=pt>⚡ 电弧与温度保护</span></div>
+<div class=r3 style=margin-bottom:0>
+<div style=background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center><div style=font-size:11px;color:var(--muted);margin-bottom:6px>串联电弧</div><div style=font-size:24px;font-weight:700;color:var(--green)>0次</div><div style=font-size:11px;color:var(--muted);margin-top:4px>本月检测</div></div>
+<div style=background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center><div style=font-size:11px;color:var(--muted);margin-bottom:6px>并联电弧</div><div style=font-size:24px;font-weight:700;color:var(--green)>0次</div><div style=font-size:11px;color:var(--muted);margin-top:4px>本月检测</div></div>
+<div style=background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center><div style=font-size:11px;color:var(--muted);margin-bottom:6px>热失控风险</div><div style=font-size:24px;font-weight:700;color:var(--green)>15%</div><div style=font-size:11px;color:var(--muted);margin-top:4px>AI评估 低风险</div></div>
+</div></div>
 </div>
-<div class=g2><div class=panel><div class=ph><span class=pt>📊 近30天用电量</span></div><canvas id=c-en-bar height=180></canvas></div>
-<div class=panel><div class=ph><span class=pt>📈 分项能耗占比</span></div><canvas id=c-en-pie height=180></canvas></div></div>
-<div class=panel><div class=ph><span class=pt>💡 AI节能建议</span></div>
-<div class=g3>
-<div style=background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px><div style=font-size:12px;font-weight:600;color:#fff;margin-bottom:6px>🌡️ 空调温度优化</div><div style=font-size:10.5px;color:var(--muted)>建议夏季从24℃调至26℃，预计年省 ¥18,000</div></div>
-<div style=background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px><div style=font-size:12px;font-weight:600;color:#fff;margin-bottom:6px>💡 照明LED改造</div><div style=font-size:10.5px;color:var(--muted)>ACD栋灯具更换LED，节能率42%，回收期1.5年</div></div>
-<div style=background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px><div style=font-size:12px;font-weight:600;color:#fff;margin-bottom:6px>⚡ 错峰用电优化</div><div style=font-size:10.5px;color:var(--muted)>转移峰时段负载至谷时段，预计月省 ¥2,800</div></div>
-</div></div></div>
 
-<div class=page id=p-告警中心>
-<div class="kw kw5">
-<div class="kc rd"><div class=kl>🔴 紧急</div><div class=kv>1</div><div class=ks>需立即处理</div></div>
-<div class="kc yl"><div class=kl>🟡 严重</div><div class=kv>2</div><div class=ks>24h内处理</div></div>
-<div class="kc or"><div class=kl>🟠 警告</div><div class=kv>2</div><div class=ks>本周处理</div></div>
-<div class="kc gr"><div class=kl>✅ 今日已处理</div><div class=kv>8</div><div class=ks>平均23min</div></div>
-<div class="kc bl"><div class=kl>📊 本月告警</div><div class=kv>62</div><div class=ks><span class=up>▼14%</span></div></div>
+<!-- PAGE 2: 能源 -->
+<div class=page id=p2>
+<div class=r1>
+<div class=kc><div class=bar style=background:var(--blue)></div><div class=kl>今日用电</div><div class=kv>18,624<span class=ku>kWh</span></div><div class=ks><span class=u>▼5.2%</span></div></div>
+<div class=kc><div class=bar style=background:var(--green)></div><div class=kl>本月用电</div><div class=kv>485,320<span class=ku>kWh</span></div><div class=ks><span class=u>▼8.1%</span></div></div>
+<div class=kc><div class=bar style=background:var(--purple)></div><div class=kl>功率因数</div><div class=kv>0.93</div><div class=ks>力调奖励 ¥1,240</div></div>
+<div class=kc><div class=bar style=background:var(--cyan)></div><div class=kl>碳排放</div><div class=kv>192.5<span class=ku>tCO₂</span></div><div class=ks><span class=u>▼12%</span></div></div>
+<div class=kc><div class=bar style=background:var(--amber)></div><div class=kl>节能收益</div><div class=kv>38.4<span class=ku>万元</span></div><div class=ks>年度累计</div></div>
 </div>
-<div class=panel><div class=ph><span class=pt>活跃告警列表</span></div>
+<div class=r2>
+<div class=panel><div class=phead><span class=pt>📊 近30天用电量（kWh）</span></div><canvas id=c2a height=180></canvas></div>
+<div class=panel><div class=phead><span class=pt>📈 分项能耗占比</span></div><canvas id=c2b height=180></canvas></div>
+</div>
+<div class=panel><div class=phead><span class=pt>💡 AI节能建议</span></div>
+<div class=r3 style=margin-bottom:0>
+<div style=background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px><div style=font-size:12px;font-weight:600;color:#fff;margin-bottom:6px>🌡️ 空调温度优化</div><div style=font-size:11px;color:var(--muted);line-height:1.6>建议夏季空调从24℃调至26℃，冬季从22℃调至20℃。预计年节省电费 <strong style=color:var(--green)>¥18,000</strong></div></div>
+<div style=background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px><div style=font-size:12px;font-weight:600;color:#fff;margin-bottom:6px>💡 照明LED改造</div><div style=font-size:11px;color:var(--muted);line-height:1.6>A/C/D栋照明更换LED灯具，节能率42%，投资回收期约1.5年。预计年节省电费 <strong style=color:var(--green)>¥15,600</strong></div></div>
+<div style=background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px><div style=font-size:12px;font-weight:600;color:#fff;margin-bottom:6px>⚡ 错峰用电优化</div><div style=font-size:11px;color:var(--muted);line-height:1.6>转移部分非关键负载至谷时段运行，降低峰时段用电占比。预计月节省电费 <strong style=color:var(--green)>¥2,800</strong></div></div>
+</div></div>
+</div>
+
+<!-- PAGE 3: 碳排 -->
+<div class=page id=p3>
+<div class=r1>
+<div class=kc><div class=bar style=background:var(--green)></div><div class=kl>🌍 本月碳排放</div><div class=kv>192.5<span class=ku>tCO₂</span></div><div class=ks>同比 <span class=u>▼12%</span></div></div>
+<div class=kc><div class=bar style=background:var(--blue)></div><div class=kl>📊 年度累计</div><div class=kv>1,847<span class=ku>tCO₂</span></div><div class=ks>达标进度 87%</div></div>
+<div class=kc><div class=bar style=background:var(--purple)></div><div class=kl>🌱 碳减排量</div><div class=kv>263<span class=ku>tCO₂</span></div><div class=ks>节能改造贡献</div></div>
+<div class=kc><div class=bar style=background:var(--cyan)></div><div class=kl>🌳 碳中和</div><div class=kv>14,400<span class=ku>棵</span></div><div class=ks>相当于植树</div></div>
+<div class=kc><div class=bar style=background:var(--amber)></div><div class=kl>🏆 碳配额</div><div class=kv>76<span class=ku>%</span></div><div class=ks>已使用 较充裕</div></div>
+</div>
+<div class=r2>
+<div class=panel><div class=phead><span class=pt>📈 碳排放趋势（近12月）</span></div><canvas id=c3a height=180></canvas></div>
+<div class=panel><div class=phead><span class=pt>🌱 环保贡献</span></div>
+<div style=text-align:center;padding:24px 0><div style=font-size:42px;margin-bottom:8px>🌳</div><div style=font-size:18px;font-weight:700;color:var(--green);margin-bottom:4px>14,400 棵</div><div style=font-size:12px;color:var(--muted)>相当于每年种植树木的碳吸收量</div></div>
+<div class=r3 style=margin-bottom:0>
+<div style=background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center><div style=font-size:20px;font-weight:700;color:var(--green)>263</div><div style=font-size:10px;color:var(--muted);margin-top:4px>tCO₂ 减排</div></div>
+<div style=background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center><div style=font-size:20px;font-weight:700;color:var(--green)>76%</div><div style=font-size:10px;color:var(--muted);margin-top:4px>达标率</div></div>
+<div style=background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center><div style=font-size:20px;font-weight:700;color:var(--green)>12%</div><div style=font-size:10px;color:var(--muted);margin-top:4px>同比下降</div></div>
+</div></div></div>
+<div class=panel><div class=phead><span class=pt>📋 碳排放明细（本月）</span></div>
+<table class=tbl><thead><tr><th>楼栋</th><th>用电量(kWh)</th><th>碳排放(tCO₂)</th><th>强度(kgCO₂/m²)</th><th>同比</th><th>状态</th></tr></thead>
+<tbody>
+<tr><td>A栋综合楼</td><td>18,624</td><td style=color:var(--amber)>42.3</td><td>8.2</td><td><span class=u>▼12%</span></td><td><span class="tg ok">达标</span></td></tr>
+<tr><td>B栋车间</td><td>112,800</td><td style=color:var(--red)>78.6</td><td>15.4</td><td><span class=u>▼8%</span></td><td><span class="tg wa">关注</span></td></tr>
+<tr><td>C栋研发</td><td>48,600</td><td>35.2</td><td>9.1</td><td><span class=u>▼15%</span></td><td><span class="tg ok">达标</span></td></tr>
+<tr><td>D栋仓储</td><td>31,200</td><td>22.8</td><td>6.5</td><td><span class=u>▼10%</span></td><td><span class="tg ok">达标</span></td></tr>
+<tr><td>E栋宿舍</td><td>18,600</td><td>13.6</td><td>4.2</td><td><span class=u>▼18%</span></td><td><span class="tg ok">达标</span></td></tr>
+</tbody></table></div>
+</div>
+
+<!-- PAGE 4: 告警 -->
+<div class=page id=p4>
+<div class=r1>
+<div class=kc><div class=bar style=background:var(--red)></div><div class=kl>🔴 紧急告警</div><div class=kv>1</div><div class=ks>需立即处理</div></div>
+<div class=kc><div class=bar style=background:var(--orange)></div><div class=kl>🟡 严重告警</div><div class=kv>2</div><div class=ks>24h内处理</div></div>
+<div class=kc><div class=bar style=background:var(--amber)></div><div class=kl>🟠 一般警告</div><div class=kv>2</div><div class=ks>本周处理</div></div>
+<div class=kc><div class=bar style=background:var(--green)></div><div class=kl>✅ 今日已处理</div><div class=kv>8</div><div class=ks>平均23min</div></div>
+<div class=kc><div class=bar style=background:var(--blue)></div><div class=kl>📊 本月告警</div><div class=kv>62</div><div class=ks><span class=u>▼14%</span> 较上月</div></div>
+</div>
+<div class=r2>
+<div class=panel><div class=phead><span class=pt>活跃告警列表</span></div>
 <table class=tbl><thead><tr><th>时间</th><th>级别</th><th>位置</th><th>告警内容</th><th>当前值</th><th>处理人</th></tr></thead>
-<tbody id=alm-tb></tbody></table></div>
-<div class=g2><div class=panel><div class=ph><span class=pt>告警统计（近7日）</span></div><canvas id=c-alarm-stat height=150></canvas></div>
-<div class=panel><div class=ph><span class=pt>告警类型分布</span></div><div id=alarm-type-dist></div></div></div>
+<tbody>
+<tr><td>10:32</td><td><span class="tg er">紧急</span></td><td>B栋配电室</td><td>P03柜A相温度偏高</td><td style=color:var(--red)>58.6℃</td><td>张工</td></tr>
+<tr><td>09:45</td><td><span class="tg wa">严重</span></td><td>D栋配电室</td><td>P02柜接地电阻偏高</td><td style=color:var(--amber)>4.8Ω</td><td>李工</td></tr>
+<tr><td>08:30</td><td><span class="tg wa">严重</span></td><td>B栋配电室</td><td>P03柜B相电流超限</td><td style=color:var(--amber)>1,128A</td><td>待处理</td></tr>
+<tr><td>07:12</td><td><span class="tg in">警告</span></td><td>E栋宿舍</td><td>P01柜通信中断</td><td>离线</td><td>待处理</td></tr>
+<tr><td>06:00</td><td><span class="tg in">警告</span></td><td>D栋仓储</td><td>P05柜漏电流偏高</td><td>18.3mA</td><td>待处理</td></tr>
+</tbody></table></div>
+<div class=panel><div class=phead><span class=pt>告警分布</span></div>
+<div id=ad style=margin-bottom:14px></div>
+<canvas id=c4a height=130></canvas></div></div>
 </div>
-<div class=page id=p-配电监测><div class=panel style=text-align:center;padding:60px 20px><div style=font-size:48px;margin-bottom:16px>⚡</div><div style=font-size:18px;font-weight:700;color:#fff;margin-bottom:8px>配电监测</div><div style=font-size:13px;color:var(--muted)>配电监测功能模块 · 内容开发中...</div></div></div><div class=page id=p-碳排管理>
-<div class="kw kw5">
-<div class="kc gr"><div class=kl>🌍 本月碳排放</div><div class=kv>192.5<span class=ku>tCO₂</span></div><div class=ks>同比 <span class=up>▼12%</span></div></div>
-<div class="kc bl"><div class=kl>📊 年度累计</div><div class=kv>1,847<span class=ku>tCO₂</span></div><div class=ks>达标进度 87%</div></div>
-<div class="kc pu"><div class=kl>🌱 碳减排量</div><div class=kv>263<span class=ku>tCO₂</span></div><div class=ks>节能改造贡献</div></div>
-<div class="kc cy"><div class=kl>🌳 碳中和</div><div class=kv>14,400<span class=ku>棵</span></div><div class=ks>相当于植树</div></div>
-<div class="kc rd"><div class=kl>🏆 碳配额</div><div class=kv>76<span class=ku>%</span></div><div class=ks>已使用 较充裕</div></div>
+
+<!-- PAGE 5: 设备 -->
+<div class=page id=p5>
+<div class=r1>
+<div class=kc><div class=bar style=background:var(--blue)></div><div class=kl>总设备数</div><div class=kv>206<span class=ku>台</span></div><div class=ks>全部在册</div></div>
+<div class=kc><div class=bar style=background:var(--green)></div><div class=kl>在线设备</div><div class=kv>186<span class=ku>台</span></div><div class=ks>在线率 90.3%</div></div>
+<div class=kc><div class=bar style=background:var(--red)></div><div class=kl>离线设备</div><div class=kv>20<span class=ku>台</span></div><div class=ks>需检查</div></div>
+<div class=kc><div class=bar style=background:var(--amber)></div><div class=kl>低电量</div><div class=kv>12<span class=ku>台</span></div><div class=ks>需更换电池</div></div>
+<div class=kc><div class=bar style=background:var(--purple)></div><div class=kl>待升级</div><div class=kv>8<span class=ku>台</span></div><div class=ks>固件更新</div></div>
 </div>
-<div class=g2>
-<div class=panel><div class=ph><span class=pt>📈 碳排放趋势（近12月）</span></div>
-<canvas id=c-carbon height=180></canvas>
-<div style=display:flex;gap:16px;margin-top:8px;font-size:10.5px;justify-content:center>
-<span><span style=display:inline-block;width:12px;height:12px;background:var(--blue);border-radius:2px;vertical-align:middle;margin-right:4px></span>实际排放</span>
-<span><span style=display:inline-block;width:12px;height:12px;background:var(--green);border-radius:2px;vertical-align:middle;margin-right:4px></span>减排目标</span>
-</div>
-</div>
-<div class=panel><div class=ph><span class=pt>🌱 环保贡献</span></div>
-<div style=text-align:center;padding:20px 0>
-<div style=font-size:36px;margin-bottom:8px>🌳</div>
-<div style=font-size:16px;font-weight:700;color:var(--green);margin-bottom:4px>14,400 棵</div>
-<div style=font-size:11px;color:var(--muted)>相当于每年种植的树木数量</div>
-</div>
-<div style=display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px>
-<div style=background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center><div style=font-size:18px;font-weight:700;color:var(--green)>263</div><div style=font-size:9px;color:var(--muted)>tCO₂ 减排</div></div>
-<div style=background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center><div style=font-size:18px;font-weight:700;color:var(--green)>76</div><div style=font-size:9px;color:var(--muted)>% 达标</div></div>
-<div style=background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center><div style=font-size:18px;font-weight:700;color:var(--green)>12</div><div style=font-size:9px;color:var(--muted)>% 降幅</div></div>
-</div>
-</div>
-</div>
-</div>
-<div class=panel style=text-align:center;padding:60px 20px><div style=font-size:48px;margin-bottom:16px>🌍</div><div style=font-size:18px;font-weight:700;color:#fff;margin-bottom:8px>碳排管理</div><div style=font-size:13px;color:var(--muted)>碳排管理功能模块 · 内容开发中...</div></div></div><div class=page id=p-设备管理>
-<div class="kw kw5">
-<div class="kc bl"><div class=kl>总设备数</div><div class=kv>206<span class=ku>台</span></div><div class=ks>全部在册</div></div>
-<div class="kc gr"><div class=kl>在线设备</div><div class=kv>186<span class=ku>台</span></div><div class=ks>在线率 90.3%</div></div>
-<div class="kc rd"><div class=kl>离线设备</div><div class=kv>20<span class=ku>台</span></div><div class=ks>需检查</div></div>
-<div class="kc yl"><div class=kl>低电量</div><div class=kv>12<span class=ku>台</span></div><div class=ks>需更换电池</div></div>
-<div class="kc pu"><div class=kl>待升级</div><div class=kv>8<span class=ku>台</span></div><div class=ks>固件 v2.3</div></div>
-</div>
-<div class=panel><div class=ph><span class=pt>设备清单</span><button class=pbtn onclick=st()>导出</button><button class=pbtn onclick=st()>批量升级</button></div>
-<table class=tbl><thead><tr><th>设备ID</th><th>类型</th><th>位置</th><th>型号</th><th>固件</th><th>电量</th><th>在线时长</th><th>状态</th></tr></thead>
+<div class=panel><div class=phead><span class=pt>🔧 设备清单</span><button class=tbtn onclick=rf()>📥 导出</button><button class=tbtn onclick=rf()>🔄 批量OTA升级</button></div>
+<table class=tbl><thead><tr><th>设备ID</th><th>类型</th><th>位置</th><th>型号</th><th>固件</th><th>电量</th><th>在线</th><th>状态</th></tr></thead>
 <tbody>
 <tr><td style=color:var(--blue)>ESA-001</td><td><span class="tg in">智能电表</span></td><td>A栋总进线</td><td>ESA-500</td><td>v2.3</td><td>有线</td><td>365天</td><td><span class="tg ok">正常</span></td></tr>
 <tr><td style=color:var(--blue)>ESB-002</td><td><span class="tg in">不平衡监测</span></td><td>B栋车间</td><td>ESB-400</td><td>v2.3</td><td>有线</td><td>180天</td><td><span class="tg ok">正常</span></td></tr>
-<tr><td style=color:var(--blue)>EST-003</td><td><span class="tg in">温度监测</span></td><td>B栋P03柜</td><td>EST-A3</td><td>v2.1</td><td>87%</td><td>90天</td><td><span class="tg wa">告警</span></td></tr>
-<tr><td style=color:var(--blue)>FRP-004</td><td><span class="tg in">接地电阻</span></td><td>D栋P02柜</td><td>FRP-300</td><td>v2.3</td><td>85%</td><td>200天</td><td><span class="tg wa">告警</span></td></tr>
+<tr><td style=color:var(--blue)>EST-003</td><td><span class="tg in">温度监测</span></td><td>B栋P03</td><td>EST-A3</td><td>v2.1</td><td>87%</td><td>90天</td><td><span class="tg wa">告警</span></td></tr>
+<tr><td style=color:var(--blue)>FRP-004</td><td><span class="tg in">接地电阻</span></td><td>D栋P02</td><td>FRP-300</td><td>v2.3</td><td>85%</td><td>200天</td><td><span class="tg wa">告警</span></td></tr>
 <tr><td style=color:var(--blue)>FG-005</td><td><span class="tg in">智能网关</span></td><td>A栋配电室</td><td>FG-500</td><td>v2.3</td><td>有线</td><td>365天</td><td><span class="tg ok">正常</span></td></tr>
 <tr><td style=color:var(--blue)>ESF-006</td><td><span class="tg in">火灾监测</span></td><td>C栋配电室</td><td>ESF-12100</td><td>v2.1</td><td>72%</td><td>150天</td><td><span class="tg ok">正常</span></td></tr>
 <tr><td style=color:var(--blue)>FS-007</td><td><span class="tg in">SPD监测</span></td><td>A栋进线柜</td><td>FS-200</td><td>v2.3</td><td>有线</td><td>365天</td><td><span class="tg ok">正常</span></td></tr>
 <tr><td style=color:var(--blue)>ESP-008</td><td><span class="tg in">零地电压</span></td><td>D栋配电室</td><td>ESP-12001</td><td>v2.1</td><td>68%</td><td>120天</td><td><span class="tg ok">正常</span></td></tr>
 </tbody></table></div>
 </div>
-<div class=panel style=text-align:center;padding:60px 20px><div style=font-size:48px;margin-bottom:16px>🔧</div><div style=font-size:18px;font-weight:700;color:#fff;margin-bottom:8px>设备管理</div><div style=font-size:13px;color:var(--muted)>设备管理功能模块 · 内容开发中...</div></div></div><div class=page id=p-视频监控>
-<div class="kw kw5">
-<div class="kc bl"><div class=kl>📹 摄像头总数</div><div class=kv>48<span class=ku>路</span></div><div class=ks>全部在线</div></div>
-<div class="kc gr"><div class=kl>✅ 在线率</div><div class=kv>100<span class=ku>%</span></div><div class=ks>正常运行</div></div>
-<div class="kc yl"><div class=kl>📡 周界告警</div><div class=kv>3<span class=ku>次</span></div><div class=ks>今日 · 已处理</div></div>
-<div class="kc pu"><div class=kl>🤖 AI识别</div><div class=kv>12<span class=ku>次</span></div><div class=ks>异常行为检测</div></div>
-<div class="kc rd"><div class=kl>💾 存储时长</div><div class=kv>30<span class=ku>天</span></div><div class=ks>循环覆盖</div></div>
-</div>
-<div class=g3>
-<div style=background:var(--bg);border:1px solid var(--border);border-radius:8px;overflow:hidden><div style=aspect-ratio:16/9;background:linear-gradient(135deg,#0c1a2e,#1a3050);display:flex;align-items:center;justify-content:center;font-size:48px>📹</div><div style=padding:8px 10px><div style=font-size:11px;font-weight:600;color:#fff;margin-bottom:2px>大门入口 · 01</div><div style=font-size:10px;color:var(--muted)><span class="tg ok">正常</span></div></div></div>
-<div style=background:var(--bg);border:1px solid var(--border);border-radius:8px;overflow:hidden><div style=aspect-ratio:16/9;background:linear-gradient(135deg,#0c1a2e,#1a3050);display:flex;align-items:center;justify-content:center;font-size:48px>🏭</div><div style=padding:8px 10px><div style=font-size:11px;font-weight:600;color:#fff;margin-bottom:2px>B栋车间 · 02</div><div style=font-size:10px;color:var(--muted)><span class="tg ok">正常</span></div></div></div>
-<div style=background:var(--bg);border:1px solid var(--border);border-radius:8px;overflow:hidden><div style=aspect-ratio:16/9;background:linear-gradient(135deg,#0c1a2e,#1a3050);display:flex;align-items:center;justify-content:center;font-size:48px>🏢</div><div style=padding:8px 10px><div style=font-size:11px;font-weight:600;color:#fff;margin-bottom:2px>配电室 · 03</div><div style=font-size:10px;color:var(--muted)><span class="tg ok">正常</span></div></div></div>
-</div>
-</div>
-<div class=panel style=text-align:center;padding:60px 20px><div style=font-size:48px;margin-bottom:16px>📹</div><div style=font-size:18px;font-weight:700;color:#fff;margin-bottom:8px>视频监控</div><div style=font-size:13px;color:var(--muted)>视频监控功能模块 · 内容开发中...</div></div></div><div class=page id=p-系统设置>
-<div class=g2><div class=panel><div class=ph><span class=pt>⚙️ 告警阈值配置</span></div>
-<table class=tbl><thead><tr><th>参数</th><th>警告</th><th>告警</th><th>紧急</th></tr></thead>
-<tbody><tr><td>温度(℃)</td><td style=color:var(--amber)>60</td><td style=color:var(--orange)>75</td><td style=color:var(--red)>85</td></tr>
-<tr><td>三相不平衡(%)</td><td>5</td><td>10</td><td>15</td></tr>
-<tr><td>漏电流(mA)</td><td>15</td><td>25</td><td>30</td></tr>
-<tr><td>接地电阻(Ω)</td><td>2</td><td>3.5</td><td>4</td></tr>
-</tbody></table>
-</div>
-<div class=panel><div class=ph><span class=pt>🔔 通知配置</span></div>
-<div style=display:flex;flex-direction:column;gap:8px;margin-top:4px>
-<div style=display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(30,61,96,.3)><span style=font-size:11px;color:var(--muted)>短信通知</span><span class="tg ok">已开启</span></div>
-<div style=display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(30,61,96,.3)><span style=font-size:11px;color:var(--muted)>邮件通知</span><span class="tg ok">已开启</span></div>
-<div style=display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(30,61,96,.3)><span style=font-size:11px;color:var(--muted)>APP推送</span><span class="tg ok">已开启</span></div>
-<div style=display:flex;justify-content:space-between;align-items:center;padding:6px 0><span style=font-size:11px;color:var(--muted)>语音告警</span><span class="tg wa">仅紧急</span></div>
-</div></div></div>
-<div class=panel><div class=ph><span class=pt>🏢 系统信息</span></div>
-<div class=g3 style=margin-top:4px>
-<div><div style=font-size:10px;color:var(--muted);margin-bottom:2px>系统名称</div><div style=font-size:12px;color:#fff>FEXLINK 智慧园区管理平台</div></div>
-<div><div style=font-size:10px;color:var(--muted);margin-bottom:2px>版本</div><div style=font-size:12px;color:#fff>v3.2.1 (Build 2026.03)</div></div>
-<div><div style=font-size:10px;color:var(--muted);margin-bottom:2px>供应商</div><div style=font-size:12px;color:#fff>微物联技术（深圳）有限公司</div></div>
-</div></div>
-</div>
-<div class=panel style=text-align:center;padding:60px 20px><div style=font-size:48px;margin-bottom:16px>⚙️</div><div style=font-size:18px;font-weight:700;color:#fff;margin-bottom:8px>系统设置</div><div style=font-size:13px;color:var(--muted)>系统设置功能模块 · 内容开发中...</div></div></div>
-</div>
-<script>
-var tts={'园区总览':'🏭 园区总览 · 深圳智慧产业园','电气安全':'🛡️ 电气安全监测中心','配电监测':'⚡ 配电室实时监测','能源统计':'📊 能源统计与分析','碳排管理':'🌍 碳足迹追踪','告警中心':'🔔 告警中心','设备管理':'🔧 设备管理','视频监控':'📹 视频监控','系统设置':'⚙️ 系统设置'};
 
-function sp(id){
-  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('act')});
-  document.querySelectorAll('.ni').forEach(function(n){n.classList.remove('act')});
-  var pg=document.getElementById('p-'+id);if(pg)pg.classList.add('act');
-  document.querySelectorAll('.ni').forEach(function(n){
-    if(n.textContent.trim()===id||n.textContent.trim().startsWith(id))n.classList.add('act')
-  });
-  var t=document.getElementById('ttitle');if(t)t.textContent=tts[id]||id;
-  if(id==='园区总览')setTimeout(function(){drawCarbonChart()},300);setTimeout(function(){drawLoad();drawBuildings();drawAlerts();drawMiniEnergy();drawKeyDist()},100);
-  if(id==='告警中心')setTimeout(function(){drawAlarmTable();drawAlarmStat();drawAlarmDist()},100);
-  if(id==='能源统计')setTimeout(function(){drawEnergyBar();drawEnergyPie()},100);
+</div></div>
+
+<script>
+var pages=['p0','p1','p2','p3','p4','p5'];
+var titles=['🏭 园区总览 · 深圳智慧产业园','🛡️ 电气安全监测中心','📊 能源统计与分析','🌍 碳足迹追踪','🔔 告警中心','🔧 设备管理'];
+function sw(i){
+  pages.forEach(function(p){document.getElementById(p).classList.remove('act')});
+  document.querySelectorAll('.sni').forEach(function(b){b.classList.remove('act')});
+  document.getElementById(pages[i]).classList.add('act');
+  document.querySelectorAll('.sni')[i].classList.add('act');
+  document.getElementById('tt').textContent=titles[i];
+  setTimeout(function(){renderPage(i)},100);
+}
+function rf(){document.getElementById('tt').innerHTML=titles[pages.indexOf(document.querySelector('.page.act').id)]+'  ✅ 已刷新';setTimeout(function(){document.getElementById('tt').textContent=titles[pages.indexOf(document.querySelector('.page.act').id)]},1000)}
+
+function resizeCanvas(c){c.width=c.parentElement.clientWidth-36}
+function createCtx(id,height){
+  var c=document.getElementById(id);if(!c)return null;
+  resizeCanvas(c);c.height=height;return c.getContext('2d');
 }
 
-function rc(c){c.width=c.parentElement.clientWidth-32}
-function st(){var t=document.getElementById('ttitle');var o=t.textContent;t.textContent='✅ 已刷新';setTimeout(function(){t.textContent=o},800)}
-
+// Page 0 charts
 function drawLoad(){
-  var c=document.getElementById('c-load');if(!c)return;rc(c);c.height=155;
-  var ctx=c.getContext('2d'),W=c.width,H=155;ctx.clearRect(0,0,W,H);
-  var pad={l:40,r:12,t:12,b:20},iw=W-pad.l-pad.r,ih=H-pad.t-pad.b;
-  for(var i=0;i<=4;i++){ctx.strokeStyle='rgba(30,61,96,.5)';ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(pad.l,pad.t+ih*i/4);ctx.lineTo(W-pad.r,pad.t+ih*i/4);ctx.stroke()}
+  var ctx=createCtx('c0',160);if(!ctx)return;
+  var W=ctx.canvas.width,H=160,pad={l:40,r:12,t:14,b:22},iw=W-pad.l-pad.r,ih=H-pad.t-pad.b;
+  for(var i=0;i<=4;i++){ctx.strokeStyle='rgba(42,64,96,.5)';ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(pad.l,pad.t+ih*i/4);ctx.lineTo(W-pad.r,pad.t+ih*i/4);ctx.stroke()}
   var pts=[];var v=2847;for(var i=0;i<60;i++){v+=(Math.random()-0.48)*50;pts.push(v)}
-  ctx.strokeStyle='#3b8bff';ctx.lineWidth=2.5;ctx.lineJoin='round';ctx.beginPath();
+  ctx.strokeStyle='#3b82f6';ctx.lineWidth=2.5;ctx.lineJoin='round';ctx.beginPath();
   for(var i=0;i<60;i++){var x=pad.l+i*iw/59,y=pad.t+ih*(1-(pts[i]-2000)/(4000-2000));if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)}
   ctx.stroke();
-  ctx.fillStyle='rgba(138,172,204,.7)';ctx.font='9px sans-serif';ctx.textAlign='right';
-  for(var i=0;i<=4;i++){ctx.fillText(Math.round(2000+(4000-2000)*(1-i/4)),pad.l-3,pad.t+ih*i/4+4)}
+  ctx.fillStyle='rgba(138,172,204,.7)';ctx.font='10px sans-serif';ctx.textAlign='right';
+  for(var i=0;i<=4;i++){ctx.fillText(Math.round(2000+(4000-2000)*(1-i/4)),pad.l-4,pad.t+ih*i/4+4)}
 }
 
 function drawBuildings(){
   var d=[{n:'A栋综合楼',l:624},{n:'B栋车间',l:1128},{n:'C栋研发',l:486},{n:'D栋仓储',l:312},{n:'E栋宿舍',l:186},{n:'F栋动力',l:98}];
-  var div=document.getElementById('bld-list');if(!div)return;div.innerHTML='';
+  var div=document.getElementById('bd');if(!div)return;div.innerHTML='';
   d.forEach(function(f){var c=f.l>800?'var(--red)':f.l>500?'var(--amber)':'var(--green)';
-    div.innerHTML+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><div style="font-size:10.5px;color:var(--muted);width:80px">'+f.n+'</div><div style="flex:1;height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden"><div style="height:100%;background:'+c+';width:'+(f.l/1200*100)+'%;border-radius:3px"></div></div><div style="font-size:10.5px;color:'+c+';width:36px;text-align:right">'+f.l+'kW</div></div>'})};
+    div.innerHTML+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><div style="font-size:11px;color:var(--muted);width:80px">'+f.n+'</div><div style="flex:1;height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden"><div style="height:100%;background:'+c+';width:'+(f.l/1200*100)+'%;border-radius:4px"></div></div><div style="font-size:11px;color:'+c+';width:36px;text-align:right">'+f.l+'kW</div></div>'})};
+
+function drawMini(){
+  var ctx=createCtx('me',70);if(!ctx)return;
+  var W=ctx.canvas.width,d=[18120,17240,18624,16980,17650,18300,18624],bw=Math.max(3,(W-20)/7-4);
+  d.forEach(function(v,i){var h=v/22000*50;ctx.fillStyle=i===6?'#3b82f6':'rgba(59,130,246,.25)';ctx.beginPath();ctx.roundRect(10+i*(bw+4),52-h,bw,h,2);ctx.fill()})};
+
+function drawKeyIndicators(){
+  var div=document.getElementById('ki');if(!div)return;
+  div.innerHTML=[
+    {l:'漏电流',v:'<15mA',c:'var(--green)'},{l:'温度',v:'35~58℃',c:'var(--amber)'},
+    {l:'接地电阻',v:'0.8~4.8Ω',c:'var(--green)'},{l:'不平衡度',v:'<8%',c:'var(--green)'},
+    {l:'功率因数',v:'0.93',c:'var(--green)'}
+  ].map(function(t){return'<div style="display:flex;align-items:center;gap:10px;margin-bottom:5px;font-size:11px"><div style="color:var(--muted);width:64px">'+t.l+'</div><div style="flex:1;height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden"><div style="height:100%;width:75%;background:'+t.c+';border-radius:3px"></div></div><div style="color:'+t.c+'">'+t.v+'</div></div>'}).join('')};
 
 function drawAlerts(){
-  var div=document.getElementById('ov-alarm');if(!div)return;
-  div.innerHTML='<div class="al-item"><div class="al-dot" style="background:var(--amber)"></div><div class="al-body"><div class="al-t">B栋P03柜温度偏高</div><div class="al-m">58.6℃ · 严重</div></div></div><div class="al-item"><div class="al-dot" style="background:var(--orange)"></div><div class="al-body"><div class="al-t">D栋P02柜接地偏高</div><div class="al-m">4.8Ω · 警告</div></div></div><div class="al-item"><div class="al-dot" style="background:var(--orange)"></div><div class="al-body"><div class="al-t">E栋宿舍P01离线</div><div class="al-m">通信中断 · 警告</div></div></div>'};
+  var div=document.getElementById('al');if(!div)return;
+  div.innerHTML='<div class="al-item" style="display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid rgba(42,64,96,.35)"><div style="width:7px;height:7px;border-radius:50%;background:var(--amber);flex-shrink:0;margin-top:5px"></div><div style="flex:1"><div style="font-size:12px;color:#fff;font-weight:500">B栋P03柜温度偏高</div><div style="font-size:10px;color:var(--muted);margin-top:2px">58.6℃ · 严重</div></div></div><div class="al-item" style="display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid rgba(42,64,96,.35)"><div style="width:7px;height:7px;border-radius:50%;background:var(--orange);flex-shrink:0;margin-top:5px"></div><div style="flex:1"><div style="font-size:12px;color:#fff;font-weight:500">D栋P02柜接地偏高</div><div style="font-size:10px;color:var(--muted);margin-top:2px">4.8Ω · 警告</div></div></div><div class="al-item" style="display:flex;align-items:flex-start;gap:8px;padding:8px 0"><div style="width:7px;height:7px;border-radius:50%;background:var(--orange);flex-shrink:0;margin-top:5px"></div><div style="flex:1"><div style="font-size:12px;color:#fff;font-weight:500">E栋宿舍P01离线</div><div style="font-size:10px;color:var(--muted);margin-top:2px">通信中断 · 警告</div></div></div>'};
 
-function drawMiniEnergy(){
-  var c=document.getElementById('c-en-mini');if(!c)return;rc(c);c.height=70;
-  var ctx=c.getContext('2d'),W=c.width;ctx.clearRect(0,0,W,70);
-  var d=[18120,17240,18624,16980,17650,18300,18624];var bw=Math.max(3,(W-20)/7-4);
-  d.forEach(function(v,i){var h=v/22000*50;var x=10+i*(bw+4);ctx.fillStyle=i===6?'var(--blue)':'rgba(59,139,255,.3)';ctx.beginPath();ctx.roundRect(x,52-h,bw,h,2);ctx.fill()})};
-
-function drawKeyDist(){
-  var div=document.getElementById('key-dist');if(!div)return;
-  var d=[{l:'漏电流',v:'<15mA',c:'var(--green)'},{l:'温度',v:'35~59℃',c:'var(--amber)'},{l:'接地电阻',v:'0.8~4.8Ω',c:'var(--green)'},{l:'不平衡度',v:'<8%',c:'var(--green)'},{l:'功率因数',v:0.93,c:'var(--green)'}];
-  div.innerHTML=d.map(function(t){return'<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;font-size:11px"><div style="color:var(--muted);width:60px">'+t.l+'</div><div style="flex:1;height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden"><div style="height:100%;width:75%;background:'+t.c+';border-radius:3px"></div></div><div style="color:'+t.c+'">'+t.v+'</div></div>'}).join('')};
-
-function drawAlarmTable(){
-  var tbody=document.getElementById('alm-tb');if(!tbody)return;
-  tbody.innerHTML='<tr><td>10:32</td><td><span class="tg er">紧急</span></td><td>B栋配电室</td><td>P03柜A相温度 58.6℃</td><td style=color:var(--red)>58.6℃</td><td>张工</td></tr><tr><td>09:45</td><td><span class="tg wa">严重</span></td><td>D栋配电室</td><td>P02柜接地电阻 4.8Ω</td><td style=color:var(--amber)>4.8Ω</td><td>李工</td></tr><tr><td>08:30</td><td><span class="tg wa">严重</span></td><td>B栋配电室</td><td>P03柜B相电流超限</td><td style=color:var(--amber)>1128A</td><td>待处理</td></tr><tr><td>07:12</td><td><span class="tg in">警告</span></td><td>E栋宿舍</td><td>P01柜通信中断</td><td>离线</td><td>待处理</td></tr><tr><td>06:00</td><td><span class="tg in">警告</span></td><td>D栋仓储</td><td>P05柜漏电流偏高</td><td>18.3mA</td><td>待处理</td></tr>'};
-
-function drawAlarmStat(){
-  var c=document.getElementById('c-alarm-stat');if(!c)return;rc(c);c.height=150;
-  var ctx=c.getContext('2d'),W=c.width,H=150;ctx.clearRect(0,0,W,H);
-  var d=[5,4,6,5,3,7,5];var pad={l:30,r:10,t:10,b:18},iw=W-pad.l-pad.r,ih=H-pad.t-pad.b;
-  var maxV=Math.max.apply(null,d)*1.2;
-  d.forEach(function(v,i){var bw=Math.max(4,iw/d.length-4);var x=pad.l+i*(iw/d.length)+2;var h=v/maxV*ih;ctx.fillStyle=i===d.length-1?'var(--blue)':'rgba(59,139,255,.3)';ctx.beginPath();ctx.roundRect(x,pad.t+ih-h,bw,h,2);ctx.fill()});
-  ctx.fillStyle='rgba(138,172,204,.6)';ctx.font='8px sans-serif';ctx.textAlign='center';
-  ['','周一','','周三','','周五','今'].forEach(function(l,i){ctx.fillText(l,pad.l+i*iw/d.length+iw/d.length/2,H-3)})};
-
-function drawAlarmDist(){
-  var div=document.getElementById('alarm-type-dist');if(!div)return;
-  div.innerHTML='<div style="margin-bottom:4px;font-size:10.5px;color:var(--muted)">过温告警 42%<div style="height:5px;background:rgba(255,255,255,.06);border-radius:3px;margin-top:3px;overflow:hidden"><div style="height:100%;width:42%;background:var(--red);border-radius:3px"></div></div></div><div style="margin-bottom:4px;font-size:10.5px;color:var(--muted)">接地故障 25%<div style="height:5px;background:rgba(255,255,255,.06);border-radius:3px;margin-top:3px;overflow:hidden"><div style="height:100%;width:25%;background:var(--amber);border-radius:3px"></div></div></div><div style="margin-bottom:4px;font-size:10.5px;color:var(--muted)">通信中断 18%<div style="height:5px;background:rgba(255,255,255,.06);border-radius:3px;margin-top:3px;overflow:hidden"><div style="height:100%;width:18%;background:var(--orange);border-radius:3px"></div></div></div><div style="margin-bottom:4px;font-size:10.5px;color:var(--muted)">漏电告警 10%<div style="height:5px;background:rgba(255,255,255,.06);border-radius:3px;margin-top:3px;overflow:hidden"><div style="height:100%;width:10%;background:var(--cyan);border-radius:3px"></div></div></div><div style="font-size:10.5px;color:var(--muted)">其他 5%<div style="height:5px;background:rgba(255,255,255,.06);border-radius:3px;margin-top:3px;overflow:hidden"><div style="height:100%;width:5%;background:var(--purple);border-radius:3px"></div></div></div>'};
-
-function drawEnergyBar(){
-  var c=document.getElementById('c-en-bar');if(!c)return;rc(c);c.height=180;
-  var ctx=c.getContext('2d'),W=c.width,H=180;ctx.clearRect(0,0,W,H);
+// Page 2 charts
+function drawEnBar(){
+  var ctx=createCtx('c2a',180);if(!ctx)return;
+  var W=ctx.canvas.width,H=180,pad={l:30,r:10,t:12,b:20},iw=W-pad.l-pad.r,ih=H-pad.t-pad.b;
   var d=[];for(var i=0;i<30;i++)d.push(14000+Math.random()*8000);
-  var maxV=Math.max.apply(null,d)*1.1;var pad={l:30,r:10,t:12,b:20},iw=W-pad.l-pad.r,ih=H-pad.t-pad.b;
-  d.forEach(function(v,i){var bw=Math.max(2,iw/d.length-1);var x=pad.l+i*iw/d.length;var h=v/maxV*ih;ctx.fillStyle=i===d.length-1?'var(--blue)':'rgba(59,139,255,.3)';ctx.beginPath();ctx.roundRect(x,pad.t+ih-h,bw,h,2);ctx.fill()})};
+  var maxV=Math.max.apply(null,d)*1.1;
+  d.forEach(function(v,i){var bw=Math.max(3,iw/d.length-2);var x=pad.l+i*iw/d.length;var h=v/maxV*ih;ctx.fillStyle=i===d.length-1?'#3b82f6':'rgba(59,130,246,.25)';ctx.beginPath();ctx.roundRect(x,pad.t+ih-h,bw,h,2);ctx.fill()})};
 
-function drawEnergyPie(){
-  var c=document.getElementById('c-en-pie');if(!c)return;rc(c);c.height=180;
-  var d=[{n:'A栋',v:22,c:'#3b8bff'},{n:'B栋',v:40,c:'#ffb300'},{n:'C栋',v:17,c:'#00c8e0'},{n:'D栋',v:11,c:'#8c6dff'},{n:'E栋',v:7,c:'#00e676'},{n:'F栋',v:3,c:'#ff6d00'}];
-  var ctx=c.getContext('2d'),W=c.width,H=180;ctx.clearRect(0,0,W,H);
-  var cx=100,cy=90,r=55,ang=-Math.PI/2;var total=100;
-  d.forEach(function(l){var sl=2*Math.PI*l.v/total;ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,ang,ang+sl);ctx.closePath();ctx.fillStyle=l.c;ctx.fill();ctx.strokeStyle='#070e18';ctx.lineWidth=2;ctx.stroke();ang+=sl});
-  d.forEach(function(l,i){ctx.fillStyle=l.c;ctx.fillRect(W-120,8+i*21,12,12);ctx.fillStyle='#dce8f2';ctx.font='10px sans-serif';ctx.textAlign='left';ctx.fillText(l.n+' '+l.v+'%',W-104,8+i*21+10)})};
+function drawEnPie(){
+  var ctx=createCtx('c2b',180);if(!ctx)return;
+  var W=ctx.canvas.width,H=180,ls=[{n:'B栋车间',v:40,c:'#eab308'},{n:'A栋综合',v:22,c:'#3b82f6'},{n:'C栋研发',v:17,c:'#06b6d4'},{n:'D栋仓储',v:11,c:'#8b5cf6'},{n:'E栋宿舍',v:7,c:'#22c55e'},{n:'F栋动力',v:3,c:'#f97316'}];
+  ctx.clearRect(0,0,W,H);var cx=100,cy=90,r=55,ang=-Math.PI/2;
+  ls.forEach(function(l){var sl=2*Math.PI*l.v/100;ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,ang,ang+sl);ctx.closePath();ctx.fillStyle=l.c;ctx.fill();ctx.strokeStyle='#0a0f1a';ctx.lineWidth=2;ctx.stroke();ang+=sl});
+  ls.forEach(function(l,i){ctx.fillStyle=l.c;ctx.fillRect(W-120,6+i*21,12,12);ctx.fillStyle='#dce8f2';ctx.font='10px sans-serif';ctx.textAlign='left';ctx.fillText(l.n+' '+l.v+'%',W-104,6+i*21+10)})};
 
-setTimeout(function(){drawCarbonChart()},300);setTimeout(function(){drawLoad();drawBuildings();drawAlerts();drawMiniEnergy();drawKeyDist();drawAlarmTable();drawAlarmStat();drawAlarmDist();drawEnergyBar();drawEnergyPie()},200);
+// Page 3 chart
+function drawCarbon(){
+  var ctx=createCtx('c3a',180);if(!ctx)return;
+  var W=ctx.canvas.width,H=180,pad={l:30,t:12,r:10,b:18},iw=W-pad.l-pad.r,ih=H-pad.t-pad.b;
+  var act=[32.1,30.8,35.2,38.6,40.2,36.5,33.8,31.2,34.5,29.8,27.3,28.5];
+  var tgt=[32,31,34,37,39,36,33,31,34,29,27,28];var maxV=45;
+  ctx.fillStyle='rgba(34,197,94,.08)';ctx.beginPath();ctx.moveTo(pad.l,pad.t+ih*(1-tgt[0]/maxV));
+  for(var i=0;i<tgt.length;i++){var x=pad.l+iw*i/(tgt.length-1),y=pad.t+ih*(1-tgt[i]/maxV);ctx.lineTo(x,y)}
+  ctx.lineTo(pad.l+iw,pad.t+ih);ctx.lineTo(pad.l,pad.t+ih);ctx.closePath();ctx.fill();
+  ctx.strokeStyle='#3b82f6';ctx.lineWidth=2.5;ctx.beginPath();
+  for(var i=0;i<act.length;i++){var x=pad.l+iw*i/(act.length-1),y=pad.t+ih*(1-act[i]/maxV);if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)}
+  ctx.stroke();
+  ctx.fillStyle='rgba(138,172,204,.6)';ctx.font='9px sans-serif';ctx.textAlign='center';
+  ['4月','5月','6月','7月','8月','9月','10月','11月','12月','1月','2月','3月'].forEach(function(m,i){if(i%2===0)ctx.fillText(m,pad.l+iw*i/(act.length-1),H-3)});
+  ctx.fillStyle='rgba(138,172,204,.7)';ctx.font='9px sans-serif';ctx.textAlign='right';
+  for(var i=0;i<=4;i++){ctx.fillText((maxV*(1-i/4)).toFixed(0),pad.l-4,pad.t+ih*i/4+4)}
+}
 
-// Clock
-setInterval(function(){var t=document.getElementById('tclock');if(t)t.textContent=new Date().toLocaleString('zh-CN',{hour12:false})},1000);
-// Real-time data refresh
+// Page 4 charts
+function drawAlarmDist(){
+  var div=document.getElementById('ad');if(!div)return;
+  div.innerHTML='<div style="margin-bottom:6px;font-size:11px;color:var(--muted)">过温告警 42%<div style="height:6px;background:rgba(255,255,255,.06);border-radius:3px;margin-top:3px;overflow:hidden"><div style="height:100%;width:42%;background:var(--red);border-radius:3px"></div></div></div><div style="margin-bottom:6px;font-size:11px;color:var(--muted)">接地故障 25%<div style="height:6px;background:rgba(255,255,255,.06);border-radius:3px;margin-top:3px;overflow:hidden"><div style="height:100%;width:25%;background:var(--amber);border-radius:3px"></div></div></div><div style="margin-bottom:6px;font-size:11px;color:var(--muted)">通信中断 18%<div style="height:6px;background:rgba(255,255,255,.06);border-radius:3px;margin-top:3px;overflow:hidden"><div style="height:100%;width:18%;background:var(--orange);border-radius:3px"></div></div></div><div style="font-size:11px;color:var(--muted)">其他 15%<div style="height:6px;background:rgba(255,255,255,.06);border-radius:3px;margin-top:3px;overflow:hidden"><div style="height:100%;width:15%;background:var(--purple);border-radius:3px"></div></div></div>'};
+
+function drawAlarmBar(){
+  var ctx=createCtx('c4a',130);if(!ctx)return;
+  var W=ctx.canvas.width,pad={l:30,r:10,t:10,b:18},iw=W-pad.l-pad.r,ih=130-pad.t-pad.b;
+  var d=[5,4,6,5,3,7,5];var maxV=Math.max.apply(null,d)*1.3;
+  d.forEach(function(v,i){var bw=Math.max(4,iw/d.length-5),x=pad.l+i*iw/d.length+2,h=v/maxV*ih;
+    ctx.fillStyle=i===d.length-1?'#3b82f6':'rgba(59,130,246,.25)';ctx.beginPath();ctx.roundRect(x,pad.t+ih-h,bw,h,2);ctx.fill()});
+  ctx.fillStyle='rgba(138,172,204,.6)';ctx.font='9px sans-serif';ctx.textAlign='center';
+  ['','一','','三','','五','今'].forEach(function(l,i){ctx.fillText(l,pad.l+i*iw/d.length+iw/d.length/2-2,H-3)})};
+
+function renderPage(i){
+  if(i===0){drawLoad();drawBuildings();drawMini();drawKeyIndicators();drawAlerts()}
+  if(i===2){drawEnBar();drawEnPie()}
+  if(i===3){drawCarbon()}
+  if(i===4){drawAlarmDist();drawAlarmBar()}
+}
+
+// Clock + live data
 setInterval(function(){
-  var v=document.getElementById('v-alm');if(v){var c=4+Math.floor(Math.random()*3);v.textContent=c;document.getElementById('acnt').textContent=c}
-  var pw=document.getElementById('v-pw');if(pw){var p=Math.floor(2800+Math.random()*100);pw.innerHTML=p.toLocaleString()+'<span class=ku>kW</span>'}
+  var t=document.getElementById('tc');if(t)t.textContent=new Date().toLocaleString('zh-CN',{hour12:false});
+  // Simulate live data
+  var ac=document.getElementById('ma');if(ac){var c=4+Math.floor(Math.random()*3);ac.innerHTML=c+'<span class=ku>条</span>'}
 },5000);
+
+// Init
+setTimeout(function(){renderPage(0);document.getElementById('tc').textContent=new Date().toLocaleString('zh-CN',{hour12:false})},200);
 </script>
 </body>
 </html>
