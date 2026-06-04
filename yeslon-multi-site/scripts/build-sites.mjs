@@ -41,8 +41,36 @@ const TW=`<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="
 function h(t){return(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 let GA_ID='',SC_VERIFY='',OG_DEFAULT='/og-image.jpg';
 try{const m=await import('../site-config.js');GA_ID=m.SITE_CONFIG.GA_ID||'';SC_VERIFY=m.SITE_CONFIG.SC_VERIFY||'';OG_DEFAULT=m.SITE_CONFIG.OG_IMAGE||'/og-image.jpg';}catch(e){};
-function lay(t,d,b,c){const base='https://'+(c.sub?c.sub+'.'+c.dom:c.dom);const u=arguments[4]||base;const i=(arguments[5]||OG_DEFAULT).startsWith('http')?arguments[6]:base+(arguments[6]||OG_DEFAULT);const kw=c.kw||'微物联,工业物联网,电气安全,智能防雷,PLC';return'<!DOCTYPE html>\n<html lang="zh-CN">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width,initial-scale=1.0">\n<title>'+h(t)+'</title>\n<meta name="description" content="'+h(d||c.desc||'')+'">\n<meta name="keywords" content="'+h(kw)+'">\n<link rel="canonical" href="'+h(u)+'">\n<meta name="robots" content="index,follow">\n<meta property="og:type" content="website">\n<meta property="og:title" content="'+h(t)+'">\n<meta property="og:description" content="'+h(d||c.desc||'')+'">\n<meta property="og:image" content="'+h(i)+'">\n<meta property="og:url" content="'+h(u)+'">\n<meta property="og:site_name" content="'+h(c.name||'')+'">\n<meta name="twitter:card" content="summary_large_image">\n<meta name="twitter:title" content="'+h(t)+'">\n<meta name="twitter:description" content="'+h(d||c.desc||'')+'">\n<meta name="twitter:image" content="'+h(i)+'">\n'+(SC_VERIFY?'<meta name="google-site-verification" content="'+h(SC_VERIFY)+'">\n':'')+'<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"'+h(c.name||'')+'","url":"'+h(u.replace(/\/[^/]*$/,'')||'')+'","description":"'+h(c.desc||'')+'","contactPoint":{"@type":"ContactPoint","telephone":"'+h(c.phone||'')+'","contactType":"customer service"}}</script>\n'+(GA_ID?'<script async src="https://www.googletagmanager.com/gtag/js?id='+h(GA_ID)+'"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)};gtag("js",new Date());gtag("config","'+h(GA_ID)+'");</script>\n':'')+TW+'\n<script>if(typeof window!="undefined"&&window.location){(function(){var r=document.cookie.match(new RegExp("(^| )region=([^;]*)"));var reg=r?unescape(r[2]):"CN";var cf=navigator&&navigator.language?navigator.language.substring(0,2):"";if(cf&&cf!=="zh"&&reg==="CN"){}fetch("https://ipapi.co/json/",{timeout:3000}).then(function(r){return r.json()}).then(function(d){if(d.country_code&&d.country_code!==reg&&d.country_code=="CN"){document.cookie="region=CN;path=/;max-age=2592000";var b=document.getElementById("geo-banner");if(b)b.style.display="flex"}}).catch(function(){})})()}</script>\n</head>\n<body class="bg-gray-50 text-gray-900 font-sans antialiased">\n<div id="geo-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:999;background:#2563eb;color:white;padding:12px 20px;align-items:center;justify-content:center;gap:16px;font-size:14px">\n  <span>🌏 检测到您可能在中国，是否切换到中文站点？</span>\n  <a href="javascript:void(0)" onclick="document.getElementById(\'geo-banner\').style.display=\'none\'" style="padding:4px 16px;background:white;color:#2563eb;border-radius:6px;text-decoration:none;font-weight:500;font-size:13px">确定</a>\n  <a href="javascript:void(0)" onclick="document.getElementById(\'geo-banner\').style.display=\'none\'" style="color:rgba(255,255,255,0.7);font-size:13px;text-decoration:none">关闭</a>\n</div>\n'+b+'\n</body>\n</html>';}
-const A=`<div id="progress" style="position:fixed;top:0;left:0;height:2px;width:0%;z-index:999;background:linear-gradient(90deg,#2563eb,#60a5fa);transition:width 0.05s linear"></div><script>window.addEventListener("scroll",function(){var h=document.documentElement;document.getElementById("progress").style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+"%"});var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}})},{threshold:0.1,rootMargin:"0px 0px -60px 0px"});document.addEventListener("DOMContentLoaded",function(){document.querySelectorAll(".rv").forEach(function(el){io.observe(el)})});</script>`;
+function lay(t,d,b,c){const base='https://'+(c.sub?c.sub+'.'+c.dom:c.dom);const u=arguments[4]||base;const i=(arguments[5]||OG_DEFAULT).startsWith('http')?arguments[6]:base+(arguments[6]||OG_DEFAULT);const kw=c.kw||'微物联,工业物联网,电气安全,智能防雷,PLC';return'<!DOCTYPE html>\n<html lang="zh-CN">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width,initial-scale=1.0">\n<title>'+h(t)+'</title>\n<meta name="description" content="'+h(d||c.desc||'')+'">\n<meta name="keywords" content="'+h(kw)+'">\n<link rel="canonical" href="'+h(u)+'">\n<meta name="robots" content="index,follow">\n<meta property="og:type" content="website">\n<meta property="og:title" content="'+h(t)+'">\n<meta property="og:description" content="'+h(d||c.desc||'')+'">\n<meta property="og:image" content="'+h(i)+'">\n<meta property="og:url" content="'+h(u)+'">\n<meta property="og:site_name" content="'+h(c.name||'')+'">\n<meta name="twitter:card" content="summary_large_image">\n<meta name="twitter:title" content="'+h(t)+'">\n<meta name="twitter:description" content="'+h(d||c.desc||'')+'">\n<meta name="twitter:image" content="'+h(i)+'">\n'+(SC_VERIFY?'<meta name="google-site-verification" content="'+h(SC_VERIFY)+'">\n':'')+'<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"'+h(c.name||'')+'","url":"'+h(u.replace(/\/[^/]*$/,'')||'')+'","description":"'+h(c.desc||'')+'","contactPoint":{"@type":"ContactPoint","telephone":"'+h(c.phone||'')+'","contactType":"customer service"}}</script>\n'+(GA_ID?'<script async src="https://www.googletagmanager.com/gtag/js?id='+h(GA_ID)+'"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)};gtag("js",new Date());gtag("config","'+h(GA_ID)+'");</script>\n':'')+TW+'\n<script>if(typeof window!="undefined"&&window.location){(function(){var r=document.cookie.match(new RegExp("(^| )region=([^;]*)"));var reg=r?unescape(r[2]):"CN";var cf=navigator&&navigator.language?navigator.language.substring(0,2):"";if(cf&&cf!=="zh"&&reg==="CN"){}fetch("https://ipapi.co/json/",{timeout:3000}).then(function(r){return r.json()}).then(function(d){if(d.country_code&&d.country_code!==reg&&d.country_code=="CN"){document.cookie="region=CN;path=/;max-age=2592000";var b=document.getElementById("geo-banner");if(b)b.style.display="flex"}}).catch(function(){})})()}</script>\n</head>\n<body class="bg-gray-50 text-gray-900 font-sans antialiased">\n<div id="geo-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:999;background:#2563eb;color:white;padding:12px 20px;align-items:center;justify-content:center;gap:16px;font-size:14px">\n  <span>🌏 检测到您可能在中国，是否切换到中文站点？</span>\n  <a href="javascript:void(0)" onclick="document.getElementById(\'geo-banner\').style.display=\'none\'" style="padding:4px 16px;background:white;color:#2563eb;border-radius:6px;text-decoration:none;font-weight:500;font-size:13px">确定</a>\n  <a href="javascript:void(0)" onclick="document.getElementById(\'geo-banner\').style.display=\'none\'" style="color:rgba(255,255,255,0.7);font-size:13px;text-decoration:none">关闭</a>\n</div>\n'+A+'\n'+b+'\n</body>\n</html>';}
+const A=`<div id="progress" style="position:fixed;top:0;left:0;height:2px;width:0%;z-index:999;background:linear-gradient(90deg,#2563eb,#60a5fa);transition:width 0.05s linear"></div>
+<div id="search-overlay" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.6);backdrop-filter:blur(8px)" onclick="if(event.target===this)closeSearch()">
+  <div style="max-width:640px;margin:80px auto 0;padding:0 20px">
+    <div style="background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3)">
+      <div style="display:flex;align-items:center;padding:4px;border-bottom:1px solid #e2e8f0">
+        <span style="padding:0 12px;color:#94a3b8;font-size:18px">🔍</span>
+        <input id="search-input" type="text" placeholder="搜索产品、解决方案、案例..." style="flex:1;border:none;outline:none;padding:14px 4px;font-size:15px;background:transparent" oninput="doSearch(this.value)">
+        <button style="padding:8px 16px;border:none;background:transparent;color:#94a3b8;font-size:18px;cursor:pointer" onclick="closeSearch()">✕</button>
+      </div>
+      <div id="search-results" style="max-height:60vh;overflow-y:auto;padding:8px"></div>
+      <div id="search-empty" style="text-align:center;padding:40px 20px;color:#94a3b8;font-size:14px">输入关键词搜索产品、解决方案、案例</div>
+    </div>
+  </div>
+</div>
+<script>
+var SI=[];fetch("/search-index.json").then(function(r){return r.json()}).then(function(d){SI=d}).catch(function(){});
+function openSearch(){document.getElementById("search-overlay").style.display="block";document.getElementById("search-input").value="";document.getElementById("search-results").innerHTML="";document.getElementById("search-empty").style.display="block";setTimeout(function(){document.getElementById("search-input").focus()},100)}
+function closeSearch(){document.getElementById("search-overlay").style.display="none"}
+function doSearch(q){q=q.toLowerCase().trim();var r=document.getElementById("search-results");var e=document.getElementById("search-empty");if(!q||!SI.length){r.innerHTML="";e.style.display="block";return}
+var hits=[];for(var i=0;i<SI.length;i++){var s=SI[i];if(s.t.toLowerCase().includes(q)||(s.d&&s.d.toLowerCase().includes(q))||(s.k&&s.k.toLowerCase().includes(q))){hits.push(s)}}
+if(hits.length===0){r.innerHTML='<div style="text-align:center;padding:40px 20px;color:#94a3b8;font-size:14px">未找到与 "<b style=color:#64748b>'+q+'</b>" 相关的内容</div>';e.style.display="none";return}
+e.style.display="none";var c=hits.length>50?50:hits.length;
+var h='<div style="padding:8px 12px;font-size:12px;color:#94a3b8">找到 '+hits.length+' 个结果（显示前 '+c+' 个）</div>';
+for(var i=0;i<c;i++){var s=hits[i];
+  h+='<a href="'+s.u+'" style="display:block;padding:12px 14px;border-radius:10px;text-decoration:none;color:inherit;transition:background .15s" onmouseover="this.style.background=\'#f8fafc\'" onmouseout="this.style.background=\'\'"><div style="font-size:14px;font-weight:600;color:#1e293b">'+(s.t||"")+'</div><div style="font-size:12px;color:#64748b;margin-top:2px">'+(s.d?s.d.substring(0,100):"")+'</div><div style="font-size:11px;color:#94a3b8;margin-top:4px"><span style=display:inline-block;padding:1px 6px;border-radius:3px;background:#f1f5f9;color:#64748b;font-size:10px>'+s.g+'</span> '+s.u+'</div></a>'}
+r.innerHTML=h;}
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeSearch();if(e.ctrlKey&&e.key==="k"){e.preventDefault();openSearch()}});
+</script>
+`;
 function slug(s){return s.replace(/[\/\s]+/g,'-').replace(/[()（）]/g,'').replace(/-+/g,'-').replace(/^-|-$/g,'')||'p';}
 
 function nav(pp, c, cur, prefix='') {
@@ -58,6 +86,7 @@ function nav(pp, c, cur, prefix='') {
 <span class="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center text-white text-sm font-bold">Y</span>${h(c.name)}</a>
 <button id="menu-btn" class="md:hidden p-2 rounded-lg text-gray-500 hover:bg-gray-100 focus:outline-none" onclick="var m=document.getElementById('mobile-menu');m.classList.toggle('hidden')"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="hidden md:flex items-center gap-1">${navItems}
+<button class="px-3 py-2 text-sm font-medium rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 no-underline transition-colors" onclick="openSearch()">🔍</button>
 <a href="${pfx}/contact" class="ml-2 px-4 py-2 text-sm font-medium rounded-lg bg-primary-600 text-white hover:bg-primary-700 transition-colors no-underline">联系我们</a>
 </div></div>
 <div id="mobile-menu" class="hidden md:hidden border-t border-gray-200 py-3 space-y-1">${navItems}
@@ -888,12 +917,14 @@ const defs=[
 ];
 console.log('Building...\n');
 if(!existsSync(DIST))mkdirSync(DIST,{recursive:true});
+var SLS_ALL=[],CS_ALL=[],NWS_ALL=[];
 
 for(const d of defs){
   const c=cfg(d.n);const pp=pages(d.n);
   const sls=reItems(join(root,'sites',d.n,'data','solutions.ts'),['title','description','category','slug']);
   const cs=reItems(join(root,'sites',d.n,'data','cases.ts'),['title','description','client']);
   const nws=reItems(join(root,'sites',d.n,'data','news.ts'),['title','description','category']);
+  if(d.main){SLS_ALL=sls;CS_ALL=cs;NWS_ALL=nws;}
   const out=d.main?DIST:join(DIST,d.n);
   if(!existsSync(out))mkdirSync(out,{recursive:true});
   const bu=c.sub?c.sub+'.'+c.dom:c.dom;
@@ -960,4 +991,20 @@ for(const d of defs){
 for(const f of['_redirects','_headers','_routes.json']){const s=join(root,f);if(existsSync(s))copyFileSync(s,join(DIST,f));}
 // Copy public/ directory (demos, etc.)
 (function(){try{var d=join(root,'public');if(!existsSync(d))return;var go=function(s,t){try{var ee=readdirSync(s)}catch{return};for(var i=0;i<ee.length;i++){var sp=join(s,ee[i]);try{var st=statSync(sp)}catch{continue};if(st.isDirectory()){var tp=join(t,ee[i]);if(!existsSync(tp))mkdirSync(tp,{recursive:true});go(sp,tp)}else{copyFileSync(sp,join(t,ee[i]))}}};go(d,DIST);console.log('  📁 public/ copied');}catch(e){console.log('  ℹ️ copy public error:',e.message);}})();
+// Generate search-index.json
+try{var si=[];var addItem=function(t,d,u,g,k){si.push({t:t,d:d||'',u:u,g:g||'page',k:k||''})};
+// Products
+var allCats=[{name:'工业智控'},{name:'电气安全监测'},{name:'智能防雷'},{name:'智能断路器'},{name:'软件平台'}];
+var siteUrl='https://www.yeslon.com';
+for(var ci=0;ci<allCats.length;ci++){var cat=allCats[ci];var items=PROD.yeslon[ci]?PROD.yeslon[ci].items:[];for(var ii=0;ii<items.length;ii++){var item=items[ii];addItem(item.n,item.d||'',siteUrl+'/products/'+slug(item.n),'产品',cat.name)}}
+// Solutions
+for(var si2=0;si2<SLS_ALL.length;si2++){var sol=SLS_ALL[si2];addItem(sol.title,sol.description||'',siteUrl+'/solutions/'+(sol.slug||slug(sol.title)),'解决方案',sol.category||'')}
+for(var ci2=0;ci2<CS_ALL.length;ci2++){var cas=CS_ALL[ci2];addItem(cas.title,cas.description||'',siteUrl+'/cases','案例',cas.client||'')}
+for(var ni=0;ni<NWS_ALL.length;ni++){var nw=NWS_ALL[ni];addItem(nw.title,nw.description||'',siteUrl+'/news','新闻',nw.category||'')}
+// Pages
+var pagesList=[{t:'首页',d:'微物联技术首页',u:siteUrl+'/'},{t:'产品中心',d:'全部产品',u:siteUrl+'/products'},{t:'解决方案',d:'行业解决方案',u:siteUrl+'/solutions'},{t:'成功案例',d:'客户案例',u:siteUrl+'/cases'},{t:'新闻动态',d:'公司新闻',u:siteUrl+'/news'},{t:'关于我们',d:'公司介绍',u:siteUrl+'/about'},{t:'联系我们',d:'联系方式',u:siteUrl+'/contact'}];
+for(var pi=0;pi<pagesList.length;pi++){var pg=pagesList[pi];addItem(pg.t,pg.d,pg.u,'页面')}
+writeFileSync(join(DIST,'search-index.json'),JSON.stringify(si,null,0),'utf-8');
+console.log('  🔍 search-index.json ('+si.length+' entries)');
+}catch(e){console.log('  ℹ️ search index:',e.message);}
 console.log('\n✅ Build complete');
