@@ -545,12 +545,12 @@ function genHome(pp, c, sls, cs, feat, sn, pfx) {
 
   const bd=`${nav(pp,c,pfx+'/',pfx)}
 <style>.line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.hero-slide{transition:opacity .6s ease,transform .6s ease}.hero-dot{transition:all .3s ease}</style>
-<div class="relative overflow-hidden bg-gray-900" id="hero-carousel">
+<div class="relative overflow-hidden bg-gray-900" id="hero-carousel" style="min-height:520px">
 ${slides.map((s,i)=>`<div class="hero-slide absolute inset-0 bg-gradient-to-br ${s.bg} ${i===0?'opacity-100':'opacity-0 pointer-events-none'}" data-idx="${i}">
   <div class="absolute inset-0 opacity-5" style="background-image:radial-gradient(circle at 20% 30%,white 0%,transparent 40%),radial-gradient(circle at 80% 70%,white 0%,transparent 30%)"></div>
   <div class="absolute inset-0 opacity-[0.03]" style="background-image:linear-gradient(rgba(255,255,255,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.2) 1px,transparent 1px);background-size:60px 60px"></div>
 </div>`).join('')}
-<div class="relative" style="min-height:520px">
+<div class="relative z-10" style="min-height:520px">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
     ${slides.map((s,i)=>`<div class="slide-content text-white ${i===0?'block':'hidden'}" data-idx="${i}">
       <div class="max-w-3xl"><span class="inline-block px-3 py-1 bg-white/10 text-white/80 text-xs font-semibold rounded-full mb-4">${s.tag}</span>
