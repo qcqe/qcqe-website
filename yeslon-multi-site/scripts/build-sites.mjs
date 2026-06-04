@@ -933,8 +933,17 @@ for(const d of defs){
   if(!existsSync(out))mkdirSync(out,{recursive:true});
   const bu=c.sub?c.sub+'.'+c.dom:c.dom;
 
-  // sitemap
-  const surls=pp.map(p=>'<url><loc>https://'+bu+'/'+p.path+'</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>');
+  // sitemap - include all pages
+  var surls=[];
+  // Structure pages
+  pp.forEach(function(p){surls.push('<url><loc>https://'+bu+'/'+p.path+'</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>')});
+  // Product detail pages
+  var prodCats=PROD[d.n]||PROD.yeslon;
+  prodCats.forEach(function(cat){cat.items.forEach(function(item){var s=slug(item.n);surls.push('<url><loc>https://'+bu+'/products/'+s+'</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>')})});
+  // Solution detail pages (main site only)
+  if(d.main) sls.forEach(function(s){var sk=s.slug||slug(s.title);surls.push('<url><loc>https://'+bu+'/solutions/'+sk+'</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>')});
+  // Deduplicate
+  surls=surls.filter(function(u,i,a){return a.indexOf(u)===i});
   writeFileSync(join(out,'sitemap.xml'),'<?xml version="1.0"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+surls.join('\n')+'\n</urlset>');
   writeFileSync(join(out,'robots.txt'),'User-agent: *\nAllow: /\nSitemap: https://'+bu+'/sitemap.xml\nCrawl-delay: 1');
 
