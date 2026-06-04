@@ -115,9 +115,11 @@ ${grp.length?`<div class="border-t border-gray-800 mt-6 pt-6"><p class="text-xs 
 // ═══════════ COMPLETE PRODUCT CATALOG ═══════════
 const PROD = {
 yeslon:[
-{cat:'工业智控',ico:'⚙️',items:[
+{cat:'可编程控制器',ico:'🧠',items:[
   {n:'CC系列可编程控制器 (PLC)',m:'CC100/CCXXX',d:'工业级通用PLC控制器，支持IEC 61131-3编程标准，EtherCAT/PROFINET/Modbus TCP多协议通信，适用于复杂逻辑控制、运动控制与过程控制场景。',s:['IEC 61131-3 五种编程语言','EtherCAT/PROFINET/Modbus TCP','模块化I/O灵活扩展','-25℃~70℃工业宽温','CE/FCC认证']},
   {n:'CR系列工业分站',m:'CR系列',d:'分布式远程I/O站，支持EtherCAT总线组网，适用于产线分布式控制场景，实现远程设备高速数据采集与控制。',s:['EtherCAT总线通信','分布式远程I/O扩展','防护等级IP20','DIN导轨安装']},
+]},
+{cat:'工业智控',ico:'⚙️',items:[
   {n:'CX系列工业设备手环',m:'CX-08R06AI08',d:'工业设备智能监测手环，集成振动、温度等多参数采集，实时监测设备运行状态，实现预测性维护。',s:['振动/温度多参数采集','无线数据传输','IP67防护','电池续航≥2年','边缘预警AI算法']},
   {n:'CW系列边缘计算网关',m:'CW系列',d:'工业边缘计算网关，支持多协议采集与数据上云，内置边缘计算能力，实现设备联网与数据预处理。',s:['100+工业协议支持','4G/Wi-Fi/Ethernet上行','边缘数据处理','设备远程管理','MQTT/HTTP云对接']},
   {n:'HMI工业触摸屏',m:'HMI系列',d:'工业人机界面，4.3"/7"/10"/12"/15.6"多规格，支持工业以太网与远程监控，IP65防护。',s:['4.3"/7"/10"/12"/15.6"多尺寸','工业以太网通信','VNC远程访问','IP65防护等级']},
@@ -996,7 +998,7 @@ for(const f of['_redirects','_headers','_routes.json']){const s=join(root,f);if(
 // Generate search-index.json
 try{var si=[];var addItem=function(t,d,u,g,k){si.push({t:t,d:d||'',u:u,g:g||'page',k:k||''})};
 // Products
-var allCats=[{name:'工业智控'},{name:'电气安全监测'},{name:'智能防雷'},{name:'智能断路器'},{name:'软件平台'}];
+var allCats=[{name:'可编程控制器'},{name:'工业智控'},{name:'电气安全监测'},{name:'智能防雷'},{name:'智能断路器'},{name:'软件平台'}];
 var siteUrl='https://www.yeslon.com';
 for(var ci=0;ci<allCats.length;ci++){var cat=allCats[ci];var items=PROD.yeslon[ci]?PROD.yeslon[ci].items:[];for(var ii=0;ii<items.length;ii++){var item=items[ii];addItem(item.n,item.d||'',siteUrl+'/products/'+slug(item.n),'产品',cat.name)}}
 // Solutions
