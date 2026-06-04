@@ -83,7 +83,7 @@ function nav(pp, c, cur, prefix='') {
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="flex justify-between items-center h-16">
 <a href="${pfx||'/'}" class="flex items-center gap-2 text-lg font-bold text-gray-900 no-underline hover:no-underline">
-<img src="/logo.png" alt="微物联技术" class="h-8 w-auto" style="max-height:40px">${h(c.name)}</a>
+<img src="/logo.png" alt="微物联技术" class="h-8 w-auto" style="max-height:60px">${h(c.name)}</a>
 <button id="menu-btn" class="md:hidden p-2 rounded-lg text-gray-500 hover:bg-gray-100 focus:outline-none" onclick="var m=document.getElementById('mobile-menu');m.classList.toggle('hidden')"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="hidden md:flex items-center gap-1">${navItems}
 <button class="px-3 py-2 text-sm font-medium rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 no-underline transition-colors" onclick="openSearch()">🔍</button>
