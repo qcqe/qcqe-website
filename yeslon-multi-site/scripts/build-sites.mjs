@@ -87,9 +87,11 @@ function nav(pp, c, cur, prefix='') {
 <button id="menu-btn" class="md:hidden p-2 rounded-lg text-gray-500 hover:bg-gray-100 focus:outline-none" onclick="var m=document.getElementById('mobile-menu');m.classList.toggle('hidden')"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="hidden md:flex items-center gap-1">${navItems}
 <button class="px-3 py-2 text-sm font-medium rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 no-underline transition-colors" onclick="openSearch()">🔍</button>
+<a href="https://www.fexlink.com" target="_blank" class="hidden md:inline-flex px-3 py-2 text-sm font-medium rounded-lg text-primary-600 hover:bg-primary-50 no-underline transition-colors" rel="external">集团官网</a>
 <a href="${pfx}/contact" class="ml-2 px-4 py-2 text-sm font-medium rounded-lg bg-primary-600 text-white hover:bg-primary-700 transition-colors no-underline">联系我们</a>
 </div></div>
 <div id="mobile-menu" class="hidden md:hidden border-t border-gray-200 py-3 space-y-1">${navItems}
+<a href="https://www.fexlink.com" target="_blank" class="block px-3 py-2 text-sm font-medium rounded-lg text-primary-600 hover:bg-primary-50 no-underline" rel="external">🌐 集团官网</a>
 <a href="${pfx}/contact" class="block px-3 py-2 text-sm font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700 no-underline">联系我们</a>
 </div></div></nav>`;
 }
@@ -103,7 +105,7 @@ function ft(pp, c, prefix=''){
 <div><h4 class="text-white font-semibold mb-3">联系方式</h4>
 <p class="text-sm mb-1">📞 ${h(c.phone)}</p><p class="text-sm mb-1">✉️ ${h(c.email)}</p><p class="text-sm">📍 ${h(c.addr)}</p></div>
 <div><h4 class="text-white font-semibold mb-3">快速链接</h4>
-<div class="space-y-1 text-sm"><a href="${pfx}/products" class="block text-gray-400 hover:text-white no-underline">产品中心</a>${(pp||[]).some(p=>p.path==='solutions')?'<a href="'+pfx+'/solutions" class="block text-gray-400 hover:text-white no-underline">解决方案</a>':''}${(pp||[]).some(p=>p.path==='cases')?'<a href="'+pfx+'/cases" class="block text-gray-400 hover:text-white no-underline">成功案例</a>':''}${(pp||[]).some(p=>p.path==='about')?'<a href="'+pfx+'/about" class="block text-gray-400 hover:text-white no-underline">关于我们</a>':''}</div></div>
+<div class="space-y-1 text-sm"><a href="${pfx}/products" class="block text-gray-400 hover:text-white no-underline">产品中心</a>${(pp||[]).some(p=>p.path==='solutions')?'<a href="'+pfx+'/solutions" class="block text-gray-400 hover:text-white no-underline">解决方案</a>':''}${(pp||[]).some(p=>p.path==='cases')?'<a href="'+pfx+'/cases" class="block text-gray-400 hover:text-white no-underline">成功案例</a>':''}${(pp||[]).some(p=>p.path==='about')?'<a href="'+pfx+'/about" class="block text-gray-400 hover:text-white no-underline">关于我们</a>':''}<a href="https://www.fexlink.com" target="_blank" class="block text-gray-400 hover:text-white no-underline" rel="external">🌐 集团官网 fexlink.com</a></div></div>
 </div>
 ${grp.length?`<div class="border-t border-gray-800 mt-6 pt-6"><p class="text-xs text-gray-500 text-center mb-3">集团成员</p><div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs text-gray-500">${grp.map(g=>'<span>● '+h(g)+'</span>').join('')}</div></div>`:''}
 <div class="border-t border-gray-800 mt-6 pt-6 text-center text-sm">© ${new Date().getFullYear()} ${h(c.name)} 版权所有</div>
