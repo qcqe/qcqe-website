@@ -49,16 +49,20 @@ function nav(pp, c, cur, prefix='') {
   const pfx=prefix||'';
   const navItems = pp.filter(p=>p.path).map(p=>{
     const href = pfx+'/'+p.path;
-    return `<a href="${href}" class="px-3 py-2 text-sm font-medium rounded-lg transition-colors ${href===cur?'text-primary-600 bg-primary-50':'text-gray-600 hover:text-gray-900 hover:bg-gray-100'} no-underline">${h(p.title)}</a>`;
+    return `<a href="${href}" class="block px-3 py-2 text-sm font-medium rounded-lg transition-colors ${href===cur?'text-primary-600 bg-primary-50':'text-gray-600 hover:text-gray-900 hover:bg-gray-100'} no-underline">${h(p.title)}</a>`;
   }).join('');
   return `<nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="flex justify-between items-center h-16">
 <a href="${pfx||'/'}" class="flex items-center gap-2 text-lg font-bold text-gray-900 no-underline hover:no-underline">
 <span class="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center text-white text-sm font-bold">Y</span>${h(c.name)}</a>
+<button id="menu-btn" class="md:hidden p-2 rounded-lg text-gray-500 hover:bg-gray-100 focus:outline-none" onclick="var m=document.getElementById('mobile-menu');m.classList.toggle('hidden')"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="hidden md:flex items-center gap-1">${navItems}
 <a href="${pfx}/contact" class="ml-2 px-4 py-2 text-sm font-medium rounded-lg bg-primary-600 text-white hover:bg-primary-700 transition-colors no-underline">联系我们</a>
-</div></div></div></nav>`;
+</div></div>
+<div id="mobile-menu" class="hidden md:hidden border-t border-gray-200 py-3 space-y-1">${navItems}
+<a href="${pfx}/contact" class="block px-3 py-2 text-sm font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700 no-underline">联系我们</a>
+</div></div></nav>`;
 }
 function ft(pp, c, prefix=''){
   const pfx=prefix||'';
