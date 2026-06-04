@@ -29,6 +29,7 @@ function cfg(site) {
     feat: reList(c,/features:\s*\[([\s\S]*?)\]/),
     color: re(c,/primaryColor:\s*'([^']+)'/,1)||'#1E40AF',
     kw: (()=>{try{const m=readFileSync(c,'utf-8').match(/keywords:\s*\[([^\]]+)\]/);return m?[...m[1].matchAll(/'([^']+)'/g)].map(x=>x[1]).join(', '):'';}catch{return '';}})(),
+    group: (()=>{try{const m=readFileSync(c,'utf-8').match(/companyGroup:\s*\[([\s\S]*?)\]/);return m?[...m[1].matchAll(/'([^']+)'/g)].map(x=>x[1]):[];}catch{return[];}})(),
   };
 }
 function pages(site) {
@@ -61,6 +62,7 @@ function nav(pp, c, cur, prefix='') {
 }
 function ft(pp, c, prefix=''){
   const pfx=prefix||'';
+  const grp=c.group||[];
   return `<footer class="bg-gray-900 text-gray-400">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 <div class="grid md:grid-cols-3 gap-8">
@@ -70,7 +72,8 @@ function ft(pp, c, prefix=''){
 <div><h4 class="text-white font-semibold mb-3">快速链接</h4>
 <div class="space-y-1 text-sm"><a href="${pfx}/products" class="block text-gray-400 hover:text-white no-underline">产品中心</a>${(pp||[]).some(p=>p.path==='solutions')?'<a href="'+pfx+'/solutions" class="block text-gray-400 hover:text-white no-underline">解决方案</a>':''}${(pp||[]).some(p=>p.path==='cases')?'<a href="'+pfx+'/cases" class="block text-gray-400 hover:text-white no-underline">成功案例</a>':''}${(pp||[]).some(p=>p.path==='about')?'<a href="'+pfx+'/about" class="block text-gray-400 hover:text-white no-underline">关于我们</a>':''}</div></div>
 </div>
-<div class="border-t border-gray-800 mt-8 pt-8 text-center text-sm">© ${new Date().getFullYear()} ${h(c.name)} 版权所有</div>
+${grp.length?`<div class="border-t border-gray-800 mt-6 pt-6"><p class="text-xs text-gray-500 text-center mb-3">集团成员</p><div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs text-gray-500">${grp.map(g=>'<span>● '+h(g)+'</span>').join('')}</div></div>`:''}
+<div class="border-t border-gray-800 mt-6 pt-6 text-center text-sm">© ${new Date().getFullYear()} ${h(c.name)} 版权所有</div>
 </div></footer>`;
 }
 
@@ -638,6 +641,11 @@ function aboutPage(pp,c,pfx){
 <div class="text-center"><div class="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-3xl">👤</span></div><h3 class="font-bold">李博士</h3><p class="text-sm text-gray-500">联合创始人</p><p class="text-xs text-gray-400 mt-1">清华大学 · 嵌入式系统</p></div>
 </div></div></section>
 
+<section class="py-16 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-12"><span class="text-sm font-semibold text-primary-600 tracking-wider">GROUP</span><h2 class="text-3xl font-bold mt-3">集团成员</h2></div>
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
+${(c.group||[]).map((g,i)=>`<div class="flex items-center gap-3 p-4 ${i===0?'bg-primary-50 border-primary-200':'bg-gray-50 border-gray-200'} rounded-xl border"><span class="text-lg">${['🏢','🔧','🤖','💡','⚙️'][i]||'🏢'}</span><div><p class="text-sm font-semibold text-gray-900">${h(g)}</p><p class="text-xs text-gray-400">${['总部/控股','苏州公司','AI研发','方案集成','运营服务'][i]||''}</p></div></div>`).join('')}
+</div></div></section>
 <section class="py-16 bg-gray-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="text-center mb-12"><span class="text-sm font-semibold text-primary-600 tracking-wider">HONORS</span><h2 class="text-3xl font-bold mt-3">荣誉与里程碑</h2></div>
 <div class="max-w-3xl mx-auto space-y-4">
