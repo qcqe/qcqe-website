@@ -506,16 +506,45 @@ function genHome(pp, c, sls, cs, feat, sn, pfx) {
   const solCards = sls.slice(0,6).map((s,i)=>{const ss=s.slug||slug(s.title);return `<a href="${pfx}/solutions/${ss}" class="group block bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-500 hover:-translate-y-1 no-underline"><div class="flex items-center gap-3 mb-3"><span class="text-2xl">${solIcons[i%6]||'📋'}</span><h3 class="font-bold text-gray-900 group-hover:text-primary-700 transition-colors text-base">${h(s.title)}</h3></div>${s.description?'<p class="text-sm text-gray-500 leading-relaxed line-clamp-2">'+h(s.description.slice(0,120))+'</p>':''}<span class="text-sm text-primary-600 font-medium mt-3 inline-flex items-center gap-1 group-hover:gap-2 transition-all">查看详情 <span>→</span></span></a>`;}).join('');
   const caseCards = cs.slice(0,3).map(c=>`<a href="/cases" class="group block bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-500 hover:-translate-y-1 no-underline"><div class="flex items-center gap-3 mb-3"><span class="w-10 h-10 bg-primary-50 rounded-xl flex items-center justify-center text-primary-600 font-bold text-sm flex-shrink-0">案</span><div><h3 class="font-bold text-gray-900 group-hover:text-primary-700 transition-colors">${h(c.title)}</h3>${c.client?'<span class="text-xs text-gray-400">'+h(c.client)+'</span>':''}</div></div>${c.description?'<p class="text-sm text-gray-500 leading-relaxed line-clamp-2">'+h(c.description.slice(0,120))+'</p>':''}</a>`).join('');
 
+  const slides=[
+    {bg:'from-gray-900 via-blue-900 to-blue-700',ico:'⚡',t:'电气安全监测系统',d:'ESA智能电表 · ESB三相不平衡 · EST温度监测 · FA电弧探测 · 全系列电气安全产品',btn:'查看产品',url:pfx+'/products',tag:'核心产品'},
+    {bg:'from-gray-900 via-indigo-900 to-indigo-700',ico:'🌩️',t:'智能防雷系统解决方案',d:'FS/FSS/FSP电涌保护器监测 · FL雷电峰值记录 · FR/FRP接地电阻在线监测 · FG智能网关',btn:'了解方案',url:pfx+'/solutions/smart-lightning-protection',tag:'解决方案'},
+    {bg:'from-gray-900 via-emerald-900 to-emerald-700',ico:'🏭',t:'工业园区智慧能源方案',d:'园区配电监测 · 能耗管理 · 碳排追踪 · AI诊断 · 4×3×2能碳自治框架',btn:'了解方案',url:pfx+'/solutions/industrial-park-smart-energy',tag:'解决方案'},
+    {bg:'from-gray-900 via-amber-900 to-amber-700',ico:'🔋',t:'新能源充电站电气安全',d:'充电桩漏电监测 · 谐波指纹AI分析 · 电弧故障检测 · 电动自行车充电棚安全',btn:'了解方案',url:pfx+'/solutions/ev-charging-electrical-safety',tag:'解决方案'},
+    {bg:'from-gray-900 via-rose-900 to-rose-700',ico:'🤖',t:'太一AI智能诊断平台',d:'千知·万象·天衍三大模型 · 60+算法引擎 · 408项国标AI规则 · 隐患提前30天预警',btn:'了解更多',url:pfx+'/solutions/electrical-hazard-monitoring',tag:'AI技术'},
+  ];
+
   const bd=`${nav(pp,c,pfx+'/',pfx)}
-<style>.line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}</style>
-<div class="relative overflow-hidden bg-gradient-to-br from-gray-900 via-primary-900 to-primary-800 text-white">
+<style>.line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.hero-slide{transition:opacity .6s ease,transform .6s ease}.hero-dot{transition:all .3s ease}</style>
+<div class="relative overflow-hidden bg-gray-900" id="hero-carousel">
+${slides.map((s,i)=>`<div class="hero-slide absolute inset-0 bg-gradient-to-br ${s.bg} ${i===0?'opacity-100':'opacity-0 pointer-events-none'}" data-idx="${i}">
   <div class="absolute inset-0 opacity-5" style="background-image:radial-gradient(circle at 20% 30%,white 0%,transparent 40%),radial-gradient(circle at 80% 70%,white 0%,transparent 30%)"></div>
-  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
-    <div class="max-w-3xl"><div class="flex items-center gap-2 text-primary-200 text-sm font-mono tracking-widest mb-4"><span class="w-8 h-px bg-primary-400"></span>WELCOME TO YESLON</div>
-    <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight tracking-tight">${h(c.name)}</h1>
-    <p class="text-lg md:text-xl text-blue-100/80 leading-relaxed mb-10 max-w-2xl">${h(c.desc)}</p>
-    <div class="flex flex-wrap gap-4"><a href="${pfx}/products" class="inline-flex items-center gap-2 px-8 py-3.5 bg-white text-primary-700 font-semibold rounded-xl hover:bg-gray-100 hover:shadow-2xl hover:shadow-blue-500/30 transition-all duration-300 no-underline">探索产品 <span class="text-lg">→</span></a><a href="${pfx}/contact" class="inline-flex items-center gap-2 px-8 py-3.5 border-2 border-white/20 text-white font-semibold rounded-xl hover:bg-white/10 hover:border-white/40 transition-all duration-300 no-underline">联系我们</a></div>
-  </div></div>
+  <div class="absolute inset-0 opacity-[0.03]" style="background-image:linear-gradient(rgba(255,255,255,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.2) 1px,transparent 1px);background-size:60px 60px"></div>
+</div>`).join('')}
+<div class="relative" style="min-height:520px">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
+    ${slides.map((s,i)=>`<div class="slide-content ${i===0?'block':'hidden'}" data-idx="${i}">
+      <div class="max-w-3xl"><span class="inline-block px-3 py-1 bg-white/10 text-white/80 text-xs font-semibold rounded-full mb-4">${s.tag}</span>
+      <div class="text-5xl mb-3">${s.ico}</div>
+      <h1 class="text-4xl md:text-5xl font-bold mb-4 leading-tight tracking-tight">${s.t}</h1>
+      <p class="text-lg md:text-xl text-blue-100/70 leading-relaxed mb-8 max-w-2xl">${s.d}</p>
+      <a href="${s.url}" class="inline-flex items-center gap-2 px-7 py-3 bg-white text-primary-700 font-semibold rounded-xl hover:bg-gray-100 hover:shadow-2xl transition-all duration-300 no-underline">${s.btn} <span class="text-lg">→</span></a>
+      <a href="${pfx}/contact" class="inline-flex items-center gap-2 px-7 py-3 ml-3 border-2 border-white/20 text-white font-semibold rounded-xl hover:bg-white/10 hover:border-white/40 transition-all duration-300 no-underline">联系我们</a>
+    </div></div>`).join('')}
+  </div>
+  <!-- dots -->
+  <div class="absolute bottom-6 left-0 right-0 flex justify-center gap-2 z-10">${slides.map((_,i)=>`<button class="hero-dot w-2.5 h-2.5 rounded-full ${i===0?'bg-white w-6':'bg-white/40 hover:bg-white/60'}" onclick="goSlide(${i})"></button>`).join('')}</div>
+  <!-- arrows -->
+  <button class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-xl z-10 backdrop-blur transition-all" onclick="prevSlide()">‹</button>
+  <button class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-xl z-10 backdrop-blur transition-all" onclick="nextSlide()">›</button>
+</div>
+<script>
+var si=${slides.map((_,i)=>i).filter(()=>true)},ci=0,ti;
+function goSlide(n){var os=document.querySelectorAll('.hero-slide'),cs=document.querySelectorAll('.slide-content'),ds=document.querySelectorAll('.hero-dot');os.forEach(function(e,i){e.classList.toggle('opacity-100',i===n);e.classList.toggle('opacity-0',i!==n);e.classList.toggle('pointer-events-none',i!==n)});cs.forEach(function(e,i){e.classList.toggle('block',i===n);e.classList.toggle('hidden',i!==n)});ds.forEach(function(e,i){e.classList.toggle('bg-white',i===n);e.classList.toggle('w-6',i===n);e.classList.toggle('bg-white/40',i!==n);e.classList.toggle('w-2.5',i!==n)});ci=n;clearInterval(ti);ti=setInterval(function(){ci=(ci+1)%${slides.length};goSlide(ci)},5000)}
+function nextSlide(){goSlide((ci+1)%${slides.length})}
+function prevSlide(){goSlide((ci-1+${slides.length})%${slides.length})}
+ti=setInterval(function(){ci=(ci+1)%${slides.length};goSlide(ci)},5000);
+</script>
 </div>
 
 <section class="py-20 md:py-28 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
