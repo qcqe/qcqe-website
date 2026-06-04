@@ -108,7 +108,7 @@ function ft(pp, c, prefix=''){
 <div class="space-y-1 text-sm"><a href="${pfx}/products" class="block text-gray-400 hover:text-white no-underline">产品中心</a>${(pp||[]).some(p=>p.path==='solutions')?'<a href="'+pfx+'/solutions" class="block text-gray-400 hover:text-white no-underline">解决方案</a>':''}${(pp||[]).some(p=>p.path==='cases')?'<a href="'+pfx+'/cases" class="block text-gray-400 hover:text-white no-underline">成功案例</a>':''}${(pp||[]).some(p=>p.path==='about')?'<a href="'+pfx+'/about" class="block text-gray-400 hover:text-white no-underline">关于我们</a>':''}<a href="http://www.fexlink.com" target="_blank" class="block text-gray-400 hover:text-white no-underline" rel="external">🌐 集团官网 fexlink.com</a></div></div>
 </div>
 ${grp.length?`<div class="border-t border-gray-800 mt-6 pt-6"><p class="text-xs text-gray-500 text-center mb-3">集团成员</p><div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs text-gray-500">${grp.map(g=>'<span>● '+h(g)+'</span>').join('')}</div></div>`:''}
-<div class="border-t border-gray-800 mt-6 pt-6 text-center text-sm">© ${new Date().getFullYear()} ${h(c.name)} 版权所有</div>
+<div class="border-t border-gray-800 mt-6 pt-6 text-center text-sm">© ${new Date().getFullYear()} ${h(c.name)} 版权所有 · <a href="https://beian.miit.gov.cn/" target="_blank" class="text-gray-500 hover:text-gray-300 no-underline" rel="nofollow">粤ICP备15018521号</a></div>
 </div></footer>`;
 }
 
