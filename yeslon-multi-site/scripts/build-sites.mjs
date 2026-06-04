@@ -552,7 +552,7 @@ ${slides.map((s,i)=>`<div class="hero-slide absolute inset-0 bg-gradient-to-br $
 </div>`).join('')}
 <div class="relative" style="min-height:520px">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
-    ${slides.map((s,i)=>`<div class="slide-content ${i===0?'block':'hidden'}" data-idx="${i}">
+    ${slides.map((s,i)=>`<div class="slide-content text-white ${i===0?'block':'hidden'}" data-idx="${i}">
       <div class="max-w-3xl"><span class="inline-block px-3 py-1 bg-white/10 text-white/80 text-xs font-semibold rounded-full mb-4">${s.tag}</span>
       <div class="text-5xl mb-3">${s.ico}</div>
       <h1 class="text-4xl md:text-5xl font-bold mb-4 leading-tight tracking-tight">${s.t}</h1>
@@ -568,7 +568,7 @@ ${slides.map((s,i)=>`<div class="hero-slide absolute inset-0 bg-gradient-to-br $
   <button class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-xl z-10 backdrop-blur transition-all" onclick="nextSlide()">›</button>
 </div>
 <script>
-var si=${slides.map((_,i)=>i).filter(()=>true)},ci=0,ti;
+var si=[${slides.map((_,i)=>i).filter(()=>true)}],ci=0,ti;
 function goSlide(n){var os=document.querySelectorAll('.hero-slide'),cs=document.querySelectorAll('.slide-content'),ds=document.querySelectorAll('.hero-dot');os.forEach(function(e,i){e.classList.toggle('opacity-100',i===n);e.classList.toggle('opacity-0',i!==n);e.classList.toggle('pointer-events-none',i!==n)});cs.forEach(function(e,i){e.classList.toggle('block',i===n);e.classList.toggle('hidden',i!==n)});ds.forEach(function(e,i){e.classList.toggle('bg-white',i===n);e.classList.toggle('w-6',i===n);e.classList.toggle('bg-white/40',i!==n);e.classList.toggle('w-2.5',i!==n)});ci=n;clearInterval(ti);ti=setInterval(function(){ci=(ci+1)%${slides.length};goSlide(ci)},5000)}
 function nextSlide(){goSlide((ci+1)%${slides.length})}
 function prevSlide(){goSlide((ci-1+${slides.length})%${slides.length})}
