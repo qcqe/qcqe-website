@@ -1,6 +1,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync, copyFileSync, readdirSync, statSync } from 'fs';
 import { join, dirname, posix } from 'path';
 import { fileURLToPath } from 'url';
+import { execSync } from 'child_process';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, '..');
@@ -37,7 +38,7 @@ function pages(site) {
   try{const c=readFileSync(fp,'utf-8');const p=[{path:'',title:'首页'}];const r=/path:\s*'([^']+)'[\s\S]*?title:\s*'([^']+)'/g;let m;while((m=r.exec(c))!==null)p.push({path:m[1],title:m[2]});return p;}catch{return[{path:'',title:'首页'}];}
 }
 
-const TW=`<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&family=Sora:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><script>tailwind.config={theme:{extend:{colors:{primary:{50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a'}},fontFamily:{sans:['Inter','Noto Sans SC','system-ui','sans-serif']}}}}</script>`;
+const TW=`<link href="/tailwind.css" rel="stylesheet">`;
 function h(t){return(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 let GA_ID='',SC_VERIFY='',BAIDU_VERIFY='',OG_DEFAULT='/og-image.jpg';
 try{const m=await import('../site-config.js');GA_ID=m.SITE_CONFIG.GA_ID||'';SC_VERIFY=m.SITE_CONFIG.SC_VERIFY||'';BAIDU_VERIFY=m.SITE_CONFIG.BAIDU_VERIFY||'';OG_DEFAULT=m.SITE_CONFIG.OG_IMAGE||'/og-image.jpg';}catch(e){};
@@ -448,6 +449,32 @@ const SOLS = {
   implementation:[{p:'Phase 1',t:'现场勘察设计',d:'2周·园区配电系统勘测+方案设计'},{p:'Phase 2',t:'设备部署安装',d:'4周·终端+网关+通信安装调试'},{p:'Phase 3',t:'平台联调上线',d:'3周·云平台部署+数据接入+联调'},{p:'Phase 4',t:'验收培训交付',d:'1周·系统验收+操作培训'}],
   standards:['GB 50054','GB 14287','GB 13955','GB 50116','GB 17167','GB/T 31960','IEC 61439'],
 },
+'hospital-electrical-safety': {
+  sub:'医院电气安全智慧预警与透明监管体系', stats:[
+    {v:'0秒',l:'生命支持场景中断容忍边界'},{v:'4–12周',l:'慢性趋势预警窗口'},{v:'260+',l:'电气参数采集维度'},{v:'408',l:'合规条款库'},
+  ],
+  goals:[{ico:'🎯',t:'建设目标',d:'基于医用IT隔离电源、电能质量在线监测、μA/μs级物理感知、边缘AI与区域透明监管云，重构智慧医院的电力生命线，从"不断电"升级为"可感知、可预警、可处置"。'},{ico:'📈',t:'核心价值',d:'真正风险不在停电那一刻，而在停电前长期累积却没有被看见的电压暂降、谐波污染、绝缘劣化、接头温升、UPS电池衰减和备用切换逻辑黑箱。把"被动跳闸"升级为"主动预测"。'},{ico:'🚀',t:'技术优势',d:'太一智控三引擎（千知·万象·天衍）适配医院场景，兼容既有隔离电源、火灾监控、UPS与智能表计，补齐AI预测、场景定位和透明监管。'}],
+  arch:[
+    {ico:'🔌',t:'感知层',d:'AI智控终端、智能电表、IMD绝缘监测、温度贴片、剩余电流、UPS监测、电气火灾、热成像、烟感，覆盖全院关键回路。'},
+    {ico:'🧠',t:'边缘计算层',d:'边缘网关本地高频采样、事件识别、联动策略与断网自治，守住手术室和ICU底线，确保生命支持回路不依赖云端。'},
+    {ico:'☁️',t:'云平台层',d:'全院一次图、末端单线图、资产健康档案、PQ事件库、风险热力图、历史趋势模型与区域透明监管云。'},
+    {ico:'📱',t:'应用层',d:'安全驾驶舱、移动工单、监管视图、评审报告、消防审计证据链、跨部门督办与三级联动闭环。'},
+  ],
+  feats:[
+    {ico:'🏥',t:'医用IT隔离绝缘趋势解算',d:'超低频检测信号绕开分布电容干扰，解算真实对地绝缘电阻趋势，把声光报警升级为趋势漂移预警。'},
+    {ico:'⚡',t:'电压暂降与电能质量监测',d:'0.1–3秒电压暂降分类记录，谐波溯源与三相不平衡分析，关联医疗设备扰动事件。'},
+    {ico:'🔋',t:'UPS/ATS全生命周期管理',d:'电池SOH评估、旁路状态监测、切换录波核验、后备容量健康档案，杜绝冗余切换黑箱。'},
+    {ico:'🔥',t:'故障电弧与电气隐患AI诊断',d:'高频波形+谐波指纹特征提取，识别插座松动、端子虚接、充电整流等电弧隐患，火灾综合评分。'},
+    {ico:'📊',t:'全链路供电数字孪生',d:'从市电进线到末端插座，建立电力数字孪生模型，资产健康度评分与预测性维护建议。'},
+    {ico:'🏛️',t:'三级联动透明监管',d:'院内安全大脑→区域监管云→多角色协同，风险热力图、整改进度、合规证据链穿透式管理。'},
+  ],
+  prods:['ESA全要素智能电表','ESB三相不平衡监测器','EST温度监测模组','FA故障电弧监测模块','ESX智能网关','FG智能防雷网关','FEXLINK工业互联网软件'],
+  scenes:['ICU/急诊科电气安全监测','手术室医用IT隔离电源智慧化','医院数据中心UPS全生命周期管理','医技大设备电压暂降与谐波治理','冷链与机器人充电区安全监测','配电室/变压器资产健康管理','多院区集团透明监管云'],
+  benefits:['电气事故避损率显著提升','人工运维频率降低60%','UPS电池故障提前发现率大幅提高','全院电力资产寿命延长20%','合规审计证据链自动生成','静态回收期8–12个月'],
+  problems:[{p:'电气数据黑箱，慢性隐患无法前置捕捉',s:'智能电表+IMD+温度贴片全回路覆盖',a:'趋势预警窗口4–12周'},{p:'UPS/ATS切换黑箱，冗余成单点',s:'切换录波+SOH评估+后备容量核验',a:'关键切换记录100%'},{p:'人工巡检效率低，故障发现滞后',s:'边缘AI+移动工单闭环',a:'排查时间下降≥30%'},{p:'缺乏监管联动数据底座',s:'三级透明监管云+合规证据链',a:'年度安全态势报告'}],
+  implementation:[{p:'Phase 1',t:'场所分级与勘察',d:'2周·0/1/2类医疗场所清单+关键回路确认'},{p:'Phase 2',t:'关键回路部署',d:'4周·IT隔离/UPS/电气火灾/温度/漏电终端安装'},{p:'Phase 3',t:'平台联调与模型训练',d:'3周·预警阈值校准+误报过滤+工单SLA'},{p:'Phase 4',t:'验收交付与培训',d:'1周·驾驶舱验收+运维培训+监管接口对接'}],
+  standards:['GB/T 16895.24','IEC 60364-7-710','GB 51039','JGJ 312','GB 50116','GB 14287','GB 51348','IEEE 1159','IEC 61000-4-30'],
+},
 };
 
 function prodFeatures(cat, name, desc) {
@@ -536,7 +563,7 @@ function genHome(pp, c, sls, cs, feat, sn, pfx) {
     </div>`).join('');
   const catCards = cats.map(cat=>`<div class="group bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-500 hover:-translate-y-1 cursor-pointer" onclick="location.href='${pfx}/products'"><span class="text-4xl block mb-4">${cat.ico}</span><h3 class="text-lg font-bold text-gray-900 group-hover:text-primary-700 transition-colors">${h(cat.cat)}</h3><p class="text-sm text-gray-400 mt-1">${cat.items.length}款产品</p><div class="mt-4 w-8 h-0.5 bg-primary-200 group-hover:w-12 group-hover:bg-primary-500 transition-all duration-500"></div></div>`).join('');
   const solIcons = ['🎯','🔋','🔍','🌍','🌩️','📊'];
-  const solCards = sls.slice(0,6).map((s,i)=>{const ss=s.slug||slug(s.title);return `<a href="${pfx}/solutions/${ss}" class="group block bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-500 hover:-translate-y-1 no-underline"><div class="flex items-center gap-3 mb-3"><span class="text-2xl">${solIcons[i%6]||'📋'}</span><h3 class="font-bold text-gray-900 group-hover:text-primary-700 transition-colors text-base">${h(s.title)}</h3></div>${s.description?'<p class="text-sm text-gray-500 leading-relaxed line-clamp-2">'+h(s.description.slice(0,120))+'</p>':''}<span class="text-sm text-primary-600 font-medium mt-3 inline-flex items-center gap-1 group-hover:gap-2 transition-all">查看详情 <span>→</span></span></a>`;}).join('');
+  const solCards = sls.map((s,i)=>{const ss=s.slug||slug(s.title);return `<a href="${pfx}/solutions/${ss}" class="group block bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-500 hover:-translate-y-1 no-underline"><div class="flex items-center gap-3 mb-3"><span class="text-2xl">${solIcons[i%6]||'📋'}</span><h3 class="font-bold text-gray-900 group-hover:text-primary-700 transition-colors text-base">${h(s.title)}</h3></div>${s.description?'<p class="text-sm text-gray-500 leading-relaxed line-clamp-2">'+h(s.description.slice(0,120))+'</p>':''}<span class="text-sm text-primary-600 font-medium mt-3 inline-flex items-center gap-1 group-hover:gap-2 transition-all">查看详情 <span>→</span></span></a>`;}).join('');
   const caseCards = cs.slice(0,3).map(c=>`<a href="/cases" class="group block bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-500 hover:-translate-y-1 no-underline"><div class="flex items-center gap-3 mb-3"><span class="w-10 h-10 bg-primary-50 rounded-xl flex items-center justify-center text-primary-600 font-bold text-sm flex-shrink-0">案</span><div><h3 class="font-bold text-gray-900 group-hover:text-primary-700 transition-colors">${h(c.title)}</h3>${c.client?'<span class="text-xs text-gray-400">'+h(c.client)+'</span>':''}</div></div>${c.description?'<p class="text-sm text-gray-500 leading-relaxed line-clamp-2">'+h(c.description.slice(0,120))+'</p>':''}</a>`).join('');
 
   const slides=[
@@ -1020,4 +1047,15 @@ for(var pi=0;pi<pagesList.length;pi++){var pg=pagesList[pi];addItem(pg.t,pg.d,pg
 writeFileSync(join(DIST,'search-index.json'),JSON.stringify(si,null,0),'utf-8');
 console.log('  🔍 search-index.json ('+si.length+' entries)');
 }catch(e){console.log('  ℹ️ search index:',e.message);}
+// Generate tailwind.css from built HTML files
+try {
+  console.log('\n  🎨 Generating tailwind.css...');
+  execSync(`npx tailwindcss -i "${join(root, 'src', 'index.css')}" -o "${join(DIST, 'tailwind.css')}" --content "${join(DIST, '**', '*.html')}" --minify`, {
+    stdio: 'inherit',
+    cwd: root
+  });
+  console.log('  ✅ tailwind.css generated');
+} catch(e) {
+  console.log('  ⚠️  tailwind.css generation failed:', e.message);
+}
 console.log('\n✅ Build complete');

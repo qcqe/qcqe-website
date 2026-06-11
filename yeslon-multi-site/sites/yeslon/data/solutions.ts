@@ -136,5 +136,22 @@ export const solutions: Solution[] = [
     category: 'energy',
     image: '/images/solutions/industrial-park.jpg',
     publishedAt: '2026-03-25'
+  },
+  {
+    id: '9',
+    slug: 'hospital-electrical-safety',
+    title: '医院电气安全智慧预警与透明监管体系',
+    description: '面向医院的电气安全整体方案，以医用IT隔离电源、电能质量在线监测、μA/μs级物理感知、边缘AI与区域透明监管云，覆盖ICU、手术室、血透、冷链、数据中心、机器人充电区等场景，实现从"不断电"升级为"可感知、可预警、可处置"。',
+    features: [
+      '医用IT隔离电源绝缘阻抗趋势解算',
+      'UPS/ATS切换录波与电池SOH评估',
+      'ICU/手术室电能质量与电压暂降监测',
+      '故障电弧与谐波指纹AI诊断',
+      '全链路供电数字孪生驾驶舱',
+      '三级联动透明监管与合规证据链'
+    ],
+    category: 'safety',
+    image: '/images/solutions/hospital.jpg',
+    publishedAt: '2026-06-11'
   }
 ];
