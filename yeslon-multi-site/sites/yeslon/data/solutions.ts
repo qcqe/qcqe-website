@@ -16,6 +16,7 @@ export const solutions: Solution[] = [
     ],
     category: 'industrial-control',
     image: '/images/solutions/plc-control.jpg',
+    content: '工业分布式可编程控制系统是微物联技术的核心产品线之一，基于CC、CR、X三大系列可编程控制器构建完整的工业控制解决方案。CC系列高性能PLC采用瑞芯微RK3588M车规级芯片，支持IEC 61131-3五种编程语言，单控制器可管理最多256个EtherCAT轴和64000个I/O点，适用于复杂逻辑控制与运动控制场景。CR系列分布式PLC支持EtherCAT总线组网，适合产线分布式控制，大幅降低传统集中式架构60%的布线成本。X系列微型PLC以卡片式超薄设计实现设备级控制与I/O灵活扩展。配合DB系列"设备大脑"边缘AI控制器和IG系列工业网关，形成从底层控制到边缘计算再到云平台协同的完整闭环。',
     publishedAt: '2024-01-15'
   },
   {
@@ -33,6 +34,7 @@ export const solutions: Solution[] = [
     ],
     category: 'energy',
     image: '/images/solutions/ev-charging.jpg',
+    content: '新能源充电站的电气安全问题是制约充电运营高质量发展的关键瓶颈。充电桩在运行过程中会产生大量谐波污染，同时充电枪插拔频繁导致接插件磨损、端子发热、绝缘下降等隐患，传统保护方式往往在故障发生后才被动响应。微物联技术提供的充电站电气安全数字化保障方案，通过在充电桩配电回路部署ESA全要素智能电表、ESB三相不平衡监测器、EST无线温度传感器和FA故障电弧探测器，实现充电回路全参数7×24小时实时监测。核心技术创新在于谐波指纹AI分析技术——以256点/周期精细采样为基础，结合深度学习模型识别不同充电桩类型的谐波特征，97.3%的电弧识别准确率和提前30天的隐患预警窗口，将充电站安全管理从被动报警升级为主动预防。',
     publishedAt: '2024-02-10'
   },
   {
@@ -50,6 +52,7 @@ export const solutions: Solution[] = [
     ],
     category: 'safety',
     image: '/images/solutions/hazard-monitoring.jpg',
+    content: '电气安全隐患是引发电气火灾的主要原因。微物联电气安全隐患监测与AI分析系统基于谐波指纹识别技术，通过ESA智能电表和FA故障电弧监测模块对线路电压电流进行256点/周期高频采样，提取不同故障类型的谐波特征图谱，由太一AI大模型体系中的千知引擎进行智能匹配与诊断。系统内置22个电气安全诊断模型和408项国家标准红线AI规则引擎，支持四级告警机制，故障电弧识别准确率达97.3%，较传统阈值法提升4倍，慢性绝缘退化隐患可提前30天识别。',
     publishedAt: '2024-03-05'
   },
   {
@@ -67,6 +70,7 @@ export const solutions: Solution[] = [
     ],
     category: 'safety',
     image: '/images/solutions/ground-resistance.jpg',
+    content: '接地电阻是衡量接地系统是否有效的核心指标。微物联接地电阻在线监测系统基于FR系列三极法监测仪和FRP系列钳表法监测仪，实现对接地电阻的7×24小时连续在线监测。FR系列采用电位降法测量原理，测量范围0.01Ω至200Ω，适用于新建接地系统的精准测量；FRP系列采用钳表法非接触测量，免辅助电极，特别适用于已建接地系统的快速普查，并提供防爆型Ex ia IIC T4满足石化场景需求。所有数据通过FG智能网关统一汇聚至FEXLINK云平台。',
     publishedAt: '2024-03-20'
   },
   {
@@ -84,6 +88,7 @@ export const solutions: Solution[] = [
     ],
     category: 'lightning-protection',
     image: '/images/solutions/lightning-protection.jpg',
+    content: '雷电防护是工业设施和建筑安全的重要组成部分。微物联智能防雷系统解决方案基于FS/FSS/FSP电涌保护器监测仪、FL雷电峰值监测仪、FR/FRP接地电阻监测仪和FG智能网关，构建完整的防雷智能监测网络。FS系列监测仪可实时监测SPD漏电流至μA级别，精准判断SPD劣化趋势并预测剩余寿命；FL系列雷电峰值监测仪精确记录0.1kA至200kA雷电流峰值、极性及发生时间，GPS授时精度±1μs，支持多站联合雷击定位。FG智能网关搭载边缘计算芯片可在本地运行SPD寿命预测模型。',
     publishedAt: '2024-04-10'
   },
   {
@@ -101,6 +106,7 @@ export const solutions: Solution[] = [
     ],
     category: 'energy',
     image: '/images/solutions/power-monitoring.jpg',
+    content: '能源成本在企业运营支出中占比持续上升，而大多数企业对配电系统的运行状态缺乏精细化感知。微物联配电监测与能耗管理系统以ESA全要素智能电表为核心感知设备，覆盖从进线到末端回路的全层级配电网络，实时采集电压、电流、功率、功率因数、谐波等20余项电气参数。系统支持按回路、区域、设备类型三种维度进行分项能耗统计与分析，内置负荷预测、需量管理和太一AI能效优化模型，可自动识别高能耗环节和异常用能行为，帮助客户实现综合能耗降低15%至25%。',
     publishedAt: '2024-04-25'
   },
   {
@@ -118,6 +124,7 @@ export const solutions: Solution[] = [
     ],
     category: 'safety',
     image: '/images/solutions/busbar-monitoring.jpg',
+    content: '母线槽作为建筑供配电系统的关键组成部分，承担着从变压器到末端配电柜的电力传输功能。微物联BusBMS母线智能监测管理系统采用物联网感知与AI预测技术相结合的方式，通过部署52个温度、电流及红外测温监测节点覆盖母线全回路，采集精度±0.3℃。系统核心优势在于基于LSTM神经网络的AI温度趋势预测模型，可预测未来72小时母线温度变化趋势，94.7%的预测精度和提前48至72小时的预警窗口为运维人员提供了充足的检修时间。系统还支持三维可视化数字孪生、四级智能告警与工单闭环、分回路能耗管理。',
     publishedAt: '2026-03-25'
   },
   {
@@ -135,6 +142,7 @@ export const solutions: Solution[] = [
     ],
     category: 'energy',
     image: '/images/solutions/industrial-park.jpg',
+    content: '工业园区是能源消耗和电气安全风险高度集中的场景。微物联工业园区智慧能源与电气安全整体解决方案以"端-边-云"架构为底座，在园区各配电室和配电柜部署ESA智能电表、ESB三相不平衡监测器、ESF电气火灾测控器、EST温度传感器、FRP接地电阻监测仪等全系列终端，实现超过260个电气参数的实时采集。FG智能网关在边缘侧完成本地数据处理与告警判断，7寸嵌入式触控屏提供本地实时数据显示。FEXLINK智慧园区云平台支持多站点集中管理、AI预警分析、告警-工单-维修闭环、能耗统计与碳追踪。',
     publishedAt: '2026-03-25'
   },
   {
@@ -152,6 +160,7 @@ export const solutions: Solution[] = [
     ],
     category: 'safety',
     image: '/images/solutions/hospital.jpg',
+    content: '医院是现代城市中供电可靠性要求最高的场所之一——手术室、ICU、血透中心、数据中心和冷链区域对供电连续性和电能质量有着极为严格的苛刻要求。微物联医院电气安全智慧预警方案以医用IT隔离电源绝缘趋势解算、UPS/ATS全生命周期管理、电能质量在线监测和边缘AI预警为核心能力，覆盖ICU、手术室、血透、冷链、数据中心和机器人充电区六大关键场景。方案采用太一智控三引擎架构——千知引擎负责物理状态基线采集，万象引擎将孤立告警连接为因果链，天衍引擎基于67个医疗专题AI模型对绝缘退化、UPS电池SOH和电气火灾隐患给出预警窗口。',
     publishedAt: '2026-06-11'
   }
 ];

@@ -85,6 +85,7 @@ export interface Solution {
   features: string[];
   category: string;
   image: string;
+  content?: string;
   publishedAt: string;
 }
 
