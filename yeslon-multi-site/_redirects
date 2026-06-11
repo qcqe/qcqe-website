@@ -5,5 +5,8 @@ https://yeslon.com/*  https://www.yeslon.com/:splat  301
 # Baidu verification - prevent .html stripping redirect
 /baidu_verify_codeva-Gw7FVtUTBA.html  /baidu_verify_codeva-Gw7FVtUTBA.html  200
 
-# Custom 404
+# Static assets - serve directly (prevents 404 from catching .css/.js/etc)
+/*.*  /:splat  200
+
+# Custom 404 - only for routes without file extensions
 /*  /404.html  404
