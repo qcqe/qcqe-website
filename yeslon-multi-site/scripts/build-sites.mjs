@@ -67,7 +67,7 @@ if(hits.length===0){r.innerHTML='<div style="text-align:center;padding:40px 20px
 e.style.display="none";var c=hits.length>50?50:hits.length;
 var h='<div style="padding:8px 12px;font-size:12px;color:#94a3b8">找到 '+hits.length+' 个结果（显示前 '+c+' 个）</div>';
 for(var i=0;i<c;i++){var s=hits[i];
-  h+='<a href="'+s.u+'" style="display:block;padding:12px 14px;border-radius:10px;text-decoration:none;color:inherit;transition:background .15s" onmouseover="this.style.background=\'#f8fafc\'" onmouseout="this.style.background=\'\'"><div style="font-size:14px;font-weight:600;color:#1e293b">'+(s.t||"")+'</div><div style="font-size:12px;color:#64748b;margin-top:2px">'+(s.d?s.d.substring(0,100):"")+'</div><div style="font-size:11px;color:#94a3b8;margin-top:4px"><span style=display:inline-block;padding:1px 6px;border-radius:3px;background:#f1f5f9;color:#64748b;font-size:10px>'+s.g+'</span> '+s.u+'</div></a>'}
+  h+='<a href="'+s.u+'" style="display:block;padding:12px 14px;border-radius:10px;text-decoration:none;color:inherit"><div style="font-size:14px;font-weight:600;color:#1e293b">'+(s.t||"")+'</div><div style="font-size:12px;color:#64748b;margin-top:2px">'+(s.d?s.d.substring(0,100):"")+'</div><div style="font-size:11px;color:#94a3b8;margin-top:4px"><span style=display:inline-block;padding:1px 6px;border-radius:3px;background:#f1f5f9;color:#64748b;font-size:10px>'+s.g+'</span> '+s.u+'</div></a>'}
 r.innerHTML=h;}
 document.addEventListener("keydown",function(e){if(e.key==="Escape")closeSearch();if(e.ctrlKey&&e.key==="k"){e.preventDefault();openSearch()}});
 </script>
