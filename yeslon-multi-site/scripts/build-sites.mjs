@@ -793,7 +793,7 @@ ${sectionHead('专题站点','按产品线浏览','各产品线独立站点，�
 </div></section>${ft(pp,c,pfx)}`;
   const siteUrl=canonicalUrl(pfx);const pm=pageMeta||{};return lay('首页 - '+c.name,pm.desc||c.desc,bd,c,siteUrl,OG_DEFAULT,pm.kw||'');
 }
-function prodsPage(pp, c, sn, pfx) {
+function prodsPage(pp, c, sn, pfx, p) {
   const cats = PROD[sn] || PROD.yeslon;
   const tabLinks = cats.map((cat,i)=>`<button onclick="location.href='#${slug(cat.cat)}'" class="px-3 py-1.5 text-sm border transition-colors ${i===0?'border-primary-700 text-primary-800 bg-slate-50':'border-slate-200 text-slate-600 hover:border-slate-400'}">${h(cat.cat)}</button>`).join('');
 
@@ -828,10 +828,10 @@ ${pageHero('产品中心',c.name+' 产品目录与型号索引')}
 </tr></thead><tbody>${tableRows}</tbody>
 </table></div></div></div>
 ${catSections}${ft(pp,c,pfx)}`;
-  const siteU=canonicalUrl(pfx,'products');return lay('产品中心 - '+c.name,c.name+'产品中心',bd,c,siteU);
+  const siteU=canonicalUrl(pfx,'products');return lay('产品中心 - '+c.name,p?.desc||c.name+'产品中心',bd,c,siteU,OG_DEFAULT,p?.kw||'');
 }
 
-function aboutPage(pp,c,pfx){
+function aboutPage(pp,c,pfx,p){
   const bd=`${nav(pp,c,pfx+'/about',pfx)}
 ${pageHero('关于我们','有电，就有微物联 — 用数据重构能源效率')}
 
@@ -915,9 +915,9 @@ ${contactRow('电话',c.phone)}
 ${contactRow('邮箱',c.email,'mailto:'+c.email)}
 ${contactRow('地址',c.addr)}
 </dl></div></div></section>${ft(pp,c,pfx)}`;
-  const siteU=canonicalUrl(pfx,'about');return lay('关于我们 - '+c.name,'',bd,c,siteU);
+  const siteU=canonicalUrl(pfx,'about');return lay('关于我们 - '+c.name,p?.desc||'',bd,c,siteU,OG_DEFAULT,p?.kw||'');
 }
-function contactPage(pp,c,pfx){
+function contactPage(pp,c,pfx,p){
   const bd=`${nav(pp,c,pfx+'/contact',pfx)}
 ${pageHero('联系我们','技术咨询、方案对接与商务合作')}
 <section class="py-14 bg-white"><div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -926,13 +926,13 @@ ${contactRow('电话',c.phone)}
 ${contactRow('邮箱',c.email,'mailto:'+c.email)}
 ${contactRow('地址',c.addr)}
 </dl></div></div></section>${ft(pp,c,pfx)}`;
-  const siteU=canonicalUrl(pfx,'contact');return lay('联系我们 - '+c.name,'',bd,c,siteU);
+  const siteU=canonicalUrl(pfx,'contact');return lay('联系我们 - '+c.name,p?.desc||'',bd,c,siteU,OG_DEFAULT,p?.kw||'');
 }
-function listPage(t, pp, c, items, path, pfx){
+function listPage(t, pp, c, items, path, pfx, p){
   const bd=`${nav(pp,c,pfx+'/'+path,pfx)}
 ${pageHero(t)}
 <section class="py-14 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">${items.length?`<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">${items.slice(0,12).map(item=>`<article class="card-panel p-6"><h3 class="font-semibold text-slate-900 mb-2 text-base">${h(item.title||item.n)}</h3>${item.description?'<p class="text-sm text-slate-600 leading-relaxed">'+h(item.description.slice(0,150))+'</p>':''}${item.client?'<p class="mt-3 text-xs text-slate-500">客户：'+h(item.client)+'</p>':''}${item.category?'<p class="mt-1 text-xs text-slate-500">分类：'+h(item.category)+'</p>':''}</article>`).join('')}</div>`:'<p class="text-slate-500 text-sm py-8">内容更新中</p>'}</div></section>${ft(pp,c,pfx)}`;
-  return lay(t+' - '+c.name,'',bd,c);
+  return lay(t+' - '+c.name,p?.desc||'',bd,c,canonicalUrl(pfx,path),OG_DEFAULT,p?.kw||'');
 }
 
 function solDetailPage(sk, title, desc, pp, c, pfx, sls) {
@@ -1133,9 +1133,9 @@ for(const d of defs){
   for(const p of pp){
     const pt=p.path;let html;
     if(!pt)html=genHome(pp,c,sls,cs,c.feat,d.n,pfx,p);
-    else if(pt==='about')html=aboutPage(pp,c,pfx);
-    else if(pt==='contact')html=contactPage(pp,c,pfx);
-    else if(pt==='products')html=prodsPage(pp,c,d.n,pfx);
+    else if(pt==='about')html=aboutPage(pp,c,pfx,p);
+    else if(pt==='contact')html=contactPage(pp,c,pfx,p);
+    else if(pt==='products')html=prodsPage(pp,c,d.n,pfx,p);
     else if(pt==='solutions'){
       const solCards = sls.map(s=>{
         const sk = s.slug || slug(s.title);
@@ -1152,9 +1152,9 @@ ${pageHero(p.title,'行业经验与技术积累')}
 <section class="py-14 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">${solCards}</div></div></section>${ft(pp,c,pfx)}`;
       html=lay(p.title+' - '+c.name,p.desc||'',html,c,canonicalUrl(pfx,pt),OG_DEFAULT,p.kw||'');
     }
-    else if(pt==='cases')html=listPage(p.title,pp,c,cs,pt,pfx);
-    else if(pt==='news')html=listPage(p.title,pp,c,nws.length?nws:cs,pt,pfx);
-    else html=listPage(p.title,pp,c,[],pt,pfx);
+    else if(pt==='cases')html=listPage(p.title,pp,c,cs,pt,pfx,p);
+    else if(pt==='news')html=listPage(p.title,pp,c,nws.length?nws:cs,pt,pfx,p);
+    else html=listPage(p.title,pp,c,[],pt,pfx,p);
     const dir=pt?join(out,pt):out;
     if(!existsSync(dir))mkdirSync(dir,{recursive:true});
     writeFileSync(join(dir,'index.html'),html);
