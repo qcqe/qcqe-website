@@ -35,14 +35,39 @@ function cfg(site) {
 }
 function pages(site) {
   const fp=join(root,'sites',site,'data','pages.ts');
-  try{const c=readFileSync(fp,'utf-8');const p=[{path:'',title:'首页'}];const r=/path:\s*'([^']+)'[\s\S]*?title:\s*'([^']+)'/g;let m;while((m=r.exec(c))!==null)p.push({path:m[1],title:m[2]});return p;}catch{return[{path:'',title:'首页'}];}
+  try{
+    const c=readFileSync(fp,'utf-8');
+    const p=[];
+    for(const block of c.match(/\{[^{}]+\}/g)||[]){
+      const pathM=block.match(/path:\s*'([^']*)'/);
+      const titleM=block.match(/title:\s*'([^']+)'/);
+      const descM=block.match(/description:\s*'([^']+)'/);
+      const kwM=block.match(/keywords:\s*\[([^\]]+)\]/);
+      if(titleM)p.push({
+        path:pathM?pathM[1]:'',
+        title:titleM[1],
+        desc:descM?descM[1]:'',
+        kw:kwM?[...kwM[1].matchAll(/'([^']+)'/g)].map(x=>x[1]).join(', '):''
+      });
+    }
+    return p.length?p:[{path:'',title:'首页'}];
+  }catch{return[{path:'',title:'首页'}];}
 }
 
-const TW=`<link href="/tailwind.css" rel="stylesheet">`;
+const CANONICAL_HOST = 'www.yeslon.com';
+const BUILD_ID = Date.now().toString(36);
+function twLink(){return`<link href="/tailwind.css?v=${BUILD_ID}" rel="stylesheet">`;}
+function canonicalUrl(pfx, path=''){const base=`https://${CANONICAL_HOST}${pfx||''}`;return path?`${base}/${path}`:`${base}/`;}
+const GEO_BANNER=`<div id="geo-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:999;background:#2563eb;color:white;padding:12px 20px;align-items:center;justify-content:center;gap:16px;font-size:14px">
+  <span>🌏 检测到您可能在中国，是否切换到中文站点？</span>
+  <a href="javascript:void(0)" onclick="document.getElementById('geo-banner').style.display='none';document.cookie='region=CN;path=/;max-age=2592000'" style="padding:4px 16px;background:white;color:#2563eb;border-radius:6px;text-decoration:none;font-weight:500;font-size:13px">确定</a>
+  <a href="javascript:void(0)" onclick="document.getElementById('geo-banner').style.display='none'" style="color:rgba(255,255,255,0.7);font-size:13px;text-decoration:none">关闭</a>
+</div>`;
+const GEO_SCRIPT=`<script>(function(){function runGeo(){var saved=document.cookie.match(/(?:^| )region=([^;]*)/);var reg=saved?decodeURIComponent(saved[1]):"";if(reg==="CN")return;var ctrl=new AbortController();var t=setTimeout(function(){ctrl.abort()},5000);fetch("https://ipapi.co/json/",{signal:ctrl.signal}).then(function(r){return r.json()}).then(function(d){if(d&&d.country_code==="CN"){document.cookie="region=CN;path=/;max-age=2592000";var lang=(navigator.language||"").toLowerCase();if(lang.indexOf("zh")===-1){var b=document.getElementById("geo-banner");if(b)b.style.display="flex"}}}).catch(function(){var tz="";try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||""}catch(e){}if(/Asia\\/(Shanghai|Hong_Kong|Chongqing|Urumqi)/.test(tz)){var b=document.getElementById("geo-banner");if(b)b.style.display="flex"}}).finally(function(){clearTimeout(t)})}if(document.readyState==="complete"){if("requestIdleCallback"in window){requestIdleCallback(runGeo,{timeout:2000})}else{setTimeout(runGeo,0)}}else{window.addEventListener("load",function(){if("requestIdleCallback"in window){requestIdleCallback(runGeo,{timeout:2000})}else{setTimeout(runGeo,0)}})}})()</script>`;
 function h(t){return(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-let GA_ID='',SC_VERIFY='',BAIDU_VERIFY='',OG_DEFAULT='/og-image.jpg';
-try{const m=await import('../site-config.js');GA_ID=m.SITE_CONFIG.GA_ID||'';SC_VERIFY=m.SITE_CONFIG.SC_VERIFY||'';BAIDU_VERIFY=m.SITE_CONFIG.BAIDU_VERIFY||'';OG_DEFAULT=m.SITE_CONFIG.OG_IMAGE||'/og-image.jpg';}catch(e){};
-function lay(t,d,b,c){const base='https://'+(c.sub?c.sub+'.'+c.dom:c.dom);const u=arguments[4]||base;const i=(arguments[5]||OG_DEFAULT).startsWith('http')?arguments[6]:base+(arguments[6]||OG_DEFAULT);const kw=c.kw||'微物联,工业物联网,电气安全,智能防雷,PLC';return'<!DOCTYPE html>\n<html lang="zh-CN">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width,initial-scale=1.0">\n<title>'+h(t)+'</title>\n<meta name="description" content="'+h(d||c.desc||'')+'">\n<meta name="keywords" content="'+h(kw)+'">\n<link rel="icon" type="image/png" href="/favicon.ico"><link rel="canonical" href="'+h(u)+'">\n<meta name="robots" content="index,follow">\n<meta property="og:type" content="website">\n<meta property="og:title" content="'+h(t)+'">\n<meta property="og:description" content="'+h(d||c.desc||'')+'">\n<meta property="og:image" content="'+h(i)+'">\n<meta property="og:url" content="'+h(u)+'">\n<meta property="og:site_name" content="'+h(c.name||'')+'">\n<meta name="twitter:card" content="summary_large_image">\n<meta name="twitter:title" content="'+h(t)+'">\n<meta name="twitter:description" content="'+h(d||c.desc||'')+'">\n<meta name="twitter:image" content="'+h(i)+'">\n'+(SC_VERIFY?'<meta name="google-site-verification" content="'+h(SC_VERIFY)+'">\n':'')+(BAIDU_VERIFY?'<meta name="baidu-site-verification" content="'+h(BAIDU_VERIFY)+'">\n':'')+'<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"'+h(c.name||'')+'","url":"'+h(u.replace(/\/[^/]*$/,'')||'')+'","description":"'+h(c.desc||'')+'","contactPoint":{"@type":"ContactPoint","telephone":"'+h(c.phone||'')+'","contactType":"customer service"}}</script>\n'+(GA_ID?'<script async src="https://www.googletagmanager.com/gtag/js?id='+h(GA_ID)+'"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)};gtag("js",new Date());gtag("config","'+h(GA_ID)+'");</script>\n':'')+TW+'\n<script>if(typeof window!="undefined"&&window.location){(function(){var r=document.cookie.match(new RegExp("(^| )region=([^;]*)"));var reg=r?unescape(r[2]):"CN";var cf=navigator&&navigator.language?navigator.language.substring(0,2):"";if(cf&&cf!=="zh"&&reg==="CN"){}fetch("https://ipapi.co/json/",{timeout:3000}).then(function(r){return r.json()}).then(function(d){if(d.country_code&&d.country_code!==reg&&d.country_code=="CN"){document.cookie="region=CN;path=/;max-age=2592000";var b=document.getElementById("geo-banner");if(b)b.style.display="flex"}}).catch(function(){})})()}</script>\n</head>\n<body class="bg-gray-50 text-gray-900 font-sans antialiased">\n<div id="geo-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:999;background:#2563eb;color:white;padding:12px 20px;align-items:center;justify-content:center;gap:16px;font-size:14px">\n  <span>🌏 检测到您可能在中国，是否切换到中文站点？</span>\n  <a href="javascript:void(0)" onclick="document.getElementById(\'geo-banner\').style.display=\'none\'" style="padding:4px 16px;background:white;color:#2563eb;border-radius:6px;text-decoration:none;font-weight:500;font-size:13px">确定</a>\n  <a href="javascript:void(0)" onclick="document.getElementById(\'geo-banner\').style.display=\'none\'" style="color:rgba(255,255,255,0.7);font-size:13px;text-decoration:none">关闭</a>\n</div>\n'+A+'\n'+b+'\n</body>\n</html>';}
+let GA_ID='',SC_VERIFY='',BAIDU_VERIFY='',OG_DEFAULT='/logo.png';
+try{const m=await import('../site-config.js');GA_ID=m.SITE_CONFIG.GA_ID||'';SC_VERIFY=m.SITE_CONFIG.SC_VERIFY||'';BAIDU_VERIFY=m.SITE_CONFIG.BAIDU_VERIFY||'';OG_DEFAULT=m.SITE_CONFIG.OG_IMAGE||'/logo.png';}catch(e){};
+function lay(t,d,b,c){const u=arguments[4]||canonicalUrl(c.pfx||'');const ogPath=arguments[5]||OG_DEFAULT;const i=ogPath.startsWith('http')?ogPath:`https://${CANONICAL_HOST}${ogPath}`;const pageKw=arguments[6]||'';const kw=pageKw||c.kw||'微物联,工业物联网,电气安全,智能防雷,PLC';return'<!DOCTYPE html>\n<html lang="zh-CN">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width,initial-scale=1.0">\n<title>'+h(t)+'</title>\n<meta name="description" content="'+h(d||c.desc||'')+'">\n<meta name="keywords" content="'+h(kw)+'">\n<link rel="icon" type="image/svg+xml" href="/y-logo.svg"><link rel="canonical" href="'+h(u)+'">\n<meta name="robots" content="index,follow">\n<meta property="og:type" content="website">\n<meta property="og:title" content="'+h(t)+'">\n<meta property="og:description" content="'+h(d||c.desc||'')+'">\n<meta property="og:image" content="'+h(i)+'">\n<meta property="og:url" content="'+h(u)+'">\n<meta property="og:site_name" content="'+h(c.name||'')+'">\n<meta name="twitter:card" content="summary_large_image">\n<meta name="twitter:title" content="'+h(t)+'">\n<meta name="twitter:description" content="'+h(d||c.desc||'')+'">\n<meta name="twitter:image" content="'+h(i)+'">\n'+(SC_VERIFY?'<meta name="google-site-verification" content="'+h(SC_VERIFY)+'">\n':'')+(BAIDU_VERIFY?'<meta name="baidu-site-verification" content="'+h(BAIDU_VERIFY)+'">\n':'')+'<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"'+h(c.name||'')+'","url":"https://'+CANONICAL_HOST+'","description":"'+h(c.desc||'')+'","contactPoint":{"@type":"ContactPoint","telephone":"'+h(c.phone||'')+'","contactType":"customer service"}}</script>\n'+(GA_ID?'<script async src="https://www.googletagmanager.com/gtag/js?id='+h(GA_ID)+'"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)};gtag("js",new Date());gtag("config","'+h(GA_ID)+'");</script>\n':'')+twLink()+'\n</head>\n<body class="bg-gray-50 text-gray-900 font-sans antialiased">\n'+GEO_BANNER+'\n'+A+'\n'+b+GEO_SCRIPT+'\n</body>\n</html>';}
 const A=`<div id="progress" style="position:fixed;top:0;left:0;height:2px;width:0%;z-index:999;background:linear-gradient(90deg,#2563eb,#60a5fa);transition:width 0.05s linear"></div>
 <div id="search-overlay" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.6);backdrop-filter:blur(8px)" onclick="if(event.target===this)closeSearch()">
   <div style="max-width:640px;margin:80px auto 0;padding:0 20px">
@@ -551,7 +576,7 @@ ${rel?`<section class="py-12 bg-gray-50"><div class="max-w-7xl mx-auto px-4 sm:p
 </div></section>${ft(pp,c,pfx)}`;
 }
 
-function genHome(pp, c, sls, cs, feat, sn, pfx) {
+function genHome(pp, c, sls, cs, feat, sn, pfx, pageMeta) {
   const cats = PROD[sn] || PROD.yeslon;
   const featColors = ['from-blue-500 to-blue-600','from-emerald-500 to-emerald-600','from-amber-500 to-orange-600','from-cyan-500 to-cyan-600','from-violet-500 to-violet-600','from-rose-500 to-rose-600'];
   const featIcons = ['⚙️','⚡','🌩️','📡','🤖','🔬'];
@@ -625,11 +650,20 @@ ${sls.length?`<section class="py-20 md:py-28 bg-white"><div class="max-w-7xl mx-
 ${cs.length?`<section class="py-20 md:py-28 bg-gradient-to-b from-gray-50 to-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="text-center mb-16"><span class="text-xs font-semibold text-primary-600 tracking-[0.2em] uppercase bg-primary-50 px-4 py-1.5 rounded-full">成功案例</span><h2 class="text-3xl md:text-4xl font-bold mt-4 mb-3">客户成功实践</h2><p class="text-gray-400 max-w-xl mx-auto">服务200+客户，覆盖12大行业</p></div>
 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">${caseCards}</div>
-<div class="text-center mt-10"><a href="/cases" class="inline-flex items-center gap-2 px-6 py-3 border-2 border-primary-200 text-primary-700 font-semibold rounded-xl hover:bg-primary-50 hover:border-primary-400 transition-all no-underline group">查看全部案例 <span class="group-hover:translate-x-1 transition-transform">→</span></a></div>
+<div class="text-center mt-10"><a href="${pfx}/cases" class="inline-flex items-center gap-2 px-6 py-3 border-2 border-primary-200 text-primary-700 font-semibold rounded-xl hover:bg-primary-50 hover:border-primary-400 transition-all no-underline group">查看全部案例 <span class="group-hover:translate-x-1 transition-transform">→</span></a></div>
 </div></section>`:''}
 
+${sn==='yeslon'&&!pfx?`<section class="py-20 md:py-28 bg-white border-t border-gray-100"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-16"><span class="text-xs font-semibold text-primary-600 tracking-[0.2em] uppercase bg-primary-50 px-4 py-1.5 rounded-full">产品线站点</span><h2 class="text-3xl md:text-4xl font-bold mt-4 mb-3">按场景深入探索</h2><p class="text-gray-400 max-w-xl mx-auto">四大垂直产品线，覆盖新能源、电气安全、智能防雷与工业控制</p></div>
+<div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+<a href="/energy/" class="group block bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-xl hover:border-primary-200 transition-all no-underline"><span class="text-3xl block mb-3">🔋</span><h3 class="font-bold text-gray-900 group-hover:text-primary-700 transition-colors">新能源充电与电气安全</h3><p class="text-sm text-gray-500 mt-2 leading-relaxed">充电站谐波监测、储能安全、电动自行车充电棚</p><span class="text-sm text-primary-600 font-medium mt-3 inline-block">进入站点 →</span></a>
+<a href="/electrical-safety/" class="group block bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-xl hover:border-primary-200 transition-all no-underline"><span class="text-3xl block mb-3">⚡</span><h3 class="font-bold text-gray-900 group-hover:text-primary-700 transition-colors">电气安全监测系统</h3><p class="text-sm text-gray-500 mt-2 leading-relaxed">ESA智能电表、ESB三相不平衡、EST无线测温</p><span class="text-sm text-primary-600 font-medium mt-3 inline-block">进入站点 →</span></a>
+<a href="/lightning-protection/" class="group block bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-xl hover:border-primary-200 transition-all no-underline"><span class="text-3xl block mb-3">🌩️</span><h3 class="font-bold text-gray-900 group-hover:text-primary-700 transition-colors">智能防雷监测系统</h3><p class="text-sm text-gray-500 mt-2 leading-relaxed">FS/FSS/FL/FR/FG全系列防雷在线监测</p><span class="text-sm text-primary-600 font-medium mt-3 inline-block">进入站点 →</span></a>
+<a href="/industrial-plc/" class="group block bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-xl hover:border-primary-200 transition-all no-underline"><span class="text-3xl block mb-3">🧠</span><h3 class="font-bold text-gray-900 group-hover:text-primary-700 transition-colors">工业分布式PLC控制</h3><p class="text-sm text-gray-500 mt-2 leading-relaxed">CC/CR/X系列可编程控制器、设备大脑</p><span class="text-sm text-primary-600 font-medium mt-3 inline-block">进入站点 →</span></a>
+</div></div></section>`:''}
+
 <section class="relative overflow-hidden bg-gradient-to-br from-primary-600 via-primary-700 to-primary-900 text-white py-20"><div class="absolute inset-0 opacity-10" style="background-image:radial-gradient(circle at 30% 20%,white 0%,transparent 50%),radial-gradient(circle at 70% 80%,white 0%,transparent 40%)"></div><div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"><h2 class="text-3xl md:text-4xl font-bold mb-4">需要定制化方案？</h2><p class="text-blue-100/80 text-lg mb-10 max-w-xl mx-auto">联系我们获取产品资料、技术方案及项目报价</p><a href="${pfx}/contact" class="inline-flex items-center gap-2 px-8 py-3.5 bg-white text-primary-700 font-semibold rounded-xl hover:bg-gray-100 hover:shadow-2xl transition-all duration-300 shadow-lg no-underline group">📧 立即咨询 <span class="group-hover:translate-x-1 transition-transform">→</span></a></div></section>${ft(pp,c,pfx)}`;
-  const siteUrl='https://'+(c.sub?c.sub+'.'+c.dom:c.dom)+'/';return lay('首页 - '+c.name,c.desc,bd,c,siteUrl);
+  const siteUrl=canonicalUrl(pfx);const pm=pageMeta||{};return lay('首页 - '+c.name,pm.desc||c.desc,bd,c,siteUrl,OG_DEFAULT,pm.kw||'');
 }
 function prodsPage(pp, c, sn, pfx) {
   const cats = PROD[sn] || PROD.yeslon;
@@ -675,7 +709,7 @@ function prodsPage(pp, c, sn, pfx) {
 </table></div></div></div>
 
 ${catSections}${ft(pp,c,pfx)}`;
-  const siteU='https://'+(c.sub?c.sub+'.'+c.dom:c.dom)+'/';return lay('产品中心 - '+c.name,c.name+'产品中心',bd,c,siteU);
+  const siteU=canonicalUrl(pfx,'products');return lay('产品中心 - '+c.name,c.name+'产品中心',bd,c,siteU);
 }
 
 function aboutPage(pp,c,pfx){
@@ -767,7 +801,7 @@ ${['新能源充电站','工业园区','机场/交通枢纽','数据中心','商
   ['📍','地址',c.addr],
 ].map(a=>'<div class="flex items-center gap-4 p-3 bg-gray-50 rounded-lg"><span class="text-xl w-8">'+a[0]+'</span><div><p class="text-xs text-gray-400">'+a[1]+'</p><p class="font-medium text-gray-900">'+a[2]+'</p></div></div>').join('')}</div>
 </div></div></section>${ft(pp,c,pfx)}`;
-  const siteU='https://'+(c.sub?c.sub+'.'+c.dom:c.dom)+'/';return lay('关于我们 - '+c.name,'',bd,c,siteU);
+  const siteU=canonicalUrl(pfx,'about');return lay('关于我们 - '+c.name,'',bd,c,siteU);
 }
 function contactPage(pp,c,pfx){
   const bd=`${nav(pp,c,pfx+'/contact',pfx)}
@@ -777,7 +811,7 @@ function contactPage(pp,c,pfx){
 <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg"><span class="text-2xl">✉️</span><div><p class="text-sm text-gray-500">邮箱</p><p class="font-semibold text-gray-900"><a href="mailto:${h(c.email)}" class="text-primary-600 no-underline hover:underline">${h(c.email)}</a></p></div></div>
 <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg"><span class="text-2xl">📍</span><div><p class="text-sm text-gray-500">地址</p><p class="font-semibold text-gray-900">${h(c.addr)}</p></div></div>
 </div></div></div></section>${ft(pp,c,pfx)}`;
-  const siteU='https://'+(c.sub?c.sub+'.'+c.dom:c.dom)+'/';return lay('联系我们 - '+c.name,'',bd,c,siteU);
+  const siteU=canonicalUrl(pfx,'contact');return lay('联系我们 - '+c.name,'',bd,c,siteU);
 }
 function listPage(t, pp, c, items, path, pfx){
   const bd=`${nav(pp,c,pfx+'/'+path,pfx)}
@@ -941,7 +975,7 @@ ${sk==='busbar-monitoring-system'?'<div>🌡️ 48个在线节点</div><div>⚡ 
 <p class="text-primary-100 mb-6">联系我们获取详细技术方案书、产品配置清单及项目报价</p>
 <a href="${pfx}/contact" class="inline-flex items-center gap-2 px-8 py-3 bg-white text-primary-700 font-semibold rounded-xl hover:bg-gray-100 transition-colors shadow-lg no-underline">📞 立即咨询</a>
 </div></section>${ft(pp,c,pfx)}`;
-  const solUrl='https://'+(c.sub?c.sub+'.'+c.dom:c.dom)+'/solutions/'+sk;return lay(title+' - '+c.name,desc,bd,c,solUrl);
+  const solUrl=canonicalUrl(pfx,'solutions/'+sk);return lay(title+' - '+c.name,desc,bd,c,solUrl);
 }
 
 // ═══════════ BUILD ═══════════
@@ -957,33 +991,33 @@ if(!existsSync(DIST))mkdirSync(DIST,{recursive:true});
 var SLS_ALL=[],CS_ALL=[],NWS_ALL=[];
 
 for(const d of defs){
-  const c=cfg(d.n);const pp=pages(d.n);
+  const c=cfg(d.n);c.pfx=d.pfx;const pp=pages(d.n);
   const sls=reItems(join(root,'sites',d.n,'data','solutions.ts'),['title','description','category','slug']);
   const cs=reItems(join(root,'sites',d.n,'data','cases.ts'),['title','description','client']);
   const nws=reItems(join(root,'sites',d.n,'data','news.ts'),['title','description','category']);
   if(d.main){SLS_ALL=sls;CS_ALL=cs;NWS_ALL=nws;}
   const out=d.main?DIST:join(DIST,d.n);
   if(!existsSync(out))mkdirSync(out,{recursive:true});
-  const bu=c.sub?c.sub+'.'+c.dom:c.dom;
+  const siteBase=canonicalUrl(d.pfx).replace(/\/$/,'');
 
   // sitemap - include all pages
   var surls=[];
   // Structure pages
-  pp.forEach(function(p){surls.push('<url><loc>https://'+bu+'/'+p.path+'</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>')});
+  pp.forEach(function(p){surls.push('<url><loc>'+siteBase+(p.path?'/'+p.path:'')+'</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>')});
   // Product detail pages
   var prodCats=PROD[d.n]||PROD.yeslon;
-  prodCats.forEach(function(cat){cat.items.forEach(function(item){var s=slug(item.n);surls.push('<url><loc>https://'+bu+'/products/'+s+'</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>')})});
+  prodCats.forEach(function(cat){cat.items.forEach(function(item){var s=slug(item.n);surls.push('<url><loc>'+siteBase+'/products/'+s+'</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>')})});
   // Solution detail pages (main site only)
-  if(d.main) sls.forEach(function(s){var sk=s.slug||slug(s.title);surls.push('<url><loc>https://'+bu+'/solutions/'+sk+'</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>')});
+  if(d.main) sls.forEach(function(s){var sk=s.slug||slug(s.title);surls.push('<url><loc>'+siteBase+'/solutions/'+sk+'</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>')});
   // Deduplicate
   surls=surls.filter(function(u,i,a){return a.indexOf(u)===i});
   writeFileSync(join(out,'sitemap.xml'),'<?xml version="1.0"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+surls.join('\n')+'\n</urlset>');
-  writeFileSync(join(out,'robots.txt'),'User-agent: *\nAllow: /\nSitemap: https://'+bu+'/sitemap.xml\nCrawl-delay: 1');
+  writeFileSync(join(out,'robots.txt'),'User-agent: *\nAllow: /\nSitemap: '+siteBase+'/sitemap.xml'+(d.main?'\nSitemap: https://'+CANONICAL_HOST+'/sitemap-index.xml':'')+'\nCrawl-delay: 1');
 
   const pfx=d.pfx;
   for(const p of pp){
     const pt=p.path;let html;
-    if(!pt)html=genHome(pp,c,sls,cs,c.feat,d.n,pfx);
+    if(!pt)html=genHome(pp,c,sls,cs,c.feat,d.n,pfx,p);
     else if(pt==='about')html=aboutPage(pp,c,pfx);
     else if(pt==='contact')html=contactPage(pp,c,pfx);
     else if(pt==='products')html=prodsPage(pp,c,d.n,pfx);
@@ -1001,7 +1035,7 @@ for(const d of defs){
       html=`${nav(pp,c,pfx+'/solutions',pfx)}
 <div class="bg-gradient-to-r from-primary-700 to-primary-900 text-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16"><h1 class="text-3xl font-bold">${h(p.title)}</h1><p class="text-primary-200 mt-2">行业经验与技术积累，为客户创造价值</p></div></div>
 <section class="py-16 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">${solCards}</div></div></section>${ft(pp,c,pfx)}`;
-      html=lay(p.title+' - '+c.name,'',html,c);
+      html=lay(p.title+' - '+c.name,p.desc||'',html,c,canonicalUrl(pfx,pt),OG_DEFAULT,p.kw||'');
     }
     else if(pt==='cases')html=listPage(p.title,pp,c,cs,pt,pfx);
     else if(pt==='news')html=listPage(p.title,pp,c,nws.length?nws:cs,pt,pfx);
@@ -1053,6 +1087,38 @@ for(var pi=0;pi<pagesList.length;pi++){var pg=pagesList[pi];addItem(pg.t,pg.d,pg
 writeFileSync(join(DIST,'search-index.json'),JSON.stringify(si,null,0),'utf-8');
 console.log('  🔍 search-index.json ('+si.length+' entries)');
 }catch(e){console.log('  ℹ️ search index:',e.message);}
+// Generate 404 page
+try{
+  const c404=cfg('yeslon');c404.pfx='';
+  const pp404=pages('yeslon');
+  const body404=`${nav(pp404,c404,'/404','')}
+<div class="bg-gradient-to-r from-gray-800 to-gray-900 text-white"><div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+<div class="text-6xl font-bold text-white/20 mb-4">404</div>
+<h1 class="text-3xl font-bold mb-4">页面未找到</h1>
+<p class="text-gray-300 mb-8">您访问的页面不存在或已迁移，请从下方链接继续浏览。</p>
+<div class="flex flex-wrap justify-center gap-3">
+<a href="/" class="px-5 py-2.5 bg-white text-gray-900 font-semibold rounded-xl hover:bg-gray-100 no-underline">返回首页</a>
+<a href="/products" class="px-5 py-2.5 border border-white/30 text-white font-semibold rounded-xl hover:bg-white/10 no-underline">产品中心</a>
+<a href="/solutions" class="px-5 py-2.5 border border-white/30 text-white font-semibold rounded-xl hover:bg-white/10 no-underline">解决方案</a>
+<a href="/contact" class="px-5 py-2.5 border border-white/30 text-white font-semibold rounded-xl hover:bg-white/10 no-underline">联系我们</a>
+</div>
+<div class="mt-10 pt-8 border-t border-white/10">
+<p class="text-sm text-gray-400 mb-4">产品线站点</p>
+<div class="flex flex-wrap justify-center gap-3 text-sm">
+<a href="/energy/" class="text-blue-200 hover:text-white no-underline">新能源充电</a>
+<a href="/electrical-safety/" class="text-blue-200 hover:text-white no-underline">电气安全</a>
+<a href="/lightning-protection/" class="text-blue-200 hover:text-white no-underline">智能防雷</a>
+<a href="/industrial-plc/" class="text-blue-200 hover:text-white no-underline">工业PLC</a>
+</div></div></div></div>${ft(pp404,c404,'')}`;
+  writeFileSync(join(DIST,'404.html'),lay('页面未找到 - 微物联技术','您访问的页面不存在',body404,c404,canonicalUrl('','404')));
+  console.log('  📄 404.html generated');
+}catch(e){console.error('  ❌ 404.html generation failed:',e.message);process.exit(1);}
+// Sitemap index for all subsites
+try{
+  const smaps=defs.map(d=>{const loc=canonicalUrl(d.pfx,'sitemap.xml');return'<sitemap><loc>'+loc+'</loc></sitemap>';}).join('\n');
+  writeFileSync(join(DIST,'sitemap-index.xml'),'<?xml version="1.0"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+smaps+'\n</sitemapindex>');
+  console.log('  🗺️  sitemap-index.xml generated');
+}catch(e){console.log('  ℹ️ sitemap index:',e.message);}
 // Generate tailwind.css from built HTML files
 try {
   console.log('\n  🎨 Generating tailwind.css...');
@@ -1060,8 +1126,10 @@ try {
     stdio: 'inherit',
     cwd: root
   });
+  if(!existsSync(join(DIST,'tailwind.css'))){throw new Error('tailwind.css not created');}
   console.log('  ✅ tailwind.css generated');
 } catch(e) {
-  console.log('  ⚠️  tailwind.css generation failed:', e.message);
+  console.error('  ❌ tailwind.css generation failed:', e.message);
+  process.exit(1);
 }
 console.log('\n✅ Build complete');

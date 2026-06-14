@@ -52,8 +52,8 @@ export const pages: PageConfig[] = [
   {
     path: 'contact',
     title: '联系我们',
-    description: '微物联技术（深圳）有限公司联系方式：深圳市南山区高新科技园，电话0755-83008888，邮箱contact@yeslon.com。',
-    keywords: ['联系我们', '联系方式', '深圳', '0755', '咨询', '商务合作'],
+    description: '微物联技术（深圳）有限公司联系方式：深圳市福田深港科技合作区长富金茂大厦1908，电话0755-86536148，邮箱cc@fexlink.com。',
+    keywords: ['联系我们', '联系方式', '深圳福田', '0755-86536148', '咨询', '商务合作'],
     changeFreq: 'monthly',
     priority: 0.6
   }

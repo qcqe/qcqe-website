@@ -4,22 +4,25 @@
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
 
-# Cache static assets
-*.css
-  Cache-Control: public, max-age=31536000, immutable
-*.js
-  Cache-Control: public, max-age=31536000, immutable
-*.jpg
-  Cache-Control: public, max-age=31536000, immutable
-*.png
-  Cache-Control: public, max-age=31536000, immutable
-*.svg
-  Cache-Control: public, max-age=31536000, immutable
-*.ico
-  Cache-Control: public, max-age=31536000, immutable
-*.woff2
-  Cache-Control: public, max-age=31536000, immutable
+# 主样式表：短缓存 + 版本号查询参数，避免 immutable 导致更新后样式错乱
+/tailwind.css
+  Cache-Control: public, max-age=3600, must-revalidate
 
-# HTML pages: short cache, validate with origin
-*.html
+# HTML 页面：每次验证，确保内容及时更新
+/*.html
   Cache-Control: public, max-age=0, must-revalidate
+
+/404.html
+  Cache-Control: public, max-age=3600, must-revalidate
+
+# 带内容哈希或版本号的静态资源可长期缓存
+/*.jpg
+  Cache-Control: public, max-age=31536000, immutable
+/*.png
+  Cache-Control: public, max-age=31536000, immutable
+/*.svg
+  Cache-Control: public, max-age=31536000, immutable
+/*.ico
+  Cache-Control: public, max-age=31536000, immutable
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable

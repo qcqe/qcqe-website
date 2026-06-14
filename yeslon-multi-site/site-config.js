@@ -19,5 +19,5 @@ export const SITE_CONFIG = {
   // ========== 默认OG图片 ==========
   // 建议尺寸 1200×630px，PNG/JPG格式最佳
   // 将图片放在 yeslon-multi-site/dist/ 目录下，修改此处路径
-  OG_IMAGE: '/logo.png',  // ⚠️ 替换为真实1200×630品牌图
+  OG_IMAGE: '/logo.png',
 };
