@@ -58,16 +58,16 @@ const CANONICAL_HOST = 'www.yeslon.com';
 const BUILD_ID = Date.now().toString(36);
 function twLink(){return`<link href="/tailwind.css?v=${BUILD_ID}" rel="stylesheet">`;}
 function canonicalUrl(pfx, path=''){const base=`https://${CANONICAL_HOST}${pfx||''}`;return path?`${base}/${path}`:`${base}/`;}
-const GEO_BANNER=`<div id="geo-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:999;background:#2563eb;color:white;padding:12px 20px;align-items:center;justify-content:center;gap:16px;font-size:14px">
-  <span>🌏 检测到您可能在中国，是否切换到中文站点？</span>
-  <a href="javascript:void(0)" onclick="document.getElementById('geo-banner').style.display='none';document.cookie='region=CN;path=/;max-age=2592000'" style="padding:4px 16px;background:white;color:#2563eb;border-radius:6px;text-decoration:none;font-weight:500;font-size:13px">确定</a>
-  <a href="javascript:void(0)" onclick="document.getElementById('geo-banner').style.display='none'" style="color:rgba(255,255,255,0.7);font-size:13px;text-decoration:none">关闭</a>
+const GEO_BANNER=`<div id="geo-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:999;background:#0f172a;color:#e2e8f0;padding:12px 20px;align-items:center;justify-content:center;gap:16px;font-size:13px;border-top:2px solid #1d4ed8">
+  <span>检测到您可能位于中国，建议使用中文站点浏览。</span>
+  <a href="javascript:void(0)" onclick="document.getElementById('geo-banner').style.display='none';document.cookie='region=CN;path=/;max-age=2592000'" style="padding:4px 14px;background:#1d4ed8;color:white;text-decoration:none;font-weight:500;font-size:12px">确认</a>
+  <a href="javascript:void(0)" onclick="document.getElementById('geo-banner').style.display='none'" style="color:#94a3b8;font-size:12px;text-decoration:none">关闭</a>
 </div>`;
 const GEO_SCRIPT=`<script>(function(){function runGeo(){var saved=document.cookie.match(/(?:^| )region=([^;]*)/);var reg=saved?decodeURIComponent(saved[1]):"";if(reg==="CN")return;var ctrl=new AbortController();var t=setTimeout(function(){ctrl.abort()},5000);fetch("https://ipapi.co/json/",{signal:ctrl.signal}).then(function(r){return r.json()}).then(function(d){if(d&&d.country_code==="CN"){document.cookie="region=CN;path=/;max-age=2592000";var lang=(navigator.language||"").toLowerCase();if(lang.indexOf("zh")===-1){var b=document.getElementById("geo-banner");if(b)b.style.display="flex"}}}).catch(function(){var tz="";try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||""}catch(e){}if(/Asia\\/(Shanghai|Hong_Kong|Chongqing|Urumqi)/.test(tz)){var b=document.getElementById("geo-banner");if(b)b.style.display="flex"}}).finally(function(){clearTimeout(t)})}if(document.readyState==="complete"){if("requestIdleCallback"in window){requestIdleCallback(runGeo,{timeout:2000})}else{setTimeout(runGeo,0)}}else{window.addEventListener("load",function(){if("requestIdleCallback"in window){requestIdleCallback(runGeo,{timeout:2000})}else{setTimeout(runGeo,0)}})}})()</script>`;
 function h(t){return(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 let GA_ID='',SC_VERIFY='',BAIDU_VERIFY='',OG_DEFAULT='/logo.png';
 try{const m=await import('../site-config.js');GA_ID=m.SITE_CONFIG.GA_ID||'';SC_VERIFY=m.SITE_CONFIG.SC_VERIFY||'';BAIDU_VERIFY=m.SITE_CONFIG.BAIDU_VERIFY||'';OG_DEFAULT=m.SITE_CONFIG.OG_IMAGE||'/logo.png';}catch(e){};
-function lay(t,d,b,c){const u=arguments[4]||canonicalUrl(c.pfx||'');const ogPath=arguments[5]||OG_DEFAULT;const i=ogPath.startsWith('http')?ogPath:`https://${CANONICAL_HOST}${ogPath}`;const pageKw=arguments[6]||'';const kw=pageKw||c.kw||'微物联,工业物联网,电气安全,智能防雷,PLC';return'<!DOCTYPE html>\n<html lang="zh-CN">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width,initial-scale=1.0">\n<title>'+h(t)+'</title>\n<meta name="description" content="'+h(d||c.desc||'')+'">\n<meta name="keywords" content="'+h(kw)+'">\n<link rel="icon" type="image/svg+xml" href="/y-logo.svg"><link rel="canonical" href="'+h(u)+'">\n<meta name="robots" content="index,follow">\n<meta property="og:type" content="website">\n<meta property="og:title" content="'+h(t)+'">\n<meta property="og:description" content="'+h(d||c.desc||'')+'">\n<meta property="og:image" content="'+h(i)+'">\n<meta property="og:url" content="'+h(u)+'">\n<meta property="og:site_name" content="'+h(c.name||'')+'">\n<meta name="twitter:card" content="summary_large_image">\n<meta name="twitter:title" content="'+h(t)+'">\n<meta name="twitter:description" content="'+h(d||c.desc||'')+'">\n<meta name="twitter:image" content="'+h(i)+'">\n'+(SC_VERIFY?'<meta name="google-site-verification" content="'+h(SC_VERIFY)+'">\n':'')+(BAIDU_VERIFY?'<meta name="baidu-site-verification" content="'+h(BAIDU_VERIFY)+'">\n':'')+'<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"'+h(c.name||'')+'","url":"https://'+CANONICAL_HOST+'","description":"'+h(c.desc||'')+'","contactPoint":{"@type":"ContactPoint","telephone":"'+h(c.phone||'')+'","contactType":"customer service"}}</script>\n'+(GA_ID?'<script async src="https://www.googletagmanager.com/gtag/js?id='+h(GA_ID)+'"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)};gtag("js",new Date());gtag("config","'+h(GA_ID)+'");</script>\n':'')+twLink()+'\n</head>\n<body class="bg-gray-50 text-gray-900 font-sans antialiased">\n'+GEO_BANNER+'\n'+A+'\n'+b+GEO_SCRIPT+'\n</body>\n</html>';}
+function lay(t,d,b,c){const u=arguments[4]||canonicalUrl(c.pfx||'');const ogPath=arguments[5]||OG_DEFAULT;const i=ogPath.startsWith('http')?ogPath:`https://${CANONICAL_HOST}${ogPath}`;const pageKw=arguments[6]||'';const kw=pageKw||c.kw||'微物联,工业物联网,电气安全,智能防雷,PLC';return'<!DOCTYPE html>\n<html lang="zh-CN">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width,initial-scale=1.0">\n<title>'+h(t)+'</title>\n<meta name="description" content="'+h(d||c.desc||'')+'">\n<meta name="keywords" content="'+h(kw)+'">\n<link rel="icon" type="image/svg+xml" href="/y-logo.svg"><link rel="canonical" href="'+h(u)+'">\n<meta name="robots" content="index,follow">\n<meta property="og:type" content="website">\n<meta property="og:title" content="'+h(t)+'">\n<meta property="og:description" content="'+h(d||c.desc||'')+'">\n<meta property="og:image" content="'+h(i)+'">\n<meta property="og:url" content="'+h(u)+'">\n<meta property="og:site_name" content="'+h(c.name||'')+'">\n<meta name="twitter:card" content="summary_large_image">\n<meta name="twitter:title" content="'+h(t)+'">\n<meta name="twitter:description" content="'+h(d||c.desc||'')+'">\n<meta name="twitter:image" content="'+h(i)+'">\n'+(SC_VERIFY?'<meta name="google-site-verification" content="'+h(SC_VERIFY)+'">\n':'')+(BAIDU_VERIFY?'<meta name="baidu-site-verification" content="'+h(BAIDU_VERIFY)+'">\n':'')+'<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"'+h(c.name||'')+'","url":"https://'+CANONICAL_HOST+'","description":"'+h(c.desc||'')+'","contactPoint":{"@type":"ContactPoint","telephone":"'+h(c.phone||'')+'","contactType":"customer service"}}</script>\n'+(GA_ID?'<script async src="https://www.googletagmanager.com/gtag/js?id='+h(GA_ID)+'"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)};gtag("js",new Date());gtag("config","'+h(GA_ID)+'");</script>\n':'')+twLink()+UI_STYLES+'\n</head>\n<body class="bg-slate-50 text-slate-900 font-sans antialiased">\n'+GEO_BANNER+'\n'+A+'\n'+b+GEO_SCRIPT+'\n</body>\n</html>';}
 const A=`<div id="progress" style="position:fixed;top:0;left:0;height:2px;width:0%;z-index:999;background:linear-gradient(90deg,#2563eb,#60a5fa);transition:width 0.05s linear"></div>
 <div id="search-overlay" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.6);backdrop-filter:blur(8px)" onclick="if(event.target===this)closeSearch()">
   <div style="max-width:640px;margin:80px auto 0;padding:0 20px">
@@ -99,42 +99,81 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape")closeSearch(
 `;
 function slug(s){return s.replace(/[\/\s]+/g,'-').replace(/[()（）]/g,'').replace(/-+/g,'-').replace(/^-|-$/g,'')||'p';}
 
+const UI_STYLES=`<style>
+.section-label{font-size:12px;font-weight:600;letter-spacing:.06em;color:#64748b}
+.section-title{font-size:1.65rem;font-weight:700;color:#0f172a;line-height:1.3}
+.mark{display:inline-flex;align-items:center;justify-content:center;min-width:2.5rem;height:2.5rem;padding:0 .5rem;background:#f8fafc;border:1px solid #e2e8f0;font-size:11px;font-weight:700;letter-spacing:.04em;color:#334155;font-family:ui-monospace,monospace}
+.card-panel{background:#fff;border:1px solid #e2e8f0;border-radius:2px;transition:border-color .2s,box-shadow .2s}
+.card-panel:hover{border-color:#94a3b8;box-shadow:0 1px 3px rgba(15,23,42,.06)}
+.page-hero{background:#0f172a;border-bottom:3px solid #1d4ed8}
+.hero-main{background:linear-gradient(135deg,#0f172a 0%,#1e293b 55%,#1e3a5f 100%)}
+.hero-slide{transition:opacity .5s ease}
+.scroll-mt-20{scroll-margin-top:80px}
+.line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.line-clamp-4{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+</style>`;
+function sectionHead(label,title,desc='',center=false){
+  const align=center?'text-center mx-auto':'';
+  return `<div class="mb-10 max-w-2xl ${align}"><p class="section-label mb-2">${h(label)}</p><h2 class="section-title mb-2">${h(title)}</h2>${desc?`<p class="text-slate-600 text-sm leading-relaxed">${h(desc)}</p>`:''}</div>`;
+}
+function pageHero(title,desc=''){
+  return `<div class="page-hero text-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-14"><h1 class="text-2xl md:text-3xl font-bold tracking-tight">${h(title)}</h1>${desc?`<p class="text-slate-300 text-sm md:text-base mt-3 max-w-2xl leading-relaxed">${h(desc)}</p>`:''}</div></div>`;
+}
+function catCode(cat){
+  const m=[['可编程','PLC'],['工业智控','EDGE'],['电气安全','ES'],['智能防雷','SPD'],['智能断路','CB'],['软件平台','SW'],['充电站','EV'],['储能','ESS'],['温度','EST'],['监测','MON']];
+  for(const [k,v] of m){if((cat||'').includes(k))return v;}
+  return (cat||'PD').replace(/[^A-Za-z\u4e00-\u9fa5]/g,'').slice(0,3).toUpperCase()||'PD';
+}
+function catMark(cat){return `<span class="mark">${catCode(cat)}</span>`;}
+function contactRow(label,val,link){
+  const v=link?`<a href="${link}" class="text-slate-900 hover:text-primary-700 no-underline">${h(val)}</a>`:h(val);
+  return `<div class="flex gap-4 py-4 border-b border-slate-200 last:border-0"><dt class="w-16 shrink-0 text-xs font-medium text-slate-500 uppercase tracking-wide pt-0.5">${h(label)}</dt><dd class="text-sm text-slate-800 font-medium">${v}</dd></div>`;
+}
+const SVG_SEARCH='<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3-3"/></svg>';
+
 function nav(pp, c, cur, prefix='') {
   const pfx=prefix||'';
   const navItems = pp.filter(p=>p.path).map(p=>{
     const href = pfx+'/'+p.path;
-    return `<a href="${href}" class="block px-3 py-2 text-sm font-medium rounded-lg transition-colors ${href===cur?'text-primary-600 bg-primary-50':'text-gray-600 hover:text-gray-900 hover:bg-gray-100'} no-underline">${h(p.title)}</a>`;
+    return `<a href="${href}" class="block px-3 py-2 text-sm font-medium transition-colors ${href===cur?'text-primary-700 border-l-2 border-primary-600 bg-slate-50':'text-slate-600 hover:text-slate-900 hover:bg-slate-50'} no-underline">${h(p.title)}</a>`;
   }).join('');
-  return `<nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
+  const brandName=(c.name||'微物联').replace(/（.*?）/,'').replace(/\(.*?\)/,'').trim();
+  return `<nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex justify-between items-center h-16">
-<a href="${pfx||'/'}" class="flex items-center gap-2 text-lg font-bold text-gray-900 no-underline hover:no-underline">
-<img src="/y-logo.svg" alt="微物联技术" style="height:36px;width:auto"> <span>微物联技术（深圳）有限公司</span></a>
-<button id="menu-btn" class="md:hidden p-2 rounded-lg text-gray-500 hover:bg-gray-100 focus:outline-none" onclick="var m=document.getElementById('mobile-menu');m.classList.toggle('hidden')"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-<div class="hidden md:flex items-center gap-1">${navItems}
-<button class="px-3 py-2 text-sm font-medium rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 no-underline transition-colors" onclick="openSearch()">🔍</button>
-<a href="http://www.fexlink.com" target="_blank" class="hidden md:inline-flex px-3 py-2 text-sm font-medium rounded-lg text-primary-600 hover:bg-primary-50 no-underline transition-colors" rel="external">集团官网</a>
-<a href="${pfx}/contact" class="ml-2 px-4 py-2 text-sm font-medium rounded-lg bg-primary-600 text-white hover:bg-primary-700 transition-colors no-underline">联系我们</a>
+<div class="flex justify-between items-center h-14">
+<a href="${pfx||'/'}" class="flex items-center gap-3 no-underline hover:no-underline min-w-0">
+<img src="/y-logo.svg" alt="微物联" class="h-8 w-auto shrink-0">
+<span class="min-w-0"><span class="block text-base font-bold text-slate-900 leading-tight truncate">${h(brandName)}</span><span class="block text-[11px] text-slate-500 tracking-wide hidden sm:block">工业物联网 · 电气安全 · 智能防雷</span></span></a>
+<button id="menu-btn" class="md:hidden p-2 text-slate-500 hover:bg-slate-100" onclick="var m=document.getElementById('mobile-menu');m.classList.toggle('hidden')" aria-label="菜单"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+<div class="hidden md:flex items-center gap-0.5">${pp.filter(p=>p.path).map(p=>{const href=pfx+'/'+p.path;return `<a href="${href}" class="px-3 py-2 text-sm font-medium transition-colors ${href===cur?'text-primary-700':'text-slate-600 hover:text-slate-900'} no-underline">${h(p.title)}</a>`;}).join('')}
+<button class="px-2.5 py-2 text-slate-500 hover:text-slate-800" onclick="openSearch()" aria-label="搜索">${SVG_SEARCH}</button>
+<a href="http://www.fexlink.com" target="_blank" class="px-3 py-2 text-sm text-slate-600 hover:text-slate-900 no-underline" rel="external">集团官网</a>
+<a href="${pfx}/contact" class="ml-1 px-4 py-2 text-sm font-medium bg-primary-700 text-white hover:bg-primary-800 transition-colors no-underline">联系我们</a>
 </div></div>
-<div id="mobile-menu" class="hidden md:hidden border-t border-gray-200 py-3 space-y-1">${navItems}
-<a href="http://www.fexlink.com" target="_blank" class="block px-3 py-2 text-sm font-medium rounded-lg text-primary-600 hover:bg-primary-50 no-underline" rel="external">🌐 集团官网</a>
-<a href="${pfx}/contact" class="block px-3 py-2 text-sm font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700 no-underline">联系我们</a>
+<div id="mobile-menu" class="hidden md:hidden border-t border-slate-200 py-2">${navItems}
+<a href="http://www.fexlink.com" target="_blank" class="block px-3 py-2 text-sm text-slate-600 no-underline" rel="external">集团官网</a>
+<a href="${pfx}/contact" class="block mx-3 mt-2 px-4 py-2 text-sm text-center text-white bg-primary-700 no-underline">联系我们</a>
 </div></div></nav>`;
 }
 function ft(pp, c, prefix=''){
   const pfx=prefix||'';
   const grp=c.group||[];
-  return `<footer class="bg-gray-900 text-gray-400">
+  const brandName=(c.name||'微物联').replace(/（.*?）/,'').trim();
+  return `<footer class="bg-slate-900 text-slate-400 border-t-4 border-primary-700">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-<div class="grid md:grid-cols-3 gap-8">
-<div><h4 class="text-white font-semibold mb-3">${h(c.name)}</h4><p class="text-sm leading-relaxed">${h(c.desc)}</p></div>
-<div><h4 class="text-white font-semibold mb-3">联系方式</h4>
-<p class="text-sm mb-1">📞 ${h(c.phone)}</p><p class="text-sm mb-1">✉️ ${h(c.email)}</p><p class="text-sm">📍 ${h(c.addr)}</p></div>
-<div><h4 class="text-white font-semibold mb-3">快速链接</h4>
-<div class="space-y-1 text-sm"><a href="${pfx}/products" class="block text-gray-400 hover:text-white no-underline">产品中心</a>${(pp||[]).some(p=>p.path==='solutions')?'<a href="'+pfx+'/solutions" class="block text-gray-400 hover:text-white no-underline">解决方案</a>':''}${(pp||[]).some(p=>p.path==='cases')?'<a href="'+pfx+'/cases" class="block text-gray-400 hover:text-white no-underline">成功案例</a>':''}${(pp||[]).some(p=>p.path==='about')?'<a href="'+pfx+'/about" class="block text-gray-400 hover:text-white no-underline">关于我们</a>':''}<a href="http://www.fexlink.com" target="_blank" class="block text-gray-400 hover:text-white no-underline" rel="external">🌐 集团官网 fexlink.com</a></div></div>
+<div class="grid md:grid-cols-3 gap-10">
+<div><h4 class="text-white font-semibold mb-3 text-sm tracking-wide">${h(brandName)}</h4><p class="text-sm leading-relaxed text-slate-400 line-clamp-4">${h(c.desc)}</p></div>
+<div><h4 class="text-white font-semibold mb-3 text-sm tracking-wide">联系方式</h4>
+<dl class="text-sm space-y-1">
+<div><dt class="inline text-slate-500">电话：</dt><dd class="inline text-slate-300">${h(c.phone)}</dd></div>
+<div><dt class="inline text-slate-500">邮箱：</dt><dd class="inline"><a href="mailto:${h(c.email)}" class="text-slate-300 hover:text-white no-underline">${h(c.email)}</a></dd></div>
+<div><dt class="inline text-slate-500">地址：</dt><dd class="inline text-slate-300">${h(c.addr)}</dd></div>
+</dl></div>
+<div><h4 class="text-white font-semibold mb-3 text-sm tracking-wide">快速链接</h4>
+<div class="space-y-2 text-sm"><a href="${pfx}/products" class="block text-slate-400 hover:text-white no-underline">产品中心</a>${(pp||[]).some(p=>p.path==='solutions')?'<a href="'+pfx+'/solutions" class="block text-slate-400 hover:text-white no-underline">解决方案</a>':''}${(pp||[]).some(p=>p.path==='cases')?'<a href="'+pfx+'/cases" class="block text-slate-400 hover:text-white no-underline">成功案例</a>':''}${(pp||[]).some(p=>p.path==='about')?'<a href="'+pfx+'/about" class="block text-slate-400 hover:text-white no-underline">关于我们</a>':''}<a href="http://www.fexlink.com" target="_blank" class="block text-slate-400 hover:text-white no-underline" rel="external">fexlink.com</a></div></div>
 </div>
-${grp.length?`<div class="border-t border-gray-800 mt-6 pt-6"><p class="text-xs text-gray-500 text-center mb-3">集团成员</p><div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs text-gray-500">${grp.map(g=>'<span>● '+h(g)+'</span>').join('')}</div></div>`:''}
-<div class="border-t border-gray-800 mt-6 pt-6 text-center text-sm">© ${new Date().getFullYear()} ${h(c.name)} 版权所有 · <a href="https://beian.miit.gov.cn/" target="_blank" class="text-gray-500 hover:text-gray-300 no-underline" rel="nofollow">粤ICP备15018521号</a></div>
+${grp.length?`<div class="border-t border-slate-800 mt-8 pt-6"><p class="text-xs text-slate-500 mb-3">集团成员</p><div class="flex flex-wrap gap-x-5 gap-y-2 text-xs text-slate-500">${grp.map(g=>'<span>'+h(g)+'</span>').join('')}</div></div>`:''}
+<div class="border-t border-slate-800 mt-8 pt-6 text-center text-xs text-slate-500">© ${new Date().getFullYear()} ${h(c.name)} · <a href="https://beian.miit.gov.cn/" target="_blank" class="hover:text-slate-300 no-underline" rel="nofollow">粤ICP备15018521号</a></div>
 </div></footer>`;
 }
 
@@ -578,245 +617,234 @@ ${rel?`<section class="py-12 bg-gray-50"><div class="max-w-7xl mx-auto px-4 sm:p
 
 function genHome(pp, c, sls, cs, feat, sn, pfx, pageMeta) {
   const cats = PROD[sn] || PROD.yeslon;
-  const featColors = ['from-blue-500 to-blue-600','from-emerald-500 to-emerald-600','from-amber-500 to-orange-600','from-cyan-500 to-cyan-600','from-violet-500 to-violet-600','from-rose-500 to-rose-600'];
-  const featIcons = ['⚙️','⚡','🌩️','📡','🤖','🔬'];
-  const featCards = (feat.length?feat:['工业PLC控制','电气安全监测','智能防雷系统','工业物联网平台']).map((f,i)=>
-    `<div class="group relative bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-500 hover:-translate-y-1 overflow-hidden">
-      <div class="absolute inset-0 bg-gradient-to-br ${featColors[i%featColors.length]} opacity-0 group-hover:opacity-5 transition-opacity duration-500"></div>
-      <div class="relative"><div class="w-14 h-14 bg-gradient-to-br ${featColors[i%featColors.length]} rounded-2xl flex items-center justify-center mb-5 shadow-lg shadow-blue-500/20 text-2xl">${featIcons[i%featIcons.length]}</div>
-      <h3 class="text-lg font-bold text-gray-900 group-hover:text-primary-700 transition-colors">${h(f)}</h3></div>
+  const feats = feat.length?feat:['工业PLC控制','电气安全监测','智能防雷系统','工业物联网平台'];
+  const featCards = feats.map((f,i)=>
+    `<div class="card-panel p-6 flex gap-4 items-start">
+      <span class="mark shrink-0">${String(i+1).padStart(2,'0')}</span>
+      <h3 class="text-base font-semibold text-slate-900 leading-snug pt-1">${h(f)}</h3>
     </div>`).join('');
-  const catCards = cats.map(cat=>`<div class="group bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-500 hover:-translate-y-1 cursor-pointer" onclick="location.href='${pfx}/products'"><span class="text-4xl block mb-4">${cat.ico}</span><h3 class="text-lg font-bold text-gray-900 group-hover:text-primary-700 transition-colors">${h(cat.cat)}</h3><p class="text-sm text-gray-400 mt-1">${cat.items.length}款产品</p><div class="mt-4 w-8 h-0.5 bg-primary-200 group-hover:w-12 group-hover:bg-primary-500 transition-all duration-500"></div></div>`).join('');
-  const solIcons = ['🎯','🔋','🔍','🌍','🌩️','📊'];
-  const solCards = sls.map((s,i)=>{const ss=s.slug||slug(s.title);return `<a href="${pfx}/solutions/${ss}" class="group block bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-500 hover:-translate-y-1 no-underline"><div class="flex items-center gap-3 mb-3"><span class="text-2xl">${solIcons[i%6]||'📋'}</span><h3 class="font-bold text-gray-900 group-hover:text-primary-700 transition-colors text-base">${h(s.title)}</h3></div>${s.description?'<p class="text-sm text-gray-500 leading-relaxed line-clamp-2">'+h(s.description.slice(0,120))+'</p>':''}<span class="text-sm text-primary-600 font-medium mt-3 inline-flex items-center gap-1 group-hover:gap-2 transition-all">查看详情 <span>→</span></span></a>`;}).join('');
-  const caseCards = cs.slice(0,3).map(c=>`<a href="/cases" class="group block bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-500 hover:-translate-y-1 no-underline"><div class="flex items-center gap-3 mb-3"><span class="w-10 h-10 bg-primary-50 rounded-xl flex items-center justify-center text-primary-600 font-bold text-sm flex-shrink-0">案</span><div><h3 class="font-bold text-gray-900 group-hover:text-primary-700 transition-colors">${h(c.title)}</h3>${c.client?'<span class="text-xs text-gray-400">'+h(c.client)+'</span>':''}</div></div>${c.description?'<p class="text-sm text-gray-500 leading-relaxed line-clamp-2">'+h(c.description.slice(0,120))+'</p>':''}</a>`).join('');
+  const catCards = cats.map(cat=>`<a href="${pfx}/products" class="card-panel p-6 block no-underline group">
+    <div class="flex items-start gap-4 mb-3">${catMark(cat.cat)}<div><h3 class="text-base font-semibold text-slate-900 group-hover:text-primary-800">${h(cat.cat)}</h3><p class="text-xs text-slate-500 mt-1">${cat.items.length} 款产品</p></div></div>
+    <p class="text-xs text-primary-700 font-medium">查看产品目录</p></a>`).join('');
+  const solCards = sls.map((s)=>{const ss=s.slug||slug(s.title);return `<a href="${pfx}/solutions/${ss}" class="card-panel p-6 block no-underline border-l-4 border-l-primary-700 group">
+    <h3 class="font-semibold text-slate-900 group-hover:text-primary-800 text-base mb-2">${h(s.title)}</h3>
+    ${s.description?'<p class="text-sm text-slate-600 leading-relaxed line-clamp-2">'+h(s.description.slice(0,120))+'</p>':''}
+    <p class="text-xs text-slate-500 mt-3">方案说明</p></a>`;}).join('');
+  const caseCards = cs.slice(0,3).map(item=>`<a href="${pfx}/cases" class="card-panel p-6 block no-underline group">
+    <div class="flex items-baseline justify-between gap-3 mb-2"><h3 class="font-semibold text-slate-900 group-hover:text-primary-800">${h(item.title)}</h3>${item.client?'<span class="text-[11px] text-slate-500 shrink-0">'+h(item.client)+'</span>':''}</div>
+    ${item.description?'<p class="text-sm text-slate-600 leading-relaxed line-clamp-2">'+h(item.description.slice(0,120))+'</p>':''}</a>`).join('');
 
   const slides=[
-    {bg:'from-gray-900 via-blue-900 to-blue-700',ico:'⚡',t:'电气安全监测系统',d:'ESA智能电表 · ESB三相不平衡 · EST温度监测 · FA电弧探测 · 全系列电气安全产品',btn:'查看产品',url:pfx+'/products',tag:'核心产品'},
-    {bg:'from-gray-900 via-indigo-900 to-indigo-700',ico:'🌩️',t:'智能防雷系统解决方案',d:'FS/FSS/FSP电涌保护器监测 · FL雷电峰值记录 · FR/FRP接地电阻在线监测 · FG智能网关',btn:'了解方案',url:pfx+'/solutions/smart-lightning-protection',tag:'解决方案'},
-    {bg:'from-gray-900 via-emerald-900 to-emerald-700',ico:'🏭',t:'工业园区智慧能源方案',d:'园区配电监测 · 能耗管理 · 碳排追踪 · AI诊断 · 4×3×2能碳自治框架',btn:'了解方案',url:pfx+'/solutions/industrial-park-smart-energy',tag:'解决方案'},
-    {bg:'from-gray-900 via-amber-900 to-amber-700',ico:'🔋',t:'新能源充电站电气安全',d:'充电桩漏电监测 · 谐波指纹AI分析 · 电弧故障检测 · 电动自行车充电棚安全',btn:'了解方案',url:pfx+'/solutions/ev-charging-electrical-safety',tag:'解决方案'},
-    {bg:'from-gray-900 via-rose-900 to-rose-700',ico:'🤖',t:'太一AI智能诊断平台',d:'千知·万象·天衍三大模型 · 60+算法引擎 · 408项国标AI规则 · 隐患提前30天预警',btn:'了解更多',url:pfx+'/solutions/electrical-hazard-monitoring',tag:'AI技术'},
+    {t:'工业物联网与电气安全监测',d:'ESA/ESB/EST 全系列电气安全产品，覆盖配电监测、隐患分析与在线预警。',btn:'产品中心',url:pfx+'/products',tag:'电气安全'},
+    {t:'智能防雷在线监测系统',d:'FS/FSS/FL/FR/FG 系列产品，实现 SPD 状态、雷电流与接地电阻连续监测。',btn:'防雷方案',url:pfx+'/solutions/smart-lightning-protection',tag:'智能防雷'},
+    {t:'新能源充电站电气安全保障',d:'充电站与电动自行车充电棚的谐波分析、漏电与电弧监测整体方案。',btn:'充电安全',url:pfx+'/solutions/ev-charging-electrical-safety',tag:'新能源'},
   ];
 
   const bd=`${nav(pp,c,pfx+'/',pfx)}
-<style>.line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.hero-slide{transition:opacity .6s ease,transform .6s ease}.hero-dot{transition:all .3s ease}</style>
-<div class="relative overflow-hidden bg-gray-900" id="hero-carousel" style="min-height:520px">
-${slides.map((s,i)=>`<div class="hero-slide absolute inset-0 bg-gradient-to-br ${s.bg} ${i===0?'opacity-100':'opacity-0 pointer-events-none'}" data-idx="${i}">
-  <div class="absolute inset-0 opacity-5" style="background-image:radial-gradient(circle at 20% 30%,white 0%,transparent 40%),radial-gradient(circle at 80% 70%,white 0%,transparent 30%)"></div>
-  <div class="absolute inset-0 opacity-[0.03]" style="background-image:linear-gradient(rgba(255,255,255,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.2) 1px,transparent 1px);background-size:60px 60px"></div>
-</div>`).join('')}
-<div class="relative z-10" style="min-height:520px">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
-    ${slides.map((s,i)=>`<div class="slide-content text-white ${i===0?'block':'hidden'}" data-idx="${i}">
-      <div class="max-w-3xl"><span class="inline-block px-3 py-1 bg-white/10 text-white/80 text-xs font-semibold rounded-full mb-4">${s.tag}</span>
-      <div class="text-5xl mb-3">${s.ico}</div>
-      <h1 class="text-4xl md:text-5xl font-bold mb-4 leading-tight tracking-tight">${s.t}</h1>
-      <p class="text-lg md:text-xl text-blue-100/70 leading-relaxed mb-8 max-w-2xl">${s.d}</p>
-      <a href="${s.url}" class="inline-flex items-center gap-2 px-7 py-3 bg-white text-primary-700 font-semibold rounded-xl hover:bg-gray-100 hover:shadow-2xl transition-all duration-300 no-underline">${s.btn} <span class="text-lg">→</span></a>
-      <a href="${pfx}/contact" class="inline-flex items-center gap-2 px-7 py-3 ml-3 border-2 border-white/20 text-white font-semibold rounded-xl hover:bg-white/10 hover:border-white/40 transition-all duration-300 no-underline">联系我们</a>
-    </div></div>`).join('')}
-  </div>
-  <!-- dots -->
-  <div class="absolute bottom-6 left-0 right-0 flex justify-center gap-2 z-10">${slides.map((_,i)=>`<button class="hero-dot w-2.5 h-2.5 rounded-full ${i===0?'bg-white w-6':'bg-white/40 hover:bg-white/60'}" onclick="goSlide(${i})"></button>`).join('')}</div>
-  <!-- arrows -->
-  <button class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-xl z-10 backdrop-blur transition-all" onclick="prevSlide()">‹</button>
-  <button class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-xl z-10 backdrop-blur transition-all" onclick="nextSlide()">›</button>
+<div class="hero-main text-white relative overflow-hidden" id="hero-carousel">
+<div class="absolute inset-0 opacity-[0.04]" style="background-image:linear-gradient(rgba(255,255,255,.15) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.15) 1px,transparent 1px);background-size:48px 48px"></div>
+${slides.map((s,i)=>`<div class="hero-slide absolute inset-0 ${i===0?'opacity-100':'opacity-0 pointer-events-none'}" data-idx="${i}"></div>`).join('')}
+<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
+${slides.map((s,i)=>`<div class="slide-content max-w-3xl ${i===0?'block':'hidden'}" data-idx="${i}">
+  <p class="text-xs font-medium text-slate-300 mb-4 tracking-wide">${h(s.tag)}</p>
+  <h1 class="text-3xl md:text-4xl font-bold mb-4 leading-tight">${s.t}</h1>
+  <p class="text-sm md:text-base text-slate-300 leading-relaxed mb-8 max-w-2xl">${s.d}</p>
+  <div class="flex flex-wrap gap-3">
+    <a href="${s.url}" class="px-5 py-2.5 bg-white text-slate-900 text-sm font-semibold hover:bg-slate-100 no-underline">${s.btn}</a>
+    <a href="${pfx}/contact" class="px-5 py-2.5 border border-slate-500 text-slate-200 text-sm font-medium hover:border-slate-300 no-underline">技术咨询</a>
+  </div></div>`).join('')}
+<div class="flex gap-2 mt-10">${slides.map((_,i)=>`<button class="hero-dot h-1 rounded-none ${i===0?'w-8 bg-white':'w-4 bg-slate-500'}" onclick="goSlide(${i})" aria-label="幻灯片 ${i+1}"></button>`).join('')}</div>
 </div>
 <script>
-var si=[${slides.map((_,i)=>i).filter(()=>true)}],ci=0,ti;
-function goSlide(n){var os=document.querySelectorAll('.hero-slide'),cs=document.querySelectorAll('.slide-content'),ds=document.querySelectorAll('.hero-dot');os.forEach(function(e,i){e.classList.toggle('opacity-100',i===n);e.classList.toggle('opacity-0',i!==n);e.classList.toggle('pointer-events-none',i!==n)});cs.forEach(function(e,i){e.classList.toggle('block',i===n);e.classList.toggle('hidden',i!==n)});ds.forEach(function(e,i){e.classList.toggle('bg-white',i===n);e.classList.toggle('w-6',i===n);e.classList.toggle('bg-white/40',i!==n);e.classList.toggle('w-2.5',i!==n)});ci=n;clearInterval(ti);ti=setInterval(function(){ci=(ci+1)%${slides.length};goSlide(ci)},5000)}
-function nextSlide(){goSlide((ci+1)%${slides.length})}
-function prevSlide(){goSlide((ci-1+${slides.length})%${slides.length})}
-ti=setInterval(function(){ci=(ci+1)%${slides.length};goSlide(ci)},5000);
+var ci=0,ti;
+function goSlide(n){document.querySelectorAll('.hero-slide').forEach(function(e,i){e.classList.toggle('opacity-100',i===n);e.classList.toggle('opacity-0',i!==n);e.classList.toggle('pointer-events-none',i!==n)});document.querySelectorAll('.slide-content').forEach(function(e,i){e.classList.toggle('block',i===n);e.classList.toggle('hidden',i!==n)});document.querySelectorAll('.hero-dot').forEach(function(e,i){e.classList.toggle('bg-white',i===n);e.classList.toggle('w-8',i===n);e.classList.toggle('bg-slate-500',i!==n);e.classList.toggle('w-4',i!==n)});ci=n;clearInterval(ti);ti=setInterval(function(){ci=(ci+1)%${slides.length};goSlide(ci)},7000)}
+ti=setInterval(function(){ci=(ci+1)%${slides.length};goSlide(ci)},7000);
 </script>
 </div>
 
-<section class="py-20 md:py-28 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="text-center mb-16"><span class="text-xs font-semibold text-primary-600 tracking-[0.2em] uppercase bg-primary-50 px-4 py-1.5 rounded-full">核心业务</span><h2 class="text-3xl md:text-4xl font-bold mt-4 mb-3">以技术驱动能源安全</h2><p class="text-gray-400 max-w-xl mx-auto">从感知到决策，全栈自研构建工业物联网核心能力</p></div>
-<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">${featCards}</div>
+${sn==='yeslon'&&!pfx?`<div class="bg-white border-b border-slate-200"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap gap-2 text-xs">
+<a href="/products" class="px-3 py-1.5 border border-slate-200 text-slate-700 hover:border-primary-600 hover:text-primary-800 no-underline">产品中心</a>
+<a href="/solutions/ev-charging-electrical-safety" class="px-3 py-1.5 border border-slate-200 text-slate-700 hover:border-primary-600 hover:text-primary-800 no-underline">充电安全</a>
+<a href="/solutions/electrical-hazard-monitoring" class="px-3 py-1.5 border border-slate-200 text-slate-700 hover:border-primary-600 hover:text-primary-800 no-underline">隐患监测</a>
+<a href="/solutions/smart-lightning-protection" class="px-3 py-1.5 border border-slate-200 text-slate-700 hover:border-primary-600 hover:text-primary-800 no-underline">智能防雷</a>
+<a href="/industrial-plc/" class="px-3 py-1.5 border border-slate-200 text-slate-700 hover:border-primary-600 hover:text-primary-800 no-underline">工业PLC</a>
+</div></div>`:''}
+
+<section class="py-14 md:py-20 bg-white border-b border-slate-100"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+${sectionHead('业务能力','核心产品与系统能力','端-边-云全栈自研，面向工业现场与能源基础设施。')}
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">${featCards}</div>
 </div></section>
 
-<section class="py-20 md:py-28 bg-gradient-to-b from-gray-50 to-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="text-center mb-16"><span class="text-xs font-semibold text-primary-600 tracking-[0.2em] uppercase bg-primary-50 px-4 py-1.5 rounded-full">产品系列</span><h2 class="text-3xl md:text-4xl font-bold mt-4 mb-3">全栈产品矩阵</h2><p class="text-gray-400 max-w-xl mx-auto">覆盖工业控制、电气安全、智能防雷、软件平台全链路</p></div>
-<div class="grid md:grid-cols-3 lg:grid-cols-3 gap-5">${catCards}</div>
+<section class="py-14 md:py-20 bg-slate-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+${sectionHead('产品目录','产品系列','按产品线浏览规格、型号与应用说明。')}
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">${catCards}</div>
 </div></section>
 
-${sls.length?`<section class="py-20 md:py-28 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="text-center mb-16"><span class="text-xs font-semibold text-primary-600 tracking-[0.2em] uppercase bg-primary-50 px-4 py-1.5 rounded-full">解决方案</span><h2 class="text-3xl md:text-4xl font-bold mt-4 mb-3">行业解决方案</h2><p class="text-gray-400 max-w-xl mx-auto">针对各行业场景的深度技术方案</p></div>
-<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">${solCards}</div>
+${sls.length?`<section class="py-14 md:py-20 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+${sectionHead('行业应用','解决方案','面向充电站、园区、机场、高速等场景的工程化方案。')}
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">${solCards}</div>
 </div></section>`:''}
 
-${cs.length?`<section class="py-20 md:py-28 bg-gradient-to-b from-gray-50 to-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="text-center mb-16"><span class="text-xs font-semibold text-primary-600 tracking-[0.2em] uppercase bg-primary-50 px-4 py-1.5 rounded-full">成功案例</span><h2 class="text-3xl md:text-4xl font-bold mt-4 mb-3">客户成功实践</h2><p class="text-gray-400 max-w-xl mx-auto">服务200+客户，覆盖12大行业</p></div>
-<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">${caseCards}</div>
-<div class="text-center mt-10"><a href="${pfx}/cases" class="inline-flex items-center gap-2 px-6 py-3 border-2 border-primary-200 text-primary-700 font-semibold rounded-xl hover:bg-primary-50 hover:border-primary-400 transition-all no-underline group">查看全部案例 <span class="group-hover:translate-x-1 transition-transform">→</span></a></div>
+${cs.length?`<section class="py-14 md:py-20 bg-slate-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+${sectionHead('项目经验','典型案例','200+ 客户项目，覆盖新能源、交通、石化、园区等行业。')}
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">${caseCards}</div>
+<div class="mt-8"><a href="${pfx}/cases" class="text-sm font-medium text-primary-800 hover:text-primary-900 no-underline">查看全部案例</a></div>
 </div></section>`:''}
 
-${sn==='yeslon'&&!pfx?`<section class="py-20 md:py-28 bg-white border-t border-gray-100"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="text-center mb-16"><span class="text-xs font-semibold text-primary-600 tracking-[0.2em] uppercase bg-primary-50 px-4 py-1.5 rounded-full">产品线站点</span><h2 class="text-3xl md:text-4xl font-bold mt-4 mb-3">按场景深入探索</h2><p class="text-gray-400 max-w-xl mx-auto">四大垂直产品线，覆盖新能源、电气安全、智能防雷与工业控制</p></div>
-<div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
-<a href="/energy/" class="group block bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-xl hover:border-primary-200 transition-all no-underline"><span class="text-3xl block mb-3">🔋</span><h3 class="font-bold text-gray-900 group-hover:text-primary-700 transition-colors">新能源充电与电气安全</h3><p class="text-sm text-gray-500 mt-2 leading-relaxed">充电站谐波监测、储能安全、电动自行车充电棚</p><span class="text-sm text-primary-600 font-medium mt-3 inline-block">进入站点 →</span></a>
-<a href="/electrical-safety/" class="group block bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-xl hover:border-primary-200 transition-all no-underline"><span class="text-3xl block mb-3">⚡</span><h3 class="font-bold text-gray-900 group-hover:text-primary-700 transition-colors">电气安全监测系统</h3><p class="text-sm text-gray-500 mt-2 leading-relaxed">ESA智能电表、ESB三相不平衡、EST无线测温</p><span class="text-sm text-primary-600 font-medium mt-3 inline-block">进入站点 →</span></a>
-<a href="/lightning-protection/" class="group block bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-xl hover:border-primary-200 transition-all no-underline"><span class="text-3xl block mb-3">🌩️</span><h3 class="font-bold text-gray-900 group-hover:text-primary-700 transition-colors">智能防雷监测系统</h3><p class="text-sm text-gray-500 mt-2 leading-relaxed">FS/FSS/FL/FR/FG全系列防雷在线监测</p><span class="text-sm text-primary-600 font-medium mt-3 inline-block">进入站点 →</span></a>
-<a href="/industrial-plc/" class="group block bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-xl hover:border-primary-200 transition-all no-underline"><span class="text-3xl block mb-3">🧠</span><h3 class="font-bold text-gray-900 group-hover:text-primary-700 transition-colors">工业分布式PLC控制</h3><p class="text-sm text-gray-500 mt-2 leading-relaxed">CC/CR/X系列可编程控制器、设备大脑</p><span class="text-sm text-primary-600 font-medium mt-3 inline-block">进入站点 →</span></a>
+${sn==='yeslon'&&!pfx?`<section class="py-14 md:py-20 bg-white border-t border-slate-100"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+${sectionHead('专题站点','按产品线浏览','各产品线独立站点，便于按场景检索技术资料。')}
+<div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+<a href="/energy/" class="card-panel p-5 block no-underline"><div class="flex gap-3 items-center mb-2">${catMark('充电站安全')}<h3 class="font-semibold text-slate-900 text-sm">新能源充电与电气安全</h3></div><p class="text-xs text-slate-600 leading-relaxed">充电站谐波监测、储能安全、充电棚监测</p></a>
+<a href="/electrical-safety/" class="card-panel p-5 block no-underline"><div class="flex gap-3 items-center mb-2">${catMark('电气安全监测')}<h3 class="font-semibold text-slate-900 text-sm">电气安全监测系统</h3></div><p class="text-xs text-slate-600 leading-relaxed">ESA、ESB、EST 及电气火灾监测</p></a>
+<a href="/lightning-protection/" class="card-panel p-5 block no-underline"><div class="flex gap-3 items-center mb-2">${catMark('智能防雷')}<h3 class="font-semibold text-slate-900 text-sm">智能防雷监测系统</h3></div><p class="text-xs text-slate-600 leading-relaxed">SPD、雷电流、接地电阻在线监测</p></a>
+<a href="/industrial-plc/" class="card-panel p-5 block no-underline"><div class="flex gap-3 items-center mb-2">${catMark('可编程控制器')}<h3 class="font-semibold text-slate-900 text-sm">工业分布式PLC控制</h3></div><p class="text-xs text-slate-600 leading-relaxed">CC/CR/X 系列 PLC 与边缘网关</p></a>
 </div></div></section>`:''}
 
-<section class="relative overflow-hidden bg-gradient-to-br from-primary-600 via-primary-700 to-primary-900 text-white py-20"><div class="absolute inset-0 opacity-10" style="background-image:radial-gradient(circle at 30% 20%,white 0%,transparent 50%),radial-gradient(circle at 70% 80%,white 0%,transparent 40%)"></div><div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"><h2 class="text-3xl md:text-4xl font-bold mb-4">需要定制化方案？</h2><p class="text-blue-100/80 text-lg mb-10 max-w-xl mx-auto">联系我们获取产品资料、技术方案及项目报价</p><a href="${pfx}/contact" class="inline-flex items-center gap-2 px-8 py-3.5 bg-white text-primary-700 font-semibold rounded-xl hover:bg-gray-100 hover:shadow-2xl transition-all duration-300 shadow-lg no-underline group">📧 立即咨询 <span class="group-hover:translate-x-1 transition-transform">→</span></a></div></section>${ft(pp,c,pfx)}`;
+<section class="bg-slate-900 text-white py-14 border-t-4 border-primary-700"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+<div><h2 class="text-xl font-bold mb-2">获取技术方案与报价</h2><p class="text-slate-400 text-sm">提供产品资料、系统方案书及项目配置建议</p></div>
+<a href="${pfx}/contact" class="inline-flex px-6 py-3 bg-primary-700 text-white text-sm font-semibold hover:bg-primary-600 no-underline shrink-0">联系技术团队</a>
+</div></section>${ft(pp,c,pfx)}`;
   const siteUrl=canonicalUrl(pfx);const pm=pageMeta||{};return lay('首页 - '+c.name,pm.desc||c.desc,bd,c,siteUrl,OG_DEFAULT,pm.kw||'');
 }
 function prodsPage(pp, c, sn, pfx) {
   const cats = PROD[sn] || PROD.yeslon;
-  const tabLinks = cats.map((cat,i)=>`<button onclick="location.href='#${slug(cat.cat)}'" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors border border-gray-200 hover:border-primary-300 hover:text-primary-600 ${i===0?'bg-primary-50 text-primary-600 border-primary-200':'bg-white text-gray-600'}">${cat.ico} ${h(cat.cat)}</button>`).join('');
+  const tabLinks = cats.map((cat,i)=>`<button onclick="location.href='#${slug(cat.cat)}'" class="px-3 py-1.5 text-sm border transition-colors ${i===0?'border-primary-700 text-primary-800 bg-slate-50':'border-slate-200 text-slate-600 hover:border-slate-400'}">${h(cat.cat)}</button>`).join('');
 
-  // Quick reference table for all products
-  const tableRows = cats.flatMap(cat=>cat.items.map(item=>`<tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-    <td class="py-3 px-4"><a href="${pfx}/products/${slug(item.n)}" class="text-primary-600 hover:text-primary-700 font-medium text-sm no-underline">${h(item.n)}</a></td>
-    <td class="py-3 px-4 text-sm text-gray-500">${item.m||'-'}</td>
-    <td class="py-3 px-4"><span class="text-xs px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full">${h(cat.cat)}</span></td>
-    <td class="py-3 px-4 text-right"><a href="${pfx}/products/${slug(item.n)}" class="text-xs text-primary-600 hover:text-primary-700 font-medium no-underline">查看 →</a></td>
+  const tableRows = cats.flatMap(cat=>cat.items.map(item=>`<tr class="border-b border-slate-100 hover:bg-slate-50">
+    <td class="py-3 px-4"><a href="${pfx}/products/${slug(item.n)}" class="text-primary-800 hover:text-primary-900 font-medium text-sm no-underline">${h(item.n)}</a></td>
+    <td class="py-3 px-4 text-sm text-slate-500 font-mono text-xs">${item.m||'—'}</td>
+    <td class="py-3 px-4 text-xs text-slate-600">${h(cat.cat)}</td>
+    <td class="py-3 px-4 text-right"><a href="${pfx}/products/${slug(item.n)}" class="text-xs text-primary-800 font-medium no-underline">规格</a></td>
   </tr>`)).join('');
 
-  const catSections = cats.map(cat=>`<section id="${slug(cat.cat)}" class="py-12 scroll-mt-20 ${cats.indexOf(cat)%2===0?'bg-white':'bg-gray-50'}">
+  const catSections = cats.map(cat=>`<section id="${slug(cat.cat)}" class="py-12 scroll-mt-20 ${cats.indexOf(cat)%2===0?'bg-white':'bg-slate-50'}">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center justify-between mb-8">
-<div class="flex items-center gap-3"><span class="text-3xl">${cat.ico}</span><h2 class="text-2xl font-bold">${h(cat.cat)}</h2><span class="text-sm text-gray-400">（${cat.items.length}款）</span></div>
-<a href="${pfx}/products" class="text-sm text-primary-600 hover:text-primary-700 no-underline">↑ 返回顶部</a>
+<div class="flex items-center justify-between mb-8 border-b border-slate-200 pb-4">
+<div class="flex items-center gap-3">${catMark(cat.cat)}<h2 class="text-xl font-bold text-slate-900">${h(cat.cat)}</h2><span class="text-xs text-slate-500">${cat.items.length} 款</span></div>
+<a href="${pfx}/products" class="text-xs text-slate-500 hover:text-primary-800 no-underline">返回目录</a>
 </div>
-<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">${cat.items.map(item=>`<div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-shadow flex flex-col">
-<div class="flex-1"><h3 class="font-semibold text-gray-900 text-sm">${h(item.n)}</h3>${item.m?'<p class="text-xs text-gray-400 mt-0.5">'+h(item.m)+'</p>':''}<p class="text-xs text-gray-500 mt-2 leading-relaxed line-clamp-2">${h((item.d||item.desc||'').slice(0,100))}</p></div>
-<a href="${pfx}/products/${slug(item.n)}" class="inline-block mt-3 text-xs text-primary-600 hover:text-primary-700 font-medium no-underline self-start">查看详情 →</a>
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-3">${cat.items.map(item=>`<div class="card-panel p-4 flex flex-col">
+<h3 class="font-semibold text-slate-900 text-sm">${h(item.n)}</h3>${item.m?'<p class="text-xs text-slate-500 mt-1 font-mono">'+h(item.m)+'</p>':''}<p class="text-xs text-slate-600 mt-2 leading-relaxed line-clamp-2 flex-1">${h((item.d||item.desc||'').slice(0,100))}</p>
+<a href="${pfx}/products/${slug(item.n)}" class="text-xs text-primary-800 font-medium mt-3 no-underline self-start">产品说明</a>
 </div>`).join('')}
 </div></div></section>`).join('');
 
   const bd=`${nav(pp,c,pfx+'/products',pfx)}
-<style>.line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.scroll-mt-20{scroll-margin-top:80px}</style>
-<div class="bg-gradient-to-r from-primary-700 to-primary-900 text-white">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-<h1 class="text-3xl md:text-4xl font-bold mb-3">产品中心</h1>
-<p class="text-primary-100 text-lg mb-6">${h(c.name)} 全系列产品 · 点击分类快速定位</p>
-<div class="flex flex-wrap gap-2">${tabLinks}</div>
-</div></div>
-
-<!-- Quick Reference Table -->
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-10">
-<div class="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
-<div class="p-4 border-b border-gray-100 bg-gray-50"><h3 class="font-semibold text-sm text-gray-700">📋 全部产品速查表</h3></div>
+${pageHero('产品中心',c.name+' 产品目录与型号索引')}
+<div class="bg-white border-b border-slate-200"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap gap-2">${tabLinks}</div></div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="card-panel overflow-hidden">
+<div class="px-4 py-3 border-b border-slate-200 bg-slate-50"><h3 class="font-semibold text-sm text-slate-700">产品速查表</h3></div>
 <div class="overflow-x-auto"><table class="w-full text-sm">
-<thead><tr class="bg-gray-50 text-left text-xs text-gray-500 uppercase tracking-wider">
+<thead><tr class="bg-slate-50 text-left text-xs text-slate-500">
 <th class="py-3 px-4 font-medium">产品名称</th><th class="py-3 px-4 font-medium">型号</th><th class="py-3 px-4 font-medium">分类</th><th class="py-3 px-4 font-medium text-right">详情</th>
 </tr></thead><tbody>${tableRows}</tbody>
 </table></div></div></div>
-
 ${catSections}${ft(pp,c,pfx)}`;
   const siteU=canonicalUrl(pfx,'products');return lay('产品中心 - '+c.name,c.name+'产品中心',bd,c,siteU);
 }
 
 function aboutPage(pp,c,pfx){
   const bd=`${nav(pp,c,pfx+'/about',pfx)}
-<div class="bg-gradient-to-r from-primary-700 to-primary-900 text-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16"><h1 class="text-3xl font-bold">关于我们</h1><p class="text-primary-200 mt-2 text-lg max-w-2xl">有电，就有微物联．用数据重构能源效率</p></div></div>
+${pageHero('关于我们','有电，就有微物联 — 用数据重构能源效率')}
 
-<section class="py-16 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="grid md:grid-cols-2 gap-16 items-center mb-20">
-<div><span class="text-sm font-semibold text-primary-600 tracking-wider">COMPANY OVERVIEW</span>
-<h2 class="text-3xl font-bold mt-3 mb-6">微物联技术（深圳）有限公司</h2>
-<p class="text-gray-600 leading-relaxed mb-4">微物联技术成立于2016年，总部位于深圳市福田深港科技合作区，是一家专注于<span class="font-semibold text-gray-900">工业物联网、电气安全监测、智能防雷及工业分布式控制</span>领域的国家高新技术企业。</p>
-<p class="text-gray-600 leading-relaxed mb-4">公司拥有从智能传感器、边缘计算网关到AI分析平台、云平台的完整产品体系，是国内少数具备<span class="font-semibold text-gray-900">"端-边-云"全栈自主研发能力</span>的工业物联网企业之一。</p>
-<p class="text-gray-600 leading-relaxed">公司以"让每一度电都可见、可懂、可优化"为使命，致力于为新能源充电站、工业园区、机场、高速公路、商业综合体、数据中心等场景提供电气安全与能源管理的整体解决方案。</p></div>
-<div class="bg-gray-50 rounded-2xl p-8">
-<div class="grid grid-cols-2 gap-6">
-<div class="text-center"><div class="text-4xl font-bold text-primary-600">2016</div><p class="text-sm text-gray-500 mt-1">公司成立</p></div>
-<div class="text-center"><div class="text-4xl font-bold text-primary-600">200+</div><p class="text-sm text-gray-500 mt-1">服务客户</p></div>
-<div class="text-center"><div class="text-4xl font-bold text-primary-600">60+</div><p class="text-sm text-gray-500 mt-1">算法模型</p></div>
-<div class="text-center"><div class="text-4xl font-bold text-primary-600">40+</div><p class="text-sm text-gray-500 mt-1">产品系列</p></div>
+<section class="py-14 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid md:grid-cols-2 gap-12 items-start mb-16">
+<div>${sectionHead('公司概况','微物联技术（深圳）有限公司')}
+<p class="text-slate-600 leading-relaxed mb-4 text-sm">微物联技术成立于2016年，总部位于深圳市福田深港科技合作区，专注于工业物联网、电气安全监测、智能防雷及工业分布式控制领域的国家高新技术企业。</p>
+<p class="text-slate-600 leading-relaxed mb-4 text-sm">公司拥有从智能传感器、边缘计算网关到 AI 分析平台、云平台的完整产品体系，具备"端-边-云"全栈自主研发能力。</p>
+<p class="text-slate-600 leading-relaxed text-sm">服务新能源充电站、工业园区、机场、高速公路、商业综合体、数据中心等场景。</p></div>
+<div class="card-panel p-8">
+<div class="grid grid-cols-2 gap-6 text-center">
+<div><div class="text-3xl font-bold text-slate-900">2016</div><p class="text-xs text-slate-500 mt-1">成立年份</p></div>
+<div><div class="text-3xl font-bold text-slate-900">200+</div><p class="text-xs text-slate-500 mt-1">服务客户</p></div>
+<div><div class="text-3xl font-bold text-slate-900">60+</div><p class="text-xs text-slate-500 mt-1">算法模型</p></div>
+<div><div class="text-3xl font-bold text-slate-900">40+</div><p class="text-xs text-slate-500 mt-1">产品系列</p></div>
 </div></div></div>
 </div></section>
 
-<section class="py-16 bg-gray-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="text-center mb-12"><span class="text-sm font-semibold text-primary-600 tracking-wider">BRAND & MISSION</span><h2 class="text-3xl font-bold mt-3">品牌与使命</h2></div>
-<div class="grid md:grid-cols-3 gap-8">
-<div class="bg-white rounded-xl p-8 text-center"><div class="text-4xl mb-4">⚡</div><h3 class="font-bold text-lg mb-3">企业使命</h3><p class="text-gray-500 text-sm leading-relaxed">让每一度电都可见、可懂、可优化．通过物联网+AI技术，让用电安全从"被动报警"走向"主动预防"。</p></div>
-<div class="bg-white rounded-xl p-8 text-center"><div class="text-4xl mb-4">🎯</div><h3 class="font-bold text-lg mb-3">品牌理念</h3><p class="text-gray-500 text-sm leading-relaxed">"有电，就有微物联"——我们相信电气安全是每个企业、每个家庭的刚需，微物联致力于成为电气安全与能效管理领域的首选品牌。</p></div>
-<div class="bg-white rounded-xl p-8 text-center"><div class="text-4xl mb-4">🔬</div><h3 class="font-bold text-lg mb-3">技术理念</h3><p class="text-gray-500 text-sm leading-relaxed">"用数据重构能源效率"——以物联网感知层为基础，以AI算法为核心，实现从数据采集到智能决策的完整闭环。</p></div>
+<section class="py-14 bg-slate-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+${sectionHead('品牌定位','使命与技术理念')}
+<div class="grid md:grid-cols-3 gap-4">
+<div class="card-panel p-6"><h3 class="font-semibold text-slate-900 mb-2">企业使命</h3><p class="text-sm text-slate-600 leading-relaxed">让每一度电都可见、可懂、可优化，推动用电安全从被动报警走向主动预防。</p></div>
+<div class="card-panel p-6"><h3 class="font-semibold text-slate-900 mb-2">品牌理念</h3><p class="text-sm text-slate-600 leading-relaxed">"有电，就有微物联"——专注电气安全与能效管理领域的长期技术投入。</p></div>
+<div class="card-panel p-6"><h3 class="font-semibold text-slate-900 mb-2">技术理念</h3><p class="text-sm text-slate-600 leading-relaxed">以物联网感知为基础，以数据分析为核心，构建从采集到决策的完整闭环。</p></div>
 </div></div></section>
 
-<section class="py-16 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="text-center mb-12"><span class="text-sm font-semibold text-primary-600 tracking-wider">TECHNOLOGY</span><h2 class="text-3xl font-bold mt-3">核心技术能力</h2></div>
-<div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-<div class="p-6 border border-gray-100 rounded-xl"><span class="text-3xl">🔌</span><h3 class="font-bold mt-3 mb-2">全栈自研硬件</h3><p class="text-sm text-gray-500">覆盖智能传感器、分布式PLC、边缘计算网关、智能断路器等全套硬件产品线</p></div>
-<div class="p-6 border border-gray-100 rounded-xl"><span class="text-3xl">🤖</span><h3 class="font-bold mt-3 mb-2">AI算法引擎</h3><p class="text-sm text-gray-500">千知/万象/天衍三大AI模型体系，60+专业算法模型，408项国标红线AI规则引擎</p></div>
-<div class="p-6 border border-gray-100 rounded-xl"><span class="text-3xl">☁️</span><h3 class="font-bold mt-3 mb-2">云边协同平台</h3><p class="text-sm text-gray-500">FEXLINK工业互联网平台，支持设备管理、数据分析、告警联动、远程运维</p></div>
-<div class="p-6 border border-gray-100 rounded-xl"><span class="text-3xl">📊</span><h3 class="font-bold mt-3 mb-2">电气隐患AI分析</h3><p class="text-sm text-gray-500">谐波指纹识别技术，256点/周期高频采样，隐患提前30天预警，准确率97.3%</p></div>
+<section class="py-14 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+${sectionHead('技术能力','核心技术体系')}
+<div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="card-panel p-5"><h3 class="font-semibold text-slate-900 text-sm mb-2">全栈自研硬件</h3><p class="text-xs text-slate-600 leading-relaxed">传感器、PLC、边缘网关、智能断路器等完整硬件产品线</p></div>
+<div class="card-panel p-5"><h3 class="font-semibold text-slate-900 text-sm mb-2">AI 算法引擎</h3><p class="text-xs text-slate-600 leading-relaxed">千知/万象/天衍模型体系，60+ 算法，408 项国标规则引擎</p></div>
+<div class="card-panel p-5"><h3 class="font-semibold text-slate-900 text-sm mb-2">云边协同平台</h3><p class="text-xs text-slate-600 leading-relaxed">FEXLINK 平台：设备管理、数据分析、告警联动、远程运维</p></div>
+<div class="card-panel p-5"><h3 class="font-semibold text-slate-900 text-sm mb-2">隐患分析</h3><p class="text-xs text-slate-600 leading-relaxed">谐波指纹识别，256 点/周期采样，提前预警电气隐患</p></div>
 </div></div></section>
 
-<section class="py-16 bg-gray-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="text-center mb-12"><span class="text-sm font-semibold text-primary-600 tracking-wider">PRODUCTS</span><h2 class="text-3xl font-bold mt-3">产品矩阵</h2></div>
+<section class="py-14 bg-slate-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+${sectionHead('产品矩阵','主要产品线')}
+<div class="grid md:grid-cols-3 gap-4">
+<div class="card-panel p-5"><h3 class="font-semibold text-slate-900 text-sm mb-2">工业智控</h3><p class="text-xs text-slate-600">CC/CR 系列 PLC、工业手环、边缘网关、HMI、I/O 模块</p></div>
+<div class="card-panel p-5"><h3 class="font-semibold text-slate-900 text-sm mb-2">电气安全监测</h3><p class="text-xs text-slate-600">ESA、ESB、EST、FA 电弧探测、FAP 故障电弧</p></div>
+<div class="card-panel p-5"><h3 class="font-semibold text-slate-900 text-sm mb-2">智能防雷</h3><p class="text-xs text-slate-600">FS/FSS/FSP、FL、FR/FRP、FG 网关</p></div>
+<div class="card-panel p-5"><h3 class="font-semibold text-slate-900 text-sm mb-2">智能配电</h3><p class="text-xs text-slate-600">FECB2P 智能断路器、FECM2 网关、配电监测系统</p></div>
+<div class="card-panel p-5"><h3 class="font-semibold text-slate-900 text-sm mb-2">软件平台</h3><p class="text-xs text-slate-600">FEXLINK 工业互联网平台、设备管理云平台</p></div>
+<div class="card-panel p-5"><h3 class="font-semibold text-slate-900 text-sm mb-2">新能源安全</h3><p class="text-xs text-slate-600">充电站监测、充电棚安全、储能电站安全监测</p></div>
+</div></div></section>
+
+<section class="py-14 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+${sectionHead('管理团队','核心团队')}
 <div class="grid md:grid-cols-3 gap-6">
-<div class="bg-white rounded-xl p-6 shadow-sm"><span class="text-2xl">⚙️</span><h3 class="font-bold mt-2 mb-2">工业智控</h3><p class="text-sm text-gray-500">CC/CR系列PLC、CX工业手环、CW边缘网关、HMI、I/O模块</p></div>
-<div class="bg-white rounded-xl p-6 shadow-sm"><span class="text-2xl">⚡</span><h3 class="font-bold mt-2 mb-2">电气安全监测</h3><p class="text-sm text-gray-500">ESA智能电表、ESB三相不平衡、EST温度监测、FA电弧探测、FAP故障电弧</p></div>
-<div class="bg-white rounded-xl p-6 shadow-sm"><span class="text-2xl">🌩️</span><h3 class="font-bold mt-2 mb-2">智能防雷</h3><p class="text-sm text-gray-500">FS/FSS/FSP电涌保护器监测、FL雷电峰值、FR/FRP接地电阻、FG网关</p></div>
-<div class="bg-white rounded-xl p-6 shadow-sm"><span class="text-2xl">🔌</span><h3 class="font-bold mt-2 mb-2">智能配电</h3><p class="text-sm text-gray-500">FECB2P智能断路器、FECB2LP漏电断路器、FECM2网关、配电监测系统</p></div>
-<div class="bg-white rounded-xl p-6 shadow-sm"><span class="text-2xl">🖥️</span><h3 class="font-bold mt-2 mb-2">软件平台</h3><p class="text-sm text-gray-500">FEXLINK工业互联网平台、设备管理云平台、太一智能大模型AI分析平台</p></div>
-<div class="bg-white rounded-xl p-6 shadow-sm"><span class="text-2xl">🔋</span><h3 class="font-bold mt-2 mb-2">新能源安全</h3><p class="text-sm text-gray-500">充电站电气安全监测、电动自行车充电棚安全、储能电站安全监测</p></div>
+<div class="card-panel p-6 text-center"><h3 class="font-semibold text-slate-900">崔灿</h3><p class="text-sm text-slate-500 mt-1">创始人 / CEO</p><p class="text-xs text-slate-400 mt-2">香港城市大学 · BGS 全球终身会员</p></div>
+<div class="card-panel p-6 text-center"><h3 class="font-semibold text-slate-900">邓博士</h3><p class="text-sm text-slate-500 mt-1">联合创始人</p><p class="text-xs text-slate-400 mt-2">清华大学 · 可编程逻辑控制</p></div>
+<div class="card-panel p-6 text-center"><h3 class="font-semibold text-slate-900">李博士</h3><p class="text-sm text-slate-500 mt-1">联合创始人</p><p class="text-xs text-slate-400 mt-2">清华大学 · 嵌入式系统</p></div>
 </div></div></section>
 
-<section class="py-16 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="text-center mb-12"><span class="text-sm font-semibold text-primary-600 tracking-wider">TEAM</span><h2 class="text-3xl font-bold mt-3">核心团队</h2></div>
-<div class="grid md:grid-cols-3 gap-8">
-<div class="text-center"><div class="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-3xl">👤</span></div><h3 class="font-bold">崔灿</h3><p class="text-sm text-gray-500">创始人/CEO</p><p class="text-xs text-gray-400 mt-1">香港城市大学 · BGS全球终身会员</p></div>
-<div class="text-center"><div class="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-3xl">👤</span></div><h3 class="font-bold">邓博士</h3><p class="text-sm text-gray-500">联合创始人</p><p class="text-xs text-gray-400 mt-1">清华大学 · 可编程逻辑控制</p></div>
-<div class="text-center"><div class="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-3xl">👤</span></div><h3 class="font-bold">李博士</h3><p class="text-sm text-gray-500">联合创始人</p><p class="text-xs text-gray-400 mt-1">清华大学 · 嵌入式系统</p></div>
-</div></div></section>
+<section class="py-14 bg-slate-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+${sectionHead('集团架构','集团成员')}
+<div class="grid md:grid-cols-2 gap-3 max-w-4xl">${(c.group||[]).map((g,i)=>`<div class="card-panel p-4 ${i===0?'border-l-4 border-l-primary-700':''}"><p class="text-sm font-medium text-slate-900">${h(g)}</p></div>`).join('')}</div>
+</div></section>
 
-<section class="py-16 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="text-center mb-12"><span class="text-sm font-semibold text-primary-600 tracking-wider">GROUP</span><h2 class="text-3xl font-bold mt-3">集团成员</h2></div>
-<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
-${(c.group||[]).map((g,i)=>`<div class="flex items-center gap-3 p-4 ${i===0?'bg-primary-50 border-primary-200':'bg-gray-50 border-gray-200'} rounded-xl border"><span class="text-lg">${['🏢','🔧','🤖','💡','⚙️'][i]||'🏢'}</span><div><p class="text-sm font-semibold text-gray-900">${h(g)}</p><p class="text-xs text-gray-400">${['总部/控股','苏州公司','AI研发','方案集成','运营服务'][i]||''}</p></div></div>`).join('')}
-</div></div></section>
-<section class="py-16 bg-gray-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="text-center mb-12"><span class="text-sm font-semibold text-primary-600 tracking-wider">HONORS</span><h2 class="text-3xl font-bold mt-3">荣誉与里程碑</h2></div>
-<div class="max-w-3xl mx-auto space-y-4">
-${[
+<section class="py-14 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+${sectionHead('发展历程','荣誉与里程碑')}
+<div class="max-w-3xl space-y-2">${[
   ['2016','深圳市最具投资价值企业50强'],
-  ['2017','福田之星全国创业大赛第一名 · 创IN中国人工智能大赛深圳赛区第一名'],
-  ['2018','全国高校校友创业大赛企业组第一名 · 全国工业互联网比赛第三名 · 入围物联网行业创新产品奖'],
-  ['2019','航天云网杯工业互联网大赛一等奖 · 中国最具颠覆式创新潜力榜（腾讯/阿里/百度/赛迪/德勤/国网等联合评选）'],
-  ['2020','科技部部长王志刚、深圳市委书记王伟中、市长陈如桂等领导莅临视察'],
-  ['2021-至今','发布太一智能大模型 · 谐波指纹AI分析技术 · 服务客户200+ · 产品覆盖全国30+省市'],
-].map(([y,t])=>'<div class="flex gap-4 p-4 bg-white rounded-lg"><span class="text-primary-600 font-bold text-sm w-16 flex-shrink-0">'+y+'</span><p class="text-sm text-gray-600">'+t+'</p></div>').join('')}
+  ['2017','福田之星全国创业大赛第一名'],
+  ['2018','全国高校校友创业大赛企业组第一名'],
+  ['2019','航天云网杯工业互联网大赛一等奖'],
+  ['2020','科技部部长、深圳市领导莅临视察'],
+  ['2021-至今','太一智能大模型 · 谐波指纹分析 · 服务客户 200+'],
+].map(([y,t])=>'<div class="flex gap-4 p-4 card-panel"><span class="text-primary-800 font-semibold text-sm w-20 shrink-0">'+y+'</span><p class="text-sm text-slate-600">'+t+'</p></div>').join('')}</div>
+</div></section>
+
+<section class="py-14 bg-slate-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+${sectionHead('服务行业','主要应用行业')}
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+${['新能源充电站','工业园区','机场/交通枢纽','数据中心','商业综合体','石油化工','市政工程','建筑楼宇'].map(i=>'<div class="card-panel p-4 text-center text-sm text-slate-700">'+i+'</div>').join('')}
 </div></div></section>
 
-<section class="py-16 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="text-center mb-12"><span class="text-sm font-semibold text-primary-600 tracking-wider">INDUSTRIES</span><h2 class="text-3xl font-bold mt-3">服务行业</h2></div>
-<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-${['新能源充电站','工业园区','机场/交通枢纽','数据中心','商业综合体','石油化工','市政工程','建筑楼宇'].map(i=>'<div class="p-4 bg-gray-50 rounded-xl text-center text-sm font-medium text-gray-700">'+i+'</div>').join('')}
-</div></div></section>
-
-<section class="py-16 bg-gray-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="max-w-3xl mx-auto bg-white rounded-2xl p-8 shadow-sm">
-<h3 class="text-xl font-bold mb-6 text-center">联系方式</h3>
-<div class="space-y-4">${[
-  ['📞','电话',c.phone],
-  ['✉️','邮箱','<a href="mailto:'+h(c.email)+'" class="text-primary-600 hover:underline">'+h(c.email)+'</a>'],
-  ['📍','地址',c.addr],
-].map(a=>'<div class="flex items-center gap-4 p-3 bg-gray-50 rounded-lg"><span class="text-xl w-8">'+a[0]+'</span><div><p class="text-xs text-gray-400">'+a[1]+'</p><p class="font-medium text-gray-900">'+a[2]+'</p></div></div>').join('')}</div>
-</div></div></section>${ft(pp,c,pfx)}`;
+<section class="py-14 bg-white"><div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="card-panel p-8"><h3 class="text-lg font-bold mb-4 text-slate-900">联系方式</h3><dl>
+${contactRow('电话',c.phone)}
+${contactRow('邮箱',c.email,'mailto:'+c.email)}
+${contactRow('地址',c.addr)}
+</dl></div></div></section>${ft(pp,c,pfx)}`;
   const siteU=canonicalUrl(pfx,'about');return lay('关于我们 - '+c.name,'',bd,c,siteU);
 }
 function contactPage(pp,c,pfx){
   const bd=`${nav(pp,c,pfx+'/contact',pfx)}
-<div class="bg-gradient-to-r from-primary-700 to-primary-900 text-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16"><h1 class="text-3xl font-bold">联系我们</h1></div></div>
-<section class="py-16 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="max-w-2xl mx-auto"><div class="space-y-4">
-<div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg"><span class="text-2xl">📞</span><div><p class="text-sm text-gray-500">电话</p><p class="font-semibold text-gray-900">${h(c.phone)}</p></div></div>
-<div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg"><span class="text-2xl">✉️</span><div><p class="text-sm text-gray-500">邮箱</p><p class="font-semibold text-gray-900"><a href="mailto:${h(c.email)}" class="text-primary-600 no-underline hover:underline">${h(c.email)}</a></p></div></div>
-<div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg"><span class="text-2xl">📍</span><div><p class="text-sm text-gray-500">地址</p><p class="font-semibold text-gray-900">${h(c.addr)}</p></div></div>
-</div></div></div></section>${ft(pp,c,pfx)}`;
+${pageHero('联系我们','技术咨询、方案对接与商务合作')}
+<section class="py-14 bg-white"><div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="card-panel p-6 md:p-8"><dl>
+${contactRow('电话',c.phone)}
+${contactRow('邮箱',c.email,'mailto:'+c.email)}
+${contactRow('地址',c.addr)}
+</dl></div></div></section>${ft(pp,c,pfx)}`;
   const siteU=canonicalUrl(pfx,'contact');return lay('联系我们 - '+c.name,'',bd,c,siteU);
 }
 function listPage(t, pp, c, items, path, pfx){
   const bd=`${nav(pp,c,pfx+'/'+path,pfx)}
-<div class="bg-gradient-to-r from-primary-700 to-primary-900 text-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16"><h1 class="text-3xl font-bold">${h(t)}</h1></div></div>
-<section class="py-16 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">${items.length?`<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">${items.slice(0,12).map(item=>`<div class="bg-gray-50 rounded-xl p-6 hover:shadow-md transition-shadow"><h3 class="font-semibold mb-2">${h(item.title||item.n)}</h3>${item.description?'<p class="text-sm text-gray-500 leading-relaxed">'+h(item.description.slice(0,150))+'</p>':''}${item.client?'<span class="inline-block mt-3 text-xs px-2 py-1 bg-gray-100 rounded-full">'+h(item.client)+'</span>':''}${item.category?'<span class="inline-block mt-3 text-xs px-2 py-1 bg-primary-50 text-primary-700 rounded-full ml-1">'+h(item.category)+'</span>':''}</div>`).join('')}</div>`:'<p class="text-gray-400 text-center py-8">内容更新中</p>'}</div></section>${ft(pp,c,pfx)}`;
+${pageHero(t)}
+<section class="py-14 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">${items.length?`<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">${items.slice(0,12).map(item=>`<article class="card-panel p-6"><h3 class="font-semibold text-slate-900 mb-2 text-base">${h(item.title||item.n)}</h3>${item.description?'<p class="text-sm text-slate-600 leading-relaxed">'+h(item.description.slice(0,150))+'</p>':''}${item.client?'<p class="mt-3 text-xs text-slate-500">客户：'+h(item.client)+'</p>':''}${item.category?'<p class="mt-1 text-xs text-slate-500">分类：'+h(item.category)+'</p>':''}</article>`).join('')}</div>`:'<p class="text-slate-500 text-sm py-8">内容更新中</p>'}</div></section>${ft(pp,c,pfx)}`;
   return lay(t+' - '+c.name,'',bd,c);
 }
 
@@ -1025,16 +1053,16 @@ for(const d of defs){
       const solCards = sls.map(s=>{
         const sk = s.slug || slug(s.title);
         const sd=SOLS[sk];
-        return `<a href="${pfx}/solutions/${sk}" class="block bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md hover:border-primary-200 transition-all no-underline">
-          <h3 class="font-semibold text-gray-900 mb-2">${h(s.title)}</h3>
-          <p class="text-sm text-gray-500 leading-relaxed mb-3">${h((s.description||'').slice(0,120))}</p>
-          ${sd?`<div class="flex gap-3 text-xs text-gray-400 border-t border-gray-100 pt-3 mt-3">${sd.stats.slice(0,3).map(st=>`<span>${h(st.v)} ${h(st.l)}</span>`).join('<span class="text-gray-300">|</span>')}</div>`:''}
-          <span class="text-sm text-primary-600 font-medium mt-2 inline-block">查看详情 →</span>
+        return `<a href="${pfx}/solutions/${sk}" class="card-panel p-6 block no-underline border-l-4 border-l-primary-700 group">
+          <h3 class="font-semibold text-slate-900 group-hover:text-primary-800 mb-2">${h(s.title)}</h3>
+          <p class="text-sm text-slate-600 leading-relaxed mb-3">${h((s.description||'').slice(0,120))}</p>
+          ${sd?`<div class="flex gap-4 text-xs text-slate-500 border-t border-slate-100 pt-3">${sd.stats.slice(0,3).map(st=>`<span>${h(st.v)} ${h(st.l)}</span>`).join('')}</div>`:''}
+          <p class="text-xs text-slate-500 mt-3">方案说明</p>
         </a>`;
       }).join('');
       html=`${nav(pp,c,pfx+'/solutions',pfx)}
-<div class="bg-gradient-to-r from-primary-700 to-primary-900 text-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16"><h1 class="text-3xl font-bold">${h(p.title)}</h1><p class="text-primary-200 mt-2">行业经验与技术积累，为客户创造价值</p></div></div>
-<section class="py-16 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">${solCards}</div></div></section>${ft(pp,c,pfx)}`;
+${pageHero(p.title,'行业经验与技术积累')}
+<section class="py-14 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">${solCards}</div></div></section>${ft(pp,c,pfx)}`;
       html=lay(p.title+' - '+c.name,p.desc||'',html,c,canonicalUrl(pfx,pt),OG_DEFAULT,p.kw||'');
     }
     else if(pt==='cases')html=listPage(p.title,pp,c,cs,pt,pfx);
@@ -1092,24 +1120,22 @@ try{
   const c404=cfg('yeslon');c404.pfx='';
   const pp404=pages('yeslon');
   const body404=`${nav(pp404,c404,'/404','')}
-<div class="bg-gradient-to-r from-gray-800 to-gray-900 text-white"><div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-<div class="text-6xl font-bold text-white/20 mb-4">404</div>
-<h1 class="text-3xl font-bold mb-4">页面未找到</h1>
-<p class="text-gray-300 mb-8">您访问的页面不存在或已迁移，请从下方链接继续浏览。</p>
-<div class="flex flex-wrap justify-center gap-3">
-<a href="/" class="px-5 py-2.5 bg-white text-gray-900 font-semibold rounded-xl hover:bg-gray-100 no-underline">返回首页</a>
-<a href="/products" class="px-5 py-2.5 border border-white/30 text-white font-semibold rounded-xl hover:bg-white/10 no-underline">产品中心</a>
-<a href="/solutions" class="px-5 py-2.5 border border-white/30 text-white font-semibold rounded-xl hover:bg-white/10 no-underline">解决方案</a>
-<a href="/contact" class="px-5 py-2.5 border border-white/30 text-white font-semibold rounded-xl hover:bg-white/10 no-underline">联系我们</a>
+${pageHero('页面未找到','您访问的页面不存在或已迁移')}
+<section class="py-14 bg-white"><div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+<div class="flex flex-wrap justify-center gap-3 mb-10">
+<a href="/" class="px-5 py-2.5 bg-primary-700 text-white text-sm font-medium hover:bg-primary-800 no-underline">返回首页</a>
+<a href="/products" class="px-5 py-2.5 border border-slate-300 text-slate-700 text-sm no-underline hover:border-slate-500">产品中心</a>
+<a href="/solutions" class="px-5 py-2.5 border border-slate-300 text-slate-700 text-sm no-underline hover:border-slate-500">解决方案</a>
+<a href="/contact" class="px-5 py-2.5 border border-slate-300 text-slate-700 text-sm no-underline hover:border-slate-500">联系我们</a>
 </div>
-<div class="mt-10 pt-8 border-t border-white/10">
-<p class="text-sm text-gray-400 mb-4">产品线站点</p>
-<div class="flex flex-wrap justify-center gap-3 text-sm">
-<a href="/energy/" class="text-blue-200 hover:text-white no-underline">新能源充电</a>
-<a href="/electrical-safety/" class="text-blue-200 hover:text-white no-underline">电气安全</a>
-<a href="/lightning-protection/" class="text-blue-200 hover:text-white no-underline">智能防雷</a>
-<a href="/industrial-plc/" class="text-blue-200 hover:text-white no-underline">工业PLC</a>
-</div></div></div></div>${ft(pp404,c404,'')}`;
+<div class="border-t border-slate-200 pt-8">
+<p class="text-xs text-slate-500 mb-3">产品线站点</p>
+<div class="flex flex-wrap justify-center gap-4 text-sm">
+<a href="/energy/" class="text-primary-800 hover:text-primary-900 no-underline">新能源充电</a>
+<a href="/electrical-safety/" class="text-primary-800 hover:text-primary-900 no-underline">电气安全</a>
+<a href="/lightning-protection/" class="text-primary-800 hover:text-primary-900 no-underline">智能防雷</a>
+<a href="/industrial-plc/" class="text-primary-800 hover:text-primary-900 no-underline">工业PLC</a>
+</div></div></div></section>${ft(pp404,c404,'')}`;
   writeFileSync(join(DIST,'404.html'),lay('页面未找到 - 微物联技术','您访问的页面不存在',body404,c404,canonicalUrl('','404')));
   console.log('  📄 404.html generated');
 }catch(e){console.error('  ❌ 404.html generation failed:',e.message);process.exit(1);}
