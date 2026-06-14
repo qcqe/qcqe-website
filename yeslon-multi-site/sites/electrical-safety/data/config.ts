@@ -10,8 +10,8 @@ export const electricalSafetyConfig: SiteConfig = {
   industry: 'electrical-safety',
   region: 'CN',
   language: 'zh-CN',
-  primaryColor: '#DC2626',
-  secondaryColor: '#991B1B',
+  primaryColor: '#D97706',
+  secondaryColor: '#92400E',
   logo: '/images/electrical-safety-logo.svg',
   features: [
     'ESA全要素智能电表',
