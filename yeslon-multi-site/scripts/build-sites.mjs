@@ -16,27 +16,109 @@ function reList(f, rx) {
 function reItems(f, fields) {
   try { const c=readFileSync(f,'utf-8'); const r=[]; for(const b of c.split(/\n\s*\{/)){ const it={}; for(const g of fields){ const m=b.match(new RegExp(g+":\\s*'([^']+)'")); if(m) it[g]=m[1]; } if(it.title||it.name) r.push(it); } return r; } catch { return []; }
 }
-
-const LIGHTNING_KW_FILE=join(root,'sites/lightning-protection/data/lightning-seo-keywords.ts');
-function parseLightningKw(){
+function reNews(f){
   try{
-    const m=readFileSync(LIGHTNING_KW_FILE,'utf-8').match(/CORE_LIGHTNING_SEO_KEYWORDS\s*=\s*\[([\s\S]*?)\]/);
-    return m?[...m[1].matchAll(/'([^']+)'/g)].map(x=>x[1]):[];
+    const c=readFileSync(f,'utf-8');
+    const r=[];
+    for(const b of c.split(/\n\s*\{/)){
+      const g=(k)=>{const m=b.match(new RegExp(k+":\\s*'([^']*)'"));return m?m[1]:''};
+      const title=g('title');
+      if(!title) continue;
+      const category=g('category');
+      let section=g('section');
+      if(section!=='company'&&section!=='knowledge'){
+        section=(category==='公司新闻'||category==='产品发布')?'company':'knowledge';
+      }
+      const kwM=b.match(/keywords:\s*\[([^\]]+)\]/);
+      const keywords=kwM?[...kwM[1].matchAll(/'([^']+)'/g)].map(x=>x[1]):[];
+      r.push({
+        id:g('id'),
+        slug:g('slug')||slug(title),
+        title,
+        description:g('description'),
+        content:g('content'),
+        category,
+        section,
+        publishedAt:g('publishedAt'),
+        keywords,
+      });
+    }
+    return r;
   }catch{return[];}
 }
-const LIGHTNING_KW=parseLightningKw();
+function navPages(pp){return(pp||[]).filter(p=>p.path&&!p.path.includes('/'));}
+function navActive(cur,href,path){
+  if(cur===href) return true;
+  if(path==='news') return cur===href||cur.startsWith(href+'/');
+  return false;
+}
+
+const LIGHTNING_KW_FILE=join(root,'sites/lightning-protection/data/lightning-seo-keywords.ts');
+const LIGHTNING_KW_META_CAP=18;
+function parseKwArrayConst(name){
+  try{
+    const c=readFileSync(LIGHTNING_KW_FILE,'utf-8');
+    const m1=c.match(new RegExp('export const '+name+'\\s*=\\s*\\[([\\s\\S]*?)\\]\\s*as const','m'));
+    if(m1) return [...m1[1].matchAll(/'([^']+)'/g)].map(x=>x[1]);
+    const m2=c.match(new RegExp(name+'\\s*=\\s*\\[([\\s\\S]*?)\\]','m'));
+    return m2?[...m2[1].matchAll(/'([^']+)'/g)].map(x=>x[1]):[];
+  }catch{return[];}
+}
+function parsePageLightningKwSets(){
+  try{
+    const c=readFileSync(LIGHTNING_KW_FILE,'utf-8');
+    const m=c.match(/PAGE_LIGHTNING_KEYWORD_SETS\s*=\s*\{([\s\S]*?)\}\s*as const/);
+    if(!m) return {};
+    const sets={};
+    for(const block of m[1].matchAll(/(\w+):\s*\[([\s\S]*?)\]/g)){
+      sets[block[1]]=[...block[2].matchAll(/'([^']+)'/g)].map(x=>x[1]);
+    }
+    return sets;
+  }catch{return{};}
+}
+const LIGHTNING_KW_CORE=parseKwArrayConst('CORE_LIGHTNING_SEO_KEYWORDS');
+const LIGHTNING_KW_P1=parseKwArrayConst('P1_LIGHTNING_SEO_KEYWORDS');
+const LIGHTNING_KW_P2=parseKwArrayConst('P2_LIGHTNING_SEO_KEYWORDS');
+const LIGHTNING_KW_P3=parseKwArrayConst('P3_LIGHTNING_SEO_KEYWORDS');
+const PAGE_LIGHTNING_KW=parsePageLightningKwSets();
 function mergeKwList(base,extra){
   const seen=new Set();const out=[];
   for(const s of [...extra,...base]){const k=(s||'').trim();if(k&&!seen.has(k)){seen.add(k);out.push(k);}}
   return out;
 }
 function mergeKwStr(baseStr,extra){return mergeKwList(baseStr?baseStr.split(',').map(s=>s.trim()).filter(Boolean):[],extra).join(', ');}
-function shouldMergeLightningKw(site,path){return site==='lightning-protection'||site==='yeslon'&&['','products','solutions','cases'].includes(path);}
+function capKwList(list,max){return list.slice(0,max);}
+function capKwStr(str,max){return capKwList(str?str.split(',').map(s=>s.trim()).filter(Boolean):[],max).join(', ');}
+function lightningPageType(path){
+  if(path===''||!path) return 'home';
+  if(path==='products'||path.startsWith('products/')) return 'products';
+  if(path==='solutions'||path.startsWith('solutions/')) return 'solutions';
+  if(path==='cases') return 'cases';
+  if(path==='specifications') return 'specifications';
+  if(path==='news/knowledge'||path.startsWith('news/knowledge/')) return 'knowledge';
+  return null;
+}
+function lightningKwForPage(path,baseStr){
+  const type=lightningPageType(path);
+  const pageSet=type&&PAGE_LIGHTNING_KW[type]?PAGE_LIGHTNING_KW[type]:LIGHTNING_KW_CORE.slice(0,8);
+  const baseList=baseStr?baseStr.split(',').map(s=>s.trim()).filter(Boolean):[];
+  return capKwList(mergeKwList(pageSet,baseList.slice(0,6)),LIGHTNING_KW_META_CAP).join(', ');
+}
+function shouldMergeLightningKw(site,path){
+  if(path==='contact'||path==='about') return false;
+  if(site==='lightning-protection'){
+    return ['','products','solutions','cases','specifications'].includes(path)||path.startsWith('products/');
+  }
+  if(site==='yeslon'){
+    return ['','products','solutions','cases','news/knowledge'].includes(path)||path.startsWith('news/knowledge/');
+  }
+  return false;
+}
 
 function cfg(site) {
   const c=join(root,'sites',site,'data','config.ts');
   const kwRaw=(()=>{try{const m=readFileSync(c,'utf-8').match(/keywords:\s*\[([^\]]+)\]/);return m?[...m[1].matchAll(/'([^']+)'/g)].map(x=>x[1]).join(', '):'';}catch{return '';}})();
-  const kw=site==='lightning-protection'||site==='yeslon'?mergeKwStr(kwRaw,LIGHTNING_KW):kwRaw;
+  const kw=site==='lightning-protection'||site==='yeslon'?capKwStr(mergeKwStr(kwRaw,LIGHTNING_KW_CORE.slice(0,6)),LIGHTNING_KW_META_CAP):kwRaw;
   return {
     sub: re(c,/subdomain:\s*'([^']+)'/,1),
     dom: re(c,/(?<!sub)domain:\s*'([^']+)'/,1),
@@ -68,7 +150,7 @@ function pages(site) {
         path:pathVal,
         title:titleM[1],
         desc:descM?descM[1]:'',
-        kw:shouldMergeLightningKw(site,pathVal)?mergeKwStr(kwRaw,LIGHTNING_KW):kwRaw
+        kw:shouldMergeLightningKw(site,pathVal)?lightningKwForPage(pathVal,kwRaw):kwRaw
       });
     }
     return p.length?p:[{path:'',title:'首页'}];
@@ -254,9 +336,9 @@ function nav(pp, c, cur, prefix='') {
   const pfx=prefix||'';
   const sn=c.sn||'yeslon';
   const t=getTheme(sn,c);
-  const navItems = pp.filter(p=>p.path).map(p=>{
+  const navItems = navPages(pp).map(p=>{
     const href = pfx+'/'+p.path;
-    return `<a href="${href}" class="block px-3 py-2 text-sm font-medium transition-colors ${href===cur?'text-brand border-l-2 border-brand bg-slate-50':'text-slate-600 hover:text-slate-900 hover:bg-slate-50'} no-underline">${h(p.title)}</a>`;
+    return `<a href="${href}" class="block px-3 py-2 text-sm font-medium transition-colors ${navActive(cur,href,p.path)?'text-brand border-l-2 border-brand bg-slate-50':'text-slate-600 hover:text-slate-900 hover:bg-slate-50'} no-underline">${h(p.title)}</a>`;
   }).join('');
   const brandName=(c.name||'微物联').replace(/（.*?）/,'').replace(/\(.*?\)/,'').trim();
   const subTag=sn==='yeslon'?'工业物联网 · 电气安全 · 智能防雷':t.tagline;
@@ -267,7 +349,7 @@ function nav(pp, c, cur, prefix='') {
 <img src="/y-logo.svg" alt="微物联" class="h-8 w-auto shrink-0">
 <span class="min-w-0"><span class="block text-base font-bold text-slate-900 leading-tight truncate">${h(brandName)}</span><span class="block text-[11px] text-slate-500 tracking-wide hidden sm:block">${h(subTag)}</span></span></a>
 <button id="menu-btn" class="md:hidden p-2 text-slate-500 hover:bg-slate-100" onclick="var m=document.getElementById('mobile-menu');m.classList.toggle('hidden')" aria-label="菜单"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
-<div class="hidden md:flex items-center gap-0.5">${pp.filter(p=>p.path).map(p=>{const href=pfx+'/'+p.path;return `<a href="${href}" class="px-3 py-2 text-sm font-medium transition-colors ${href===cur?'text-brand':'text-slate-600 hover:text-slate-900'} no-underline">${h(p.title)}</a>`;}).join('')}
+<div class="hidden md:flex items-center gap-0.5">${navPages(pp).map(p=>{const href=pfx+'/'+p.path;return `<a href="${href}" class="px-3 py-2 text-sm font-medium transition-colors ${navActive(cur,href,p.path)?'text-brand':'text-slate-600 hover:text-slate-900'} no-underline">${h(p.title)}</a>`;}).join('')}
 <button class="px-2.5 py-2 text-slate-500 hover:text-slate-800" onclick="openSearch()" aria-label="搜索">${SVG_SEARCH}</button>
 ${sn!=='yeslon'?`<a href="/" class="px-3 py-2 text-sm text-slate-500 hover:text-slate-800 no-underline">主站</a>`:'<a href="http://www.fexlink.com" target="_blank" class="px-3 py-2 text-sm text-slate-600 hover:text-slate-900 no-underline" rel="external">集团官网</a>'}
 <a href="${pfx}/contact" class="ml-1 px-4 py-2 text-sm font-medium btn-brand text-white no-underline">联系我们</a>
@@ -955,6 +1037,97 @@ ${pageHero(t)}
   return lay(t+' - '+c.name,p?.desc||'',bd,c,canonicalUrl(pfx,path),OG_DEFAULT,p?.kw||'');
 }
 
+const NEWS_SECTION_META={
+  company:{title:'公司新闻',desc:'产品发布、战略合作、荣誉奖项与企业动态',path:'news/company',label:'公司新闻'},
+  knowledge:{title:'行业知识',desc:'技术解读、标准规范、应用指南与专业文档',path:'news/knowledge',label:'行业知识'},
+};
+function newsCard(item,pfx,section){
+  const base=NEWS_SECTION_META[section].path;
+  return `<article class="card-panel p-6 flex flex-col h-full group">
+<div class="flex items-center gap-2 text-xs text-slate-500 mb-3">
+<span class="px-2 py-0.5 bg-slate-100 rounded">${h(item.category||NEWS_SECTION_META[section].label)}</span>
+${item.publishedAt?`<time datetime="${h(item.publishedAt)}">${h(item.publishedAt)}</time>`:''}
+</div>
+<h3 class="font-semibold text-slate-900 mb-2 text-base group-hover:text-primary-800"><a href="${pfx}/${base}/${h(item.slug)}" class="no-underline text-inherit">${h(item.title)}</a></h3>
+<p class="text-sm text-slate-600 leading-relaxed flex-1">${h((item.description||'').slice(0,160))}</p>
+<a href="${pfx}/${base}/${h(item.slug)}" class="mt-4 text-sm text-primary-700 font-medium no-underline group-hover:underline">阅读全文 →</a>
+</article>`;
+}
+function newsHubPage(pp,c,allNews,pfx,p){
+  const company=allNews.filter(n=>n.section==='company');
+  const knowledge=allNews.filter(n=>n.section==='knowledge');
+  const latestCards=(sec)=>{const list=allNews.filter(x=>x.section===sec).slice(0,3);return list.length?list.map(x=>newsCard(x,pfx,sec)).join(''):'<p class="text-slate-500 text-sm">内容更新中</p>';};
+  const bd=`${nav(pp,c,pfx+'/news',pfx)}
+${pageHero(p.title,'公司新闻 · 行业知识')}
+<section class="py-14 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid md:grid-cols-2 gap-6 mb-14">
+<a href="${pfx}/news/company" class="card-panel p-8 block no-underline border-l-4 border-l-primary-700 hover:shadow-md transition-shadow group">
+<p class="text-xs font-medium text-primary-700 uppercase tracking-wide mb-2">栏目一</p>
+<h2 class="text-xl font-bold text-slate-900 group-hover:text-primary-800 mb-2">公司新闻</h2>
+<p class="text-sm text-slate-600 leading-relaxed mb-4">产品发布、战略合作、荣誉奖项与企业动态</p>
+<span class="text-sm text-primary-700 font-medium">${company.length} 篇 · 查看全部 →</span>
+</a>
+<a href="${pfx}/news/knowledge" class="card-panel p-8 block no-underline border-l-4 border-l-amber-600 hover:shadow-md transition-shadow group">
+<p class="text-xs font-medium text-amber-700 uppercase tracking-wide mb-2">栏目二</p>
+<h2 class="text-xl font-bold text-slate-900 group-hover:text-amber-800 mb-2">行业知识</h2>
+<p class="text-sm text-slate-600 leading-relaxed mb-4">技术文档、标准解读、应用指南与行业专业内容</p>
+<span class="text-sm text-amber-700 font-medium">${knowledge.length} 篇 · 查看全部 →</span>
+</a>
+</div>
+<div class="grid lg:grid-cols-2 gap-10">
+<div><div class="flex items-center justify-between mb-4"><h3 class="font-semibold text-slate-900">最新公司新闻</h3><a href="${pfx}/news/company" class="text-sm text-primary-700 no-underline hover:underline">全部</a></div><div class="grid gap-4">${latestCards('company')}</div></div>
+<div><div class="flex items-center justify-between mb-4"><h3 class="font-semibold text-slate-900">最新行业知识</h3><a href="${pfx}/news/knowledge" class="text-sm text-amber-700 no-underline hover:underline">全部</a></div><div class="grid gap-4">${latestCards('knowledge')}</div></div>
+</div>
+</div></section>${ft(pp,c,pfx)}`;
+  return lay(p.title+' - '+c.name,p.desc||'',bd,c,canonicalUrl(pfx,'news'),OG_DEFAULT,p.kw||'');
+}
+function newsListPage(section,pp,c,items,pfx,p){
+  const meta=NEWS_SECTION_META[section];
+  const filtered=items.filter(n=>n.section===section);
+  const cards=filtered.length?`<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">${filtered.map(n=>newsCard(n,pfx,section)).join('')}</div>`:'<p class="text-slate-500 text-sm py-8">内容更新中</p>';
+  const bd=`${nav(pp,c,pfx+'/'+meta.path,pfx)}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-sm text-slate-500 flex gap-2 flex-wrap">
+<a href="${pfx}/news" class="hover:text-primary-600 no-underline">新闻动态</a><span>/</span><span class="text-slate-700">${h(meta.title)}</span>
+</div>
+${pageHero(meta.title,meta.desc)}
+<section class="py-14 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex gap-3 mb-8 text-sm">
+<a href="${pfx}/news/company" class="px-4 py-2 rounded border ${section==='company'?'bg-primary-700 text-white border-primary-700':'border-slate-300 text-slate-600 hover:border-slate-500'} no-underline">公司新闻</a>
+<a href="${pfx}/news/knowledge" class="px-4 py-2 rounded border ${section==='knowledge'?'bg-amber-600 text-white border-amber-600':'border-slate-300 text-slate-600 hover:border-slate-500'} no-underline">行业知识</a>
+</div>
+${cards}
+</div></section>${ft(pp,c,pfx)}`;
+  return lay(meta.title+' - '+c.name,p?.desc||meta.desc,bd,c,canonicalUrl(pfx,meta.path),OG_DEFAULT,p?.kw||'');
+}
+function newsArticlePage(item,section,pp,c,pfx){
+  const meta=NEWS_SECTION_META[section];
+  const articleUrl=canonicalUrl(pfx,meta.path+'/'+item.slug);
+  const paras=(item.content||'').split(/(?<=[。！？])/).filter(Boolean).map(p=>`<p class="text-slate-700 leading-relaxed mb-4">${h(p.trim())}</p>`).join('');
+  const kw=capKwStr(mergeKwStr((item.keywords||[]).join(', '),section==='knowledge'?(PAGE_LIGHTNING_KW.knowledge||LIGHTNING_KW_CORE.slice(0,8)):[]),LIGHTNING_KW_META_CAP);
+  const jsonLd=JSON.stringify({'@context':'https://schema.org','@type':'Article',headline:item.title,description:item.description,datePublished:item.publishedAt,author:{'@type':'Organization',name:c.name||'微物联技术（深圳）有限公司'},publisher:{'@type':'Organization',name:c.name||'微物联技术（深圳）有限公司'},mainEntityOfPage:articleUrl});
+  const bd=`${nav(pp,c,pfx+'/'+meta.path,pfx)}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-sm text-slate-500 flex gap-2 flex-wrap">
+<a href="${pfx}/news" class="hover:text-primary-600 no-underline">新闻动态</a><span>/</span>
+<a href="${pfx}/${meta.path}" class="hover:text-primary-600 no-underline">${h(meta.title)}</a><span>/</span>
+<span class="text-slate-700 line-clamp-1">${h(item.title)}</span>
+</div>
+<article class="py-10 bg-white"><div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+<header class="mb-8 pb-6 border-b border-slate-200">
+<p class="text-xs text-slate-500 mb-3 flex flex-wrap gap-3"><span class="px-2 py-0.5 bg-slate-100 rounded">${h(item.category||meta.label)}</span>${item.publishedAt?`<time datetime="${h(item.publishedAt)}">${h(item.publishedAt)}</time>`:''}</p>
+<h1 class="text-2xl md:text-3xl font-bold text-slate-900 leading-snug">${h(item.title)}</h1>
+${item.description?`<p class="mt-4 text-slate-600 leading-relaxed">${h(item.description)}</p>`:''}
+</header>
+<div class="prose prose-slate max-w-none">${paras||'<p class="text-slate-500">正文更新中</p>'}</div>
+<div class="mt-10 pt-6 border-t border-slate-200 flex flex-wrap gap-3">
+<a href="${pfx}/${meta.path}" class="text-sm text-primary-700 no-underline hover:underline">← 返回${h(meta.title)}</a>
+<a href="${pfx}/news" class="text-sm text-slate-500 no-underline hover:text-slate-800">新闻动态首页</a>
+</div>
+</div></article>
+<script type="application/ld+json">${jsonLd.replace(/</g,'\\u003c')}</script>
+${ft(pp,c,pfx)}`;
+  return lay(item.title+' - '+meta.title+' - '+c.name,item.description||item.content?.slice(0,160)||'',bd,c,articleUrl,OG_DEFAULT,kw);
+}
+
 function solDetailPage(sk, title, desc, pp, c, pfx, sls) {
   const sd = SOLS[sk];
   if (!sd) return listPage(title, pp, c, [{title,description:desc}], 'solutions', pfx);
@@ -1129,7 +1302,8 @@ for(const d of defs){
   const c=cfg(d.n);c.pfx=d.pfx;c.sn=d.n;const pp=pages(d.n);
   const sls=reItems(join(root,'sites',d.n,'data','solutions.ts'),['title','description','category','slug']);
   const cs=reItems(join(root,'sites',d.n,'data','cases.ts'),['title','description','client']);
-  const nws=reItems(join(root,'sites',d.n,'data','news.ts'),['title','description','category']);
+  const nwsFile=join(root,'sites',d.n,'data','news.ts');
+  const nws=d.main?reNews(nwsFile):reItems(nwsFile,['title','description','category']);
   if(d.main){SLS_ALL=sls;CS_ALL=cs;NWS_ALL=nws;}
   const out=d.main?DIST:join(DIST,d.n);
   if(!existsSync(out))mkdirSync(out,{recursive:true});
@@ -1144,6 +1318,7 @@ for(const d of defs){
   prodCats.forEach(function(cat){cat.items.forEach(function(item){var s=slug(item.n);surls.push('<url><loc>'+siteBase+'/products/'+s+'</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>')})});
   // Solution detail pages (main site only)
   if(d.main) sls.forEach(function(s){var sk=s.slug||slug(s.title);surls.push('<url><loc>'+siteBase+'/solutions/'+sk+'</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>')});
+  if(d.main) nws.forEach(function(n){if(!n.slug)return;var sec=n.section||'knowledge';surls.push('<url><loc>'+siteBase+'/news/'+sec+'/'+n.slug+'</loc><changefreq>monthly</changefreq><priority>0.65</priority></url>')});
   // Deduplicate
   surls=surls.filter(function(u,i,a){return a.indexOf(u)===i});
   writeFileSync(join(out,'sitemap.xml'),'<?xml version="1.0"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+surls.join('\n')+'\n</urlset>');
@@ -1173,7 +1348,9 @@ ${pageHero(p.title,'行业经验与技术积累')}
       html=lay(p.title+' - '+c.name,p.desc||'',html,c,canonicalUrl(pfx,pt),OG_DEFAULT,p.kw||'');
     }
     else if(pt==='cases')html=listPage(p.title,pp,c,cs,pt,pfx,p);
-    else if(pt==='news')html=listPage(p.title,pp,c,nws.length?nws:cs,pt,pfx,p);
+    else if(pt==='news')html=newsHubPage(pp,c,nws,pfx,p);
+    else if(pt==='news/company')html=newsListPage('company',pp,c,nws,pfx,p);
+    else if(pt==='news/knowledge')html=newsListPage('knowledge',pp,c,nws,pfx,p);
     else html=listPage(p.title,pp,c,[],pt,pfx,p);
     const dir=pt?join(out,pt):out;
     if(!existsSync(dir))mkdirSync(dir,{recursive:true});
@@ -1200,7 +1377,15 @@ ${pageHero(p.title,'行业经验与技术积累')}
     writeFileSync(join(dir,'index.html'),solDetailPage(sk,s.title,s.description||'',pp,c,pfx,sls));
   }
 
-  console.log(`  ${d.n}${d.main?' (main)':''} → ${pp.length} pages + product details + solutions`);
+  if(d.main) for(const item of nws){
+    if(!item.slug) continue;
+    const sec=item.section==='company'?'company':'knowledge';
+    const dir=join(out,'news',sec,item.slug);
+    if(!existsSync(dir)) mkdirSync(dir,{recursive:true});
+    writeFileSync(join(dir,'index.html'),newsArticlePage(item,sec,pp,c,pfx));
+  }
+
+  console.log(`  ${d.n}${d.main?' (main)':''} → ${pp.length} pages + product details + solutions${d.main?' + news articles':''}`);
 }
 
 for(const f of['_redirects','_headers','_routes.json']){const s=join(root,f);if(existsSync(s))copyFileSync(s,join(DIST,f));}
@@ -1215,9 +1400,9 @@ for(var ci=0;ci<allCats.length;ci++){var cat=allCats[ci];var items=PROD.yeslon[c
 // Solutions
 for(var si2=0;si2<SLS_ALL.length;si2++){var sol=SLS_ALL[si2];addItem(sol.title,sol.description||'',siteUrl+'/solutions/'+(sol.slug||slug(sol.title)),'解决方案',sol.category||'')}
 for(var ci2=0;ci2<CS_ALL.length;ci2++){var cas=CS_ALL[ci2];addItem(cas.title,cas.description||'',siteUrl+'/cases','案例',cas.client||'')}
-for(var ni=0;ni<NWS_ALL.length;ni++){var nw=NWS_ALL[ni];addItem(nw.title,nw.description||'',siteUrl+'/news','新闻',nw.category||'')}
+for(var ni=0;ni<NWS_ALL.length;ni++){var nw=NWS_ALL[ni];var sec=nw.section||'knowledge';addItem(nw.title,nw.description||'',siteUrl+'/news/'+sec+'/'+(nw.slug||slug(nw.title)),sec==='company'?'公司新闻':'行业知识',nw.category||'')}
 // Pages
-var pagesList=[{t:'首页',d:'微物联技术首页',u:siteUrl+'/'},{t:'产品中心',d:'全部产品',u:siteUrl+'/products'},{t:'解决方案',d:'行业解决方案',u:siteUrl+'/solutions'},{t:'成功案例',d:'客户案例',u:siteUrl+'/cases'},{t:'新闻动态',d:'公司新闻',u:siteUrl+'/news'},{t:'关于我们',d:'公司介绍',u:siteUrl+'/about'},{t:'联系我们',d:'联系方式',u:siteUrl+'/contact'}];
+var pagesList=[{t:'首页',d:'微物联技术首页',u:siteUrl+'/'},{t:'产品中心',d:'全部产品',u:siteUrl+'/products'},{t:'解决方案',d:'行业解决方案',u:siteUrl+'/solutions'},{t:'成功案例',d:'客户案例',u:siteUrl+'/cases'},{t:'新闻动态',d:'公司新闻与行业知识',u:siteUrl+'/news'},{t:'公司新闻',d:'企业动态与产品发布',u:siteUrl+'/news/company'},{t:'行业知识',d:'技术文档与行业解读',u:siteUrl+'/news/knowledge'},{t:'关于我们',d:'公司介绍',u:siteUrl+'/about'},{t:'联系我们',d:'联系方式',u:siteUrl+'/contact'}];
 for(var pi=0;pi<pagesList.length;pi++){var pg=pagesList[pi];addItem(pg.t,pg.d,pg.u,'页面')}
 writeFileSync(join(DIST,'search-index.json'),JSON.stringify(si,null,0),'utf-8');
 console.log('  🔍 search-index.json ('+si.length+' entries)');

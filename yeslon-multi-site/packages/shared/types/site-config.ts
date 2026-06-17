@@ -100,6 +100,8 @@ export interface Case {
   publishedAt: string;
 }
 
+export type NewsSection = 'company' | 'knowledge';
+
 export interface News {
   id: string;
   slug: string;
@@ -109,4 +111,7 @@ export interface News {
   category: string;
   image: string;
   publishedAt: string;
+  /** company=公司新闻；knowledge=行业知识（技术文档、标准解读等） */
+  section?: NewsSection;
+  keywords?: string[];
 }

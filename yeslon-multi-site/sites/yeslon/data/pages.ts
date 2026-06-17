@@ -36,10 +36,26 @@ export const pages: PageConfig[] = [
   {
     path: 'news',
     title: '新闻动态',
-    description: '了解微物联技术最新动态、行业资讯、产品发布和项目进展。',
-    keywords: ['新闻', '动态', '行业资讯', '产品发布', '微物联', 'Yeslon'],
+    description: '微物联新闻动态入口：公司新闻与行业知识两大栏目，了解企业动态、产品发布及电气安全、智能防雷、工业物联网等技术文档与行业解读。',
+    keywords: ['新闻动态', '公司新闻', '行业知识', '微物联', 'Yeslon', '技术文档'],
     changeFreq: 'daily',
     priority: 0.8
+  },
+  {
+    path: 'news/company',
+    title: '公司新闻',
+    description: '微物联技术公司新闻：产品发布、战略合作、荣誉奖项、项目进展与企业动态。',
+    keywords: ['公司新闻', '企业动态', '产品发布', '战略合作', '微物联', 'Yeslon'],
+    changeFreq: 'weekly',
+    priority: 0.75
+  },
+  {
+    path: 'news/knowledge',
+    title: '行业知识',
+    description: '电气安全、智能防雷、工业物联网行业知识库：技术解读、标准规范、应用指南、白皮书与专业文档。',
+    keywords: ['行业知识', '技术文档', '电气安全', '智能防雷', '工业物联网', '标准解读', '应用指南', '白皮书'],
+    changeFreq: 'weekly',
+    priority: 0.85
   },
   {
     path: 'about',
