@@ -17,8 +17,26 @@ function reItems(f, fields) {
   try { const c=readFileSync(f,'utf-8'); const r=[]; for(const b of c.split(/\n\s*\{/)){ const it={}; for(const g of fields){ const m=b.match(new RegExp(g+":\\s*'([^']+)'")); if(m) it[g]=m[1]; } if(it.title||it.name) r.push(it); } return r; } catch { return []; }
 }
 
+const LIGHTNING_KW_FILE=join(root,'sites/lightning-protection/data/lightning-seo-keywords.ts');
+function parseLightningKw(){
+  try{
+    const m=readFileSync(LIGHTNING_KW_FILE,'utf-8').match(/CORE_LIGHTNING_SEO_KEYWORDS\s*=\s*\[([\s\S]*?)\]/);
+    return m?[...m[1].matchAll(/'([^']+)'/g)].map(x=>x[1]):[];
+  }catch{return[];}
+}
+const LIGHTNING_KW=parseLightningKw();
+function mergeKwList(base,extra){
+  const seen=new Set();const out=[];
+  for(const s of [...extra,...base]){const k=(s||'').trim();if(k&&!seen.has(k)){seen.add(k);out.push(k);}}
+  return out;
+}
+function mergeKwStr(baseStr,extra){return mergeKwList(baseStr?baseStr.split(',').map(s=>s.trim()).filter(Boolean):[],extra).join(', ');}
+function shouldMergeLightningKw(site,path){return site==='lightning-protection'||site==='yeslon'&&['','products','solutions','cases'].includes(path);}
+
 function cfg(site) {
   const c=join(root,'sites',site,'data','config.ts');
+  const kwRaw=(()=>{try{const m=readFileSync(c,'utf-8').match(/keywords:\s*\[([^\]]+)\]/);return m?[...m[1].matchAll(/'([^']+)'/g)].map(x=>x[1]).join(', '):'';}catch{return '';}})();
+  const kw=site==='lightning-protection'||site==='yeslon'?mergeKwStr(kwRaw,LIGHTNING_KW):kwRaw;
   return {
     sub: re(c,/subdomain:\s*'([^']+)'/,1),
     dom: re(c,/(?<!sub)domain:\s*'([^']+)'/,1),
@@ -30,7 +48,7 @@ function cfg(site) {
     feat: reList(c,/features:\s*\[([\s\S]*?)\]/),
     color: re(c,/primaryColor:\s*'([^']+)'/,1)||'#1E40AF',
     colorDark: re(c,/secondaryColor:\s*'([^']+)'/,1)||'',
-    kw: (()=>{try{const m=readFileSync(c,'utf-8').match(/keywords:\s*\[([^\]]+)\]/);return m?[...m[1].matchAll(/'([^']+)'/g)].map(x=>x[1]).join(', '):'';}catch{return '';}})(),
+    kw,
     group: (()=>{try{const m=readFileSync(c,'utf-8').match(/companyGroup:\s*\[([\s\S]*?)\]/);return m?[...m[1].matchAll(/'([^']+)'/g)].map(x=>x[1]):[];}catch{return[];}})(),
   };
 }
@@ -44,11 +62,13 @@ function pages(site) {
       const titleM=block.match(/title:\s*'([^']+)'/);
       const descM=block.match(/description:\s*'([^']+)'/);
       const kwM=block.match(/keywords:\s*\[([^\]]+)\]/);
+      const kwRaw=kwM?[...kwM[1].matchAll(/'([^']+)'/g)].map(x=>x[1]).join(', '):'';
+      const pathVal=pathM?pathM[1]:'';
       if(titleM)p.push({
-        path:pathM?pathM[1]:'',
+        path:pathVal,
         title:titleM[1],
         desc:descM?descM[1]:'',
-        kw:kwM?[...kwM[1].matchAll(/'([^']+)'/g)].map(x=>x[1]).join(', '):''
+        kw:shouldMergeLightningKw(site,pathVal)?mergeKwStr(kwRaw,LIGHTNING_KW):kwRaw
       });
     }
     return p.length?p:[{path:'',title:'首页'}];
