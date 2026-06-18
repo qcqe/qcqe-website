@@ -315,6 +315,16 @@ const UI_STYLES=`<style>
 .scroll-mt-20{scroll-margin-top:80px}
 .line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .line-clamp-4{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.news-cover{border-radius:0}
+.news-card{overflow:hidden;border-radius:4px}
+.news-card:hover{box-shadow:0 8px 24px rgba(15,23,42,.1);transform:translateY(-2px)}
+.news-card{transition:box-shadow .25s,transform .25s,border-color .2s}
+.news-section-heading{font-size:1.2rem;font-weight:700;color:#0f172a;margin-bottom:1rem;padding:.5rem 0 .5rem 1rem;border-left:4px solid var(--brand-700,#1d4ed8);background:linear-gradient(90deg,color-mix(in srgb,var(--brand-700) 6%,white),transparent)}
+.news-knowledge .news-section-heading{border-left-color:#d97706;background:linear-gradient(90deg,#fffbeb,transparent)}
+.news-lead{font-size:1.125rem;line-height:1.75;color:#475569}
+.news-tag{display:inline-flex;align-items:center;padding:.2rem .65rem;font-size:11px;font-weight:600;border-radius:9999px;letter-spacing:.02em}
+.news-channel-card{position:relative;overflow:hidden;border-radius:4px}
+.news-channel-card::before{content:'';position:absolute;inset:0;opacity:.12;background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:28px 28px}
 </style>`;
 function sectionHead(label,title,desc='',center=false){
   const align=center?'text-center mx-auto':'';
@@ -948,91 +958,190 @@ ${pageHero(t)}
 }
 
 const NEWS_SECTION_META={
-  company:{title:'公司新闻',desc:'产品发布、战略合作、荣誉奖项与企业动态',path:'news/company',label:'公司新闻'},
-  knowledge:{title:'行业知识',desc:'技术解读、标准规范、应用指南与专业文档',path:'news/knowledge',label:'行业知识'},
+  company:{title:'公司新闻',desc:'产品发布、战略合作、荣誉奖项与企业动态',path:'news/company',label:'公司新闻',accent:'#1d4ed8',accentBg:'#eff6ff',heroFrom:'#0f172a',heroTo:'#1e40af'},
+  knowledge:{title:'行业知识',desc:'技术解读、标准规范、应用指南与专业文档',path:'news/knowledge',label:'行业知识',accent:'#d97706',accentBg:'#fffbeb',heroFrom:'#451a03',heroTo:'#b45309'},
 };
-function newsCard(item,pfx,section){
+const NEWS_SVG_ILLUSTRATIONS={
+  lightning:`<svg viewBox="0 0 200 160" class="w-full max-w-[200px] h-auto" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100 12L55 88h35L72 148l58-76H95L100 12z" stroke="currentColor" stroke-width="2.5" fill="currentColor" fill-opacity=".12"/><circle cx="100" cy="12" r="14" stroke="currentColor" stroke-width="1.5" opacity=".5"/><rect x="40" y="128" width="28" height="22" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="86" y="128" width="28" height="22" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="132" y="128" width="28" height="22" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M54 128V108M100 128V98M146 128V112" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3" opacity=".5"/></svg>`,
+  petrochemical:`<svg viewBox="0 0 200 160" class="w-full max-w-[200px] h-auto" fill="none"><rect x="30" y="70" width="50" height="70" rx="3" stroke="currentColor" stroke-width="2"/><ellipse cx="55" cy="70" rx="25" ry="10" stroke="currentColor" stroke-width="2"/><rect x="95" y="50" width="35" height="90" rx="2" stroke="currentColor" stroke-width="2"/><ellipse cx="112" cy="50" rx="17" ry="8" stroke="currentColor" stroke-width="2"/><rect x="145" y="85" width="30" height="55" rx="2" stroke="currentColor" stroke-width="1.5" opacity=".8"/><path d="M20 140H180" stroke="currentColor" stroke-width="2" opacity=".3"/><path d="M55 95h20M112 75v30" stroke="currentColor" stroke-width="1.5" opacity=".4"/></svg>`,
+  expo:`<svg viewBox="0 0 200 160" class="w-full max-w-[200px] h-auto" fill="none"><rect x="25" y="45" width="150" height="95" rx="4" stroke="currentColor" stroke-width="2"/><path d="M25 65h150" stroke="currentColor" stroke-width="1.5"/><rect x="45" y="80" width="35" height="45" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="90" y="80" width="35" height="45" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="135" y="80" width="25" height="45" rx="2" stroke="currentColor" stroke-width="1.5" opacity=".7"/><path d="M100 45L75 25h50L100 45z" stroke="currentColor" stroke-width="2" fill="currentColor" fill-opacity=".1"/><circle cx="62" cy="95" r="8" stroke="currentColor" stroke-width="1.5"/><circle cx="107" cy="95" r="8" stroke="currentColor" stroke-width="1.5"/></svg>`,
+  standard:`<svg viewBox="0 0 200 160" class="w-full max-w-[200px] h-auto" fill="none"><rect x="50" y="20" width="100" height="125" rx="4" stroke="currentColor" stroke-width="2"/><path d="M70 50h60M70 70h60M70 90h45M70 110h55" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".7"/><circle cx="145" cy="115" r="22" stroke="currentColor" stroke-width="2" fill="currentColor" fill-opacity=".1"/><path d="M137 115l6 6 12-14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M35 45h15v90H35z" stroke="currentColor" stroke-width="1.5" opacity=".4"/></svg>`,
+  tech:`<svg viewBox="0 0 200 160" class="w-full max-w-[200px] h-auto" fill="none"><rect x="30" y="40" width="140" height="90" rx="6" stroke="currentColor" stroke-width="2"/><circle cx="65" cy="75" r="18" stroke="currentColor" stroke-width="1.5"/><path d="M59 75h12M65 69v12" stroke="currentColor" stroke-width="2"/><rect x="95" y="58" width="60" height="8" rx="2" fill="currentColor" opacity=".25"/><rect x="95" y="74" width="48" height="8" rx="2" fill="currentColor" opacity=".2"/><rect x="95" y="90" width="54" height="8" rx="2" fill="currentColor" opacity=".15"/><path d="M50 130 Q100 115 150 130" stroke="currentColor" stroke-width="1.5" opacity=".35"/></svg>`,
+  hubCompany:`<svg viewBox="0 0 120 120" class="w-28 h-28" fill="none"><rect x="20" y="35" width="80" height="60" rx="4" stroke="currentColor" stroke-width="2"/><path d="M35 55h50M35 68h40M35 81h30" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".6"/><circle cx="60" cy="22" r="12" stroke="currentColor" stroke-width="2"/><path d="M60 34v8" stroke="currentColor" stroke-width="2"/></svg>`,
+  hubKnowledge:`<svg viewBox="0 0 120 120" class="w-28 h-28" fill="none"><path d="M30 30h60v70H30z" stroke="currentColor" stroke-width="2" rx="3"/><path d="M42 48h36M42 62h36M42 76h24" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".65"/><path d="M75 25v80l15-8V33L75 25z" stroke="currentColor" stroke-width="2" fill="currentColor" fill-opacity=".08"/><circle cx="88" cy="88" r="16" stroke="currentColor" stroke-width="2"/><path d="M82 88l4 4 8-10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+};
+function newsIllustrationKey(item,section){
+  const blob=[item.title,item.category,item.slug,...(item.keywords||[])].join(' ');
+  if(/防雷|GB|50057|SPD|雷电|接地|电涌|规范/.test(blob)) return 'lightning';
+  if(/石化|防爆|石油|炼化|罐区/.test(blob)) return 'petrochemical';
+  if(/展会|博览|签约|发布|合作|获奖|好评/.test(blob)) return 'expo';
+  if(/标准|解读|条款|知识|技术突破/.test(blob)) return 'standard';
+  return section==='knowledge'?'standard':'tech';
+}
+function newsCoverVisual(section,item,variant='card'){
+  const key=newsIllustrationKey(item,section);
+  const svg=NEWS_SVG_ILLUSTRATIONS[key]||NEWS_SVG_ILLUSTRATIONS.tech;
+  const tm=NEWS_SECTION_META[section];
+  const bg=`linear-gradient(135deg,${tm.heroFrom} 0%,${tm.heroTo} 100%)`;
+  const h=variant==='hero'?'min-h-[200px] md:min-h-[260px]':variant==='featured'?'min-h-[240px] md:min-h-full':'aspect-[16/10]';
+  return `<div class="news-cover relative overflow-hidden ${h}" style="background:${bg}"><div class="absolute inset-0 opacity-[0.08]" style="background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:28px 28px"></div><div class="absolute inset-0 flex items-center justify-center text-white/30 pointer-events-none px-8">${svg}</div><div class="absolute bottom-0 left-0 right-0 h-2/5 bg-gradient-to-t from-black/35 to-transparent"></div></div>`;
+}
+function newsBreadcrumb(pfx,parts){
+  return `<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-sm text-slate-500 flex gap-2 flex-wrap items-center">${parts.map((p,i)=>{if(i===parts.length-1)return `<span class="text-slate-700 line-clamp-1">${h(p.t)}</span>`;return `<a href="${p.u}" class="hover:text-primary-600 no-underline">${h(p.t)}</a><span class="text-slate-300">/</span>`;}).join('')}</div>`;
+}
+function newsTag(section,category){
+  const tm=NEWS_SECTION_META[section];
+  const bg=section==='knowledge'?'#fffbeb':'#eff6ff';
+  const color=tm.accent;
+  return `<span class="news-tag" style="background:${bg};color:${color}">${h(category||tm.label)}</span>`;
+}
+function formatNewsBody(content,section){
+  if(!content) return '<p class="text-slate-500">正文更新中</p>';
+  let leadDone=false;
+  const blocks=content.split(/(?=[一二三四五六七八九十百]+、)/).filter(Boolean);
+  return blocks.map(block=>{
+    block=block.trim();
+    const m=block.match(/^([一二三四五六七八九十百]+、[^。！？\n]{2,48})([\s\S]*)$/);
+    if(m){
+      const heading=m[1];
+      const body=m[2].trim().replace(/^[。，、\s]+/,'');
+      const paras=body.split(/(?<=[。！？])/).filter(Boolean).map(p=>{const t=p.trim();return t?`<p class="text-slate-700 leading-[1.85] mb-4 text-[15px]">${h(t)}</p>`:'';}).join('');
+      return `<div class="news-section-block mt-10 first:mt-0"><h2 class="news-section-heading">${h(heading)}</h2>${paras}</div>`;
+    }
+    return block.split(/(?<=[。！？])/).filter(Boolean).map(p=>{
+      p=p.trim();
+      if(!leadDone){
+        leadDone=true;
+        return `<p class="news-lead mb-8 pl-5 border-l-4 py-4 pr-4 rounded-r-lg ${section==='knowledge'?'border-amber-500 bg-amber-50/50':'border-primary-600 bg-slate-50'}">${h(p)}</p>`;
+      }
+      return `<p class="text-slate-700 leading-[1.85] mb-4 text-[15px]">${h(p)}</p>`;
+    }).join('');
+  }).join('');
+}
+function newsCard(item,pfx,section,opts={}){
   const base=NEWS_SECTION_META[section].path;
-  return `<article class="card-panel p-6 flex flex-col h-full group">
-<div class="flex items-center gap-2 text-xs text-slate-500 mb-3">
-<span class="px-2 py-0.5 bg-slate-100 rounded">${h(item.category||NEWS_SECTION_META[section].label)}</span>
-${item.publishedAt?`<time datetime="${h(item.publishedAt)}">${h(item.publishedAt)}</time>`:''}
-</div>
-<h3 class="font-semibold text-slate-900 mb-2 text-base group-hover:text-primary-800"><a href="${pfx}/${base}/${h(item.slug)}" class="no-underline text-inherit">${h(item.title)}</a></h3>
-<p class="text-sm text-slate-600 leading-relaxed flex-1">${h((item.description||'').slice(0,160))}</p>
-<a href="${pfx}/${base}/${h(item.slug)}" class="mt-4 text-sm text-primary-700 font-medium no-underline group-hover:underline">阅读全文 →</a>
-</article>`;
+  const featured=opts.featured;
+  if(featured){
+    return `<article class="news-card card-panel overflow-hidden mb-12 group grid md:grid-cols-2 border-0 shadow-sm">
+${newsCoverVisual(section,item,'featured')}
+<div class="p-8 md:p-10 flex flex-col justify-center">
+<div class="flex items-center gap-3 text-xs text-slate-500 mb-4">${newsTag(section,item.category)}${item.publishedAt?`<time datetime="${h(item.publishedAt)}">${h(item.publishedAt)}</time>`:''}<span class="px-2 py-0.5 bg-slate-100 rounded text-[10px] font-semibold uppercase tracking-wide">精选</span></div>
+<h3 class="font-bold text-slate-900 mb-3 text-xl md:text-2xl leading-snug group-hover:text-primary-800"><a href="${pfx}/${base}/${h(item.slug)}" class="no-underline text-inherit">${h(item.title)}</a></h3>
+<p class="text-sm md:text-base text-slate-600 leading-relaxed flex-1 line-clamp-4">${h(item.description||'')}</p>
+<a href="${pfx}/${base}/${h(item.slug)}" class="mt-6 inline-flex items-center gap-2 text-sm font-semibold no-underline ${section==='knowledge'?'text-amber-700 hover:text-amber-900':'text-primary-700 hover:text-primary-900'}">阅读全文 <span aria-hidden="true">→</span></a>
+</div></article>`;
+  }
+  return `<article class="news-card card-panel overflow-hidden flex flex-col h-full group border-0">
+<a href="${pfx}/${base}/${h(item.slug)}" class="no-underline text-inherit flex flex-col h-full">
+${newsCoverVisual(section,item,'card')}
+<div class="p-5 flex flex-col flex-1">
+<div class="flex items-center gap-2 text-xs text-slate-500 mb-3">${newsTag(section,item.category)}${item.publishedAt?`<time datetime="${h(item.publishedAt)}">${h(item.publishedAt)}</time>`:''}</div>
+<h3 class="font-semibold text-slate-900 mb-2 text-base leading-snug group-hover:text-primary-800 line-clamp-2">${h(item.title)}</h3>
+<p class="text-sm text-slate-600 leading-relaxed flex-1 line-clamp-3">${h((item.description||'').slice(0,120))}</p>
+<span class="mt-4 text-xs font-semibold ${section==='knowledge'?'text-amber-700':'text-primary-700'}">阅读全文 →</span>
+</div></a></article>`;
+}
+function newsSectionHero(section,meta,count){
+  const svg=section==='knowledge'?NEWS_SVG_ILLUSTRATIONS.hubKnowledge:NEWS_SVG_ILLUSTRATIONS.hubCompany;
+  const bg=`linear-gradient(135deg,${meta.heroFrom} 0%,${meta.heroTo} 100%)`;
+  return `<div class="relative overflow-hidden text-white" style="background:${bg};border-bottom:4px solid ${meta.accent}">
+<div class="absolute inset-0 opacity-[0.06]" style="background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:40px 40px"></div>
+<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 grid md:grid-cols-[1fr_auto] gap-8 items-center">
+<div><p class="text-[11px] font-semibold tracking-[0.2em] text-white/60 mb-3 uppercase">News · ${section==='knowledge'?'Knowledge':'Company'}</p>
+<h1 class="text-2xl md:text-4xl font-bold tracking-tight mb-3">${h(meta.title)}</h1>
+<p class="text-white/80 text-sm md:text-base max-w-xl leading-relaxed mb-4">${h(meta.desc)}</p>
+<p class="text-white/50 text-xs">${count} 篇文章</p></div>
+<div class="hidden md:flex text-white/20 justify-end pr-4" aria-hidden="true">${svg}</div>
+</div></div>`;
 }
 function newsHubPage(pp,c,allNews,pfx,p){
-  const company=allNews.filter(n=>n.section==='company');
-  const knowledge=allNews.filter(n=>n.section==='knowledge');
-  const latestCards=(sec)=>{const list=allNews.filter(x=>x.section===sec).slice(0,3);return list.length?list.map(x=>newsCard(x,pfx,sec)).join(''):'<p class="text-slate-500 text-sm">内容更新中</p>';};
+  const company=allNews.filter(n=>n.section==='company').sort((a,b)=>(b.publishedAt||'').localeCompare(a.publishedAt||''));
+  const knowledge=allNews.filter(n=>n.section==='knowledge').sort((a,b)=>(b.publishedAt||'').localeCompare(a.publishedAt||''));
+  const latestCards=(sec)=>{const list=(sec==='company'?company:knowledge).slice(0,3);return list.length?`<div class="grid gap-5">${list.map(x=>newsCard(x,pfx,sec)).join('')}</div>`:'<p class="text-slate-500 text-sm py-6">内容更新中</p>';};
   const bd=`${nav(pp,c,pfx+'/news',pfx)}
-${pageHero(p.title,'公司新闻 · 行业知识')}
-<section class="py-14 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="grid md:grid-cols-2 gap-6 mb-14">
-<a href="${pfx}/news/company" class="card-panel p-8 block no-underline border-l-4 border-l-primary-700 hover:shadow-md transition-shadow group">
-<p class="text-xs font-medium text-primary-700 uppercase tracking-wide mb-2">栏目一</p>
-<h2 class="text-xl font-bold text-slate-900 group-hover:text-primary-800 mb-2">公司新闻</h2>
-<p class="text-sm text-slate-600 leading-relaxed mb-4">产品发布、战略合作、荣誉奖项与企业动态</p>
-<span class="text-sm text-primary-700 font-medium">${company.length} 篇 · 查看全部 →</span>
-</a>
-<a href="${pfx}/news/knowledge" class="card-panel p-8 block no-underline border-l-4 border-l-amber-600 hover:shadow-md transition-shadow group">
-<p class="text-xs font-medium text-amber-700 uppercase tracking-wide mb-2">栏目二</p>
-<h2 class="text-xl font-bold text-slate-900 group-hover:text-amber-800 mb-2">行业知识</h2>
-<p class="text-sm text-slate-600 leading-relaxed mb-4">技术文档、标准解读、应用指南与行业专业内容</p>
-<span class="text-sm text-amber-700 font-medium">${knowledge.length} 篇 · 查看全部 →</span>
-</a>
+<div class="relative overflow-hidden text-white" style="background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 50%,#b45309 100%);border-bottom:4px solid #1d4ed8">
+<div class="absolute inset-0 opacity-[0.05]" style="background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:36px 36px"></div>
+<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-18">
+<p class="text-[11px] font-semibold tracking-[0.25em] text-white/50 mb-4">INSIGHTS & UPDATES</p>
+<h1 class="text-3xl md:text-4xl font-bold tracking-tight mb-3">${h(p.title)}</h1>
+<p class="text-white/75 text-sm md:text-base max-w-2xl leading-relaxed">公司动态与行业知识双栏目，图文呈现产品与标准深度内容</p>
+</div></div>
+<section class="py-14 bg-slate-50"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid md:grid-cols-2 gap-6 mb-16">
+<a href="${pfx}/news/company" class="news-channel-card block no-underline group" style="background:linear-gradient(135deg,#0f172a,#1e40af)">
+<div class="relative z-10 p-8 md:p-10 text-white min-h-[220px] flex flex-col justify-between">
+<div class="flex justify-between items-start gap-4">
+<div><p class="text-[10px] font-bold tracking-[0.2em] text-blue-200 mb-2">COLUMN 01</p>
+<h2 class="text-2xl font-bold mb-2 group-hover:text-blue-100">公司新闻</h2>
+<p class="text-sm text-blue-100/80 leading-relaxed max-w-xs">产品发布、战略合作、荣誉奖项与企业动态</p></div>
+<div class="text-white/15 shrink-0 hidden sm:block">${NEWS_SVG_ILLUSTRATIONS.hubCompany}</div></div>
+<span class="text-sm font-semibold text-blue-200 mt-6">${company.length} 篇 · 进入栏目 →</span>
+</div></a>
+<a href="${pfx}/news/knowledge" class="news-channel-card block no-underline group" style="background:linear-gradient(135deg,#451a03,#b45309)">
+<div class="relative z-10 p-8 md:p-10 text-white min-h-[220px] flex flex-col justify-between">
+<div class="flex justify-between items-start gap-4">
+<div><p class="text-[10px] font-bold tracking-[0.2em] text-amber-200 mb-2">COLUMN 02</p>
+<h2 class="text-2xl font-bold mb-2 group-hover:text-amber-100">行业知识</h2>
+<p class="text-sm text-amber-100/80 leading-relaxed max-w-xs">技术文档、标准解读、应用指南与专业内容</p></div>
+<div class="text-white/15 shrink-0 hidden sm:block">${NEWS_SVG_ILLUSTRATIONS.hubKnowledge}</div></div>
+<span class="text-sm font-semibold text-amber-200 mt-6">${knowledge.length} 篇 · 进入栏目 →</span>
+</div></a>
 </div>
-<div class="grid lg:grid-cols-2 gap-10">
-<div><div class="flex items-center justify-between mb-4"><h3 class="font-semibold text-slate-900">最新公司新闻</h3><a href="${pfx}/news/company" class="text-sm text-primary-700 no-underline hover:underline">全部</a></div><div class="grid gap-4">${latestCards('company')}</div></div>
-<div><div class="flex items-center justify-between mb-4"><h3 class="font-semibold text-slate-900">最新行业知识</h3><a href="${pfx}/news/knowledge" class="text-sm text-amber-700 no-underline hover:underline">全部</a></div><div class="grid gap-4">${latestCards('knowledge')}</div></div>
+<div class="grid lg:grid-cols-2 gap-12">
+<div><div class="flex items-center gap-3 mb-6"><span class="w-1 h-8 bg-primary-700 rounded-full"></span><div class="flex-1 flex items-center justify-between"><h3 class="font-bold text-slate-900 text-lg">最新公司新闻</h3><a href="${pfx}/news/company" class="text-sm text-primary-700 no-underline hover:underline font-medium">全部 →</a></div></div>${latestCards('company')}</div>
+<div><div class="flex items-center gap-3 mb-6"><span class="w-1 h-8 bg-amber-600 rounded-full"></span><div class="flex-1 flex items-center justify-between"><h3 class="font-bold text-slate-900 text-lg">最新行业知识</h3><a href="${pfx}/news/knowledge" class="text-sm text-amber-700 no-underline hover:underline font-medium">全部 →</a></div></div>${latestCards('knowledge')}</div>
 </div>
 </div></section>${ft(pp,c,pfx)}`;
   return lay(p.title+' - '+c.name,p.desc||'',bd,c,canonicalUrl(pfx,'news'),OG_DEFAULT,p.kw||'');
 }
 function newsListPage(section,pp,c,items,pfx,p){
   const meta=NEWS_SECTION_META[section];
-  const filtered=items.filter(n=>n.section===section);
-  const cards=filtered.length?`<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">${filtered.map(n=>newsCard(n,pfx,section)).join('')}</div>`:'<p class="text-slate-500 text-sm py-8">内容更新中</p>';
+  const filtered=items.filter(n=>n.section===section).sort((a,b)=>(b.publishedAt||'').localeCompare(a.publishedAt||''));
+  const featured=filtered[0];
+  const rest=filtered.slice(1);
+  const cards=rest.length?`<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">${rest.map(n=>newsCard(n,pfx,section)).join('')}</div>`:'';
   const bd=`${nav(pp,c,pfx+'/'+meta.path,pfx)}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-sm text-slate-500 flex gap-2 flex-wrap">
-<a href="${pfx}/news" class="hover:text-primary-600 no-underline">新闻动态</a><span>/</span><span class="text-slate-700">${h(meta.title)}</span>
-</div>
-${pageHero(meta.title,meta.desc)}
+${newsBreadcrumb(pfx,[{t:'新闻动态',u:pfx+'/news'},{t:meta.title,u:''}])}
+${newsSectionHero(section,meta,filtered.length)}
 <section class="py-14 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex gap-3 mb-8 text-sm">
-<a href="${pfx}/news/company" class="px-4 py-2 rounded border ${section==='company'?'bg-primary-700 text-white border-primary-700':'border-slate-300 text-slate-600 hover:border-slate-500'} no-underline">公司新闻</a>
-<a href="${pfx}/news/knowledge" class="px-4 py-2 rounded border ${section==='knowledge'?'bg-amber-600 text-white border-amber-600':'border-slate-300 text-slate-600 hover:border-slate-500'} no-underline">行业知识</a>
+<div class="flex flex-wrap gap-3 mb-10 text-sm">
+<a href="${pfx}/news/company" class="px-5 py-2.5 rounded-full border font-medium transition-colors ${section==='company'?'text-white border-transparent shadow-md':'border-slate-200 text-slate-600 hover:border-slate-400 bg-white'} no-underline" ${section==='company'?'style="background:#1d4ed8"':''}>公司新闻</a>
+<a href="${pfx}/news/knowledge" class="px-5 py-2.5 rounded-full border font-medium transition-colors ${section==='knowledge'?'text-white border-transparent shadow-md':'border-slate-200 text-slate-600 hover:border-slate-400 bg-white'} no-underline" ${section==='knowledge'?'style="background:#d97706"':''}>行业知识</a>
 </div>
-${cards}
+${featured?newsCard(featured,pfx,section,{featured:true}):''}
+${cards||(!featured?'<p class="text-slate-500 text-sm py-8 text-center">内容更新中</p>':'')}
 </div></section>${ft(pp,c,pfx)}`;
   return lay(meta.title+' - '+c.name,p?.desc||meta.desc,bd,c,canonicalUrl(pfx,meta.path),OG_DEFAULT,p?.kw||'');
 }
-function newsArticlePage(item,section,pp,c,pfx){
+function newsArticlePage(item,section,pp,c,pfx,allNews){
   const meta=NEWS_SECTION_META[section];
   const articleUrl=canonicalUrl(pfx,meta.path+'/'+item.slug);
-  const paras=(item.content||'').split(/(?<=[。！？])/).filter(Boolean).map(p=>`<p class="text-slate-700 leading-relaxed mb-4">${h(p.trim())}</p>`).join('');
+  const body=formatNewsBody(item.content||'',section);
+  const kwTags=(item.keywords||[]).map(k=>`<span class="news-tag mr-2 mb-2" style="background:${meta.accentBg};color:${meta.accent}">${h(k)}</span>`).join('');
+  const related=(allNews||[]).filter(n=>n.section===section&&n.slug!==item.slug).sort((a,b)=>(b.publishedAt||'').localeCompare(a.publishedAt||'')).slice(0,3);
+  const relatedHtml=related.length?`<section class="mt-14 pt-10 border-t border-slate-200"><h2 class="text-lg font-bold text-slate-900 mb-6">相关阅读</h2><div class="grid sm:grid-cols-3 gap-4">${related.map(r=>newsCard(r,pfx,section)).join('')}</div></section>`:'';
   const kw=capKwStr(mergeKwStr((item.keywords||[]).join(', '),section==='knowledge'?(PAGE_LIGHTNING_KW.knowledge||LIGHTNING_KW_CORE.slice(0,8)):[]),LIGHTNING_KW_META_CAP);
   const jsonLd=JSON.stringify({'@context':'https://schema.org','@type':'Article',headline:item.title,description:item.description,datePublished:item.publishedAt,author:{'@type':'Organization',name:c.name||'微物联技术（深圳）有限公司'},publisher:{'@type':'Organization',name:c.name||'微物联技术（深圳）有限公司'},mainEntityOfPage:articleUrl});
   const bd=`${nav(pp,c,pfx+'/'+meta.path,pfx)}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-sm text-slate-500 flex gap-2 flex-wrap">
-<a href="${pfx}/news" class="hover:text-primary-600 no-underline">新闻动态</a><span>/</span>
-<a href="${pfx}/${meta.path}" class="hover:text-primary-600 no-underline">${h(meta.title)}</a><span>/</span>
-<span class="text-slate-700 line-clamp-1">${h(item.title)}</span>
+${newsBreadcrumb(pfx,[{t:'新闻动态',u:pfx+'/news'},{t:meta.title,u:pfx+'/'+meta.path},{t:item.title,u:''}])}
+<div class="relative ${section==='knowledge'?'news-knowledge':''}">
+<div class="relative overflow-hidden text-white" style="background:linear-gradient(135deg,${meta.heroFrom},${meta.heroTo});border-bottom:4px solid ${meta.accent}">
+${newsCoverVisual(section,item,'hero')}
+<div class="absolute inset-0 flex items-end"><div class="w-full bg-gradient-to-t from-black/70 via-black/30 to-transparent pt-24 pb-10 md:pb-14"><div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex flex-wrap items-center gap-3 text-xs mb-4">${newsTag(section,item.category)}${item.publishedAt?`<time datetime="${h(item.publishedAt)}" class="text-white/70">${h(item.publishedAt)}</time>`:''}</div>
+<h1 class="text-2xl md:text-4xl font-bold leading-tight tracking-tight">${h(item.title)}</h1>
+${item.description?`<p class="mt-4 text-white/85 text-sm md:text-base leading-relaxed max-w-3xl line-clamp-3 md:line-clamp-none">${h(item.description)}</p>`:''}
+</div></div></div>
 </div>
-<article class="py-10 bg-white"><div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-<header class="mb-8 pb-6 border-b border-slate-200">
-<p class="text-xs text-slate-500 mb-3 flex flex-wrap gap-3"><span class="px-2 py-0.5 bg-slate-100 rounded">${h(item.category||meta.label)}</span>${item.publishedAt?`<time datetime="${h(item.publishedAt)}">${h(item.publishedAt)}</time>`:''}</p>
-<h1 class="text-2xl md:text-3xl font-bold text-slate-900 leading-snug">${h(item.title)}</h1>
-${item.description?`<p class="mt-4 text-slate-600 leading-relaxed">${h(item.description)}</p>`:''}
-</header>
-<div class="prose prose-slate max-w-none">${paras||'<p class="text-slate-500">正文更新中</p>'}</div>
-<div class="mt-10 pt-6 border-t border-slate-200 flex flex-wrap gap-3">
-<a href="${pfx}/${meta.path}" class="text-sm text-primary-700 no-underline hover:underline">← 返回${h(meta.title)}</a>
-<a href="${pfx}/news" class="text-sm text-slate-500 no-underline hover:text-slate-800">新闻动态首页</a>
+<article class="py-12 md:py-16 bg-white"><div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="article-body">${body}</div>
+${kwTags?`<div class="mt-10 pt-8 border-t border-slate-100 flex flex-wrap">${kwTags}</div>`:''}
+<div class="mt-8 flex flex-wrap gap-4">
+<a href="${pfx}/${meta.path}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold no-underline text-white" style="background:${meta.accent}">← 返回${h(meta.title)}</a>
+<a href="${pfx}/news" class="inline-flex items-center px-5 py-2.5 rounded-full text-sm font-medium border border-slate-200 text-slate-600 hover:border-slate-400 no-underline">新闻首页</a>
 </div>
-</div></article>
+${relatedHtml}
+</div></article></div>
 <script type="application/ld+json">${jsonLd.replace(/</g,'\\u003c')}</script>
 ${ft(pp,c,pfx)}`;
   return lay(item.title+' - '+meta.title+' - '+c.name,item.description||item.content?.slice(0,160)||'',bd,c,articleUrl,OG_DEFAULT,kw);
@@ -1292,7 +1401,7 @@ ${pageHero(p.title,'行业经验与技术积累')}
     const sec=item.section==='company'?'company':'knowledge';
     const dir=join(out,'news',sec,item.slug);
     if(!existsSync(dir)) mkdirSync(dir,{recursive:true});
-    writeFileSync(join(dir,'index.html'),newsArticlePage(item,sec,pp,c,pfx));
+    writeFileSync(join(dir,'index.html'),newsArticlePage(item,sec,pp,c,pfx,nws));
   }
 
   console.log(`  ${d.n}${d.main?' (main)':''} → ${pp.length} pages + product details + solutions${d.main?' + news articles':''}`);
