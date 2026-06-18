@@ -5,9 +5,9 @@
  * - P1 产品/方案词：FS/FSS/FSP/FL/FR/FRP/FG 及方案命名
  * - P2 行业场景词：石化/机场/光伏等方案与案例选题
  * - P3 标准/长尾词：文章深度写作、内部链接锚文本
+ * - P4 扩展词：标准体系、技术术语、场景长尾（全库约 130 词）
  *
- * 使用原则：每页 meta 仅注入 PAGE_LIGHTNING_KEYWORD_SETS 中对应类型的少量词；
- * 写文章/方案时从全库选题，每篇深度覆盖 3～5 个即可，避免单页堆砌。
+ * 使用原则：全库 120+ 词供选题与内链；单页 meta 合并页面词集 + 文章自有词 + 语境匹配词，上限见构建脚本 NEWS_ARTICLE_META_CAP。
  */
 
 /** P0 核心词（25） */
@@ -113,7 +113,54 @@ export const P3_LIGHTNING_SEO_KEYWORDS = [
   '防雷检测方案',
 ] as const;
 
-/** 按页面类型注入 meta 的精选词集（每类约 10～12 个，构建时与页面自有词合并并截断） */
+/** P4 扩展词（43）— 标准体系、技术术语、场景长尾，全库约 130 */
+export const P4_LIGHTNING_SEO_KEYWORDS = [
+  'GB 50343',
+  'GB/T 21431',
+  'IEC 62305',
+  'SH/T 3169',
+  '防雷装置',
+  '外部防雷',
+  '内部防雷',
+  '等电位连接',
+  '防雷击电磁脉冲',
+  '接闪器',
+  '引下线',
+  '接地装置',
+  '滚球法',
+  '防雷分类',
+  '三极法接地',
+  '回路法接地',
+  '电位降法',
+  '智能防雷监测系统',
+  '雷电峰值监测仪',
+  '接地电阻监测仪',
+  '微物联防雷',
+  '防雷在线检测',
+  '防雷定期检测',
+  '厂区防雷',
+  '园区防雷',
+  '楼宇防雷',
+  '电力系统防雷',
+  '低压配电防雷',
+  '机房防雷',
+  '智慧园区防雷',
+  'SPD更换',
+  '防雷改造',
+  '防雷升级',
+  '雷灾预警',
+  '雷电灾害防护',
+  '雷电入侵',
+  '防雷报告',
+  '防雷台账',
+  'FS监测模块',
+  'FRP监测仪',
+  'FG防雷网关',
+  '防雷智能诊断',
+  '防雷状态监测',
+] as const;
+
+/** 按页面类型注入 meta 的精选词集（构建时与页面/文章自有词及语境词合并并截断） */
 export const PAGE_LIGHTNING_KEYWORD_SETS = {
   home: [
     '智慧防雷',
@@ -173,6 +220,8 @@ export const PAGE_LIGHTNING_KEYWORD_SETS = {
     '防雷技术文档',
     '行业标准解读',
     'GB 50057',
+    'GB 50343',
+    'GB/T 21431',
     'SPD监测原理',
     '接地电阻在线监测',
     '雷电防护',
@@ -180,6 +229,23 @@ export const PAGE_LIGHTNING_KEYWORD_SETS = {
     '劣化预警',
     '雷击计数',
     '防雷检测方案',
+    '建筑物防雷设计规范',
+    '防雷击电磁脉冲',
+    '等电位连接',
+  ],
+  newsCompany: [
+    '微物联',
+    'Yeslon',
+    '智能防雷',
+    '电气安全监测',
+    '工业物联网',
+    '智慧防雷',
+    'SPD监测',
+    '接地电阻监测',
+    '产品发布',
+    '企业动态',
+    '新能源充电',
+    '数字化配电',
   ],
   specifications: [
     '技术规格',
@@ -199,6 +265,7 @@ export const ALL_LIGHTNING_SEO_KEYWORDS = [
   ...P1_LIGHTNING_SEO_KEYWORDS,
   ...P2_LIGHTNING_SEO_KEYWORDS,
   ...P3_LIGHTNING_SEO_KEYWORDS,
+  ...P4_LIGHTNING_SEO_KEYWORDS,
 ] as const;
 
 export function mergeKeywords(...lists: readonly (readonly string[])[]): string[] {

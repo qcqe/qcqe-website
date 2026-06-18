@@ -58,6 +58,7 @@ function navActive(cur,href,path){
 
 const LIGHTNING_KW_FILE=join(root,'sites/lightning-protection/data/lightning-seo-keywords.ts');
 const LIGHTNING_KW_META_CAP=18;
+const NEWS_ARTICLE_META_CAP=22;
 function parseKwArrayConst(name){
   try{
     const c=readFileSync(LIGHTNING_KW_FILE,'utf-8');
@@ -83,6 +84,8 @@ const LIGHTNING_KW_CORE=parseKwArrayConst('CORE_LIGHTNING_SEO_KEYWORDS');
 const LIGHTNING_KW_P1=parseKwArrayConst('P1_LIGHTNING_SEO_KEYWORDS');
 const LIGHTNING_KW_P2=parseKwArrayConst('P2_LIGHTNING_SEO_KEYWORDS');
 const LIGHTNING_KW_P3=parseKwArrayConst('P3_LIGHTNING_SEO_KEYWORDS');
+const LIGHTNING_KW_P4=parseKwArrayConst('P4_LIGHTNING_SEO_KEYWORDS');
+const LIGHTNING_KW_ALL=[...LIGHTNING_KW_CORE,...LIGHTNING_KW_P1,...LIGHTNING_KW_P2,...LIGHTNING_KW_P3,...LIGHTNING_KW_P4];
 const PAGE_LIGHTNING_KW=parsePageLightningKwSets();
 function mergeKwList(base,extra){
   const seen=new Set();const out=[];
@@ -99,7 +102,39 @@ function lightningPageType(path){
   if(path==='cases') return 'cases';
   if(path==='specifications') return 'specifications';
   if(path==='news/knowledge'||path.startsWith('news/knowledge/')) return 'knowledge';
+  if(path==='news/company'||path.startsWith('news/company/')) return 'newsCompany';
   return null;
+}
+function pickContextualLightningKw(item,limit=8){
+  const blob=[item.title,item.description,item.content,item.category,...(item.keywords||[])].join(' ');
+  const rules=[
+    [/防雷|SPD|电涌|浪涌|智能防雷/,['SPD监测','电涌保护器在线监测','智能浪涌保护器','智能防雷系统']],
+    [/接地|等电位/,['接地电阻在线监测','FR接地电阻监测仪','FRP接地电阻监测仪','接地网在线监测']],
+    [/雷电|雷电流|雷击|雷灾/,['雷电流监测','FL雷电峰值监测仪','雷击计数','雷电预警系统']],
+    [/GB.?50057|建筑物防雷|接闪|引下线|滚球|LEMP/,['GB 50057','建筑物防雷设计规范','防雷击电磁脉冲','接闪器']],
+    [/石化|石油|防爆|炼化|罐区/,['石化防雷监测','石油化工防爆防雷','本安防爆防雷']],
+    [/机场|航站|交通/,['机场防雷监测','高速公路防雷']],
+    [/充电|能源|电能|配电|电气安全/,['充电站防雷','电气安全监测','低压配电防雷']],
+    [/大模型|AI|算法|物联网|博览|展会/,['边缘计算防雷','防雷数字化','防雷物联网','微物联防雷']],
+    [/标准|解读|规范|检测/,['GB/T 21431','防雷检测方案','防雷装置在线监测']],
+  ];
+  const picked=[];const seen=new Set();
+  for(const [re,words] of rules){
+    if(re.test(blob)){
+      for(const w of words){if(!seen.has(w)){seen.add(w);picked.push(w);}}
+    }
+  }
+  for(const w of LIGHTNING_KW_ALL){
+    if(picked.length>=limit) break;
+    if(w.length>=3&&blob.includes(w)){if(!seen.has(w)){seen.add(w);picked.push(w);}}
+  }
+  return picked.slice(0,limit);
+}
+function newsArticleKeywords(item,section){
+  const itemKw=item.keywords||[];
+  const contextual=pickContextualLightningKw(item,8);
+  const pageSet=PAGE_LIGHTNING_KW[section==='knowledge'?'knowledge':'newsCompany']||LIGHTNING_KW_CORE.slice(0,8);
+  return capKwList(mergeKwList([...pageSet,...contextual],itemKw),NEWS_ARTICLE_META_CAP).join(', ');
 }
 function lightningKwForPage(path,baseStr){
   const type=lightningPageType(path);
@@ -113,7 +148,7 @@ function shouldMergeLightningKw(site,path){
     return ['','products','solutions','cases','specifications'].includes(path)||path.startsWith('products/');
   }
   if(site==='yeslon'){
-    return ['','products','solutions','cases','news/knowledge'].includes(path)||path.startsWith('news/knowledge/');
+    return ['','products','solutions','cases','news','news/company','news/knowledge'].includes(path)||path.startsWith('news/knowledge/')||path.startsWith('news/company/');
   }
   return false;
 }
@@ -1120,8 +1155,8 @@ function newsArticlePage(item,section,pp,c,pfx,allNews){
   const kwTags=(item.keywords||[]).map(k=>`<span class="news-tag mr-2 mb-2" style="background:${meta.accentBg};color:${meta.accent}">${h(k)}</span>`).join('');
   const related=(allNews||[]).filter(n=>n.section===section&&n.slug!==item.slug).sort((a,b)=>(b.publishedAt||'').localeCompare(a.publishedAt||'')).slice(0,3);
   const relatedHtml=related.length?`<section class="mt-14 pt-10 border-t border-slate-200"><h2 class="text-lg font-bold text-slate-900 mb-6">相关阅读</h2><div class="grid sm:grid-cols-3 gap-4">${related.map(r=>newsCard(r,pfx,section)).join('')}</div></section>`:'';
-  const kw=capKwStr(mergeKwStr((item.keywords||[]).join(', '),section==='knowledge'?(PAGE_LIGHTNING_KW.knowledge||LIGHTNING_KW_CORE.slice(0,8)):[]),LIGHTNING_KW_META_CAP);
-  const jsonLd=JSON.stringify({'@context':'https://schema.org','@type':'Article',headline:item.title,description:item.description,datePublished:item.publishedAt,author:{'@type':'Organization',name:c.name||'微物联技术（深圳）有限公司'},publisher:{'@type':'Organization',name:c.name||'微物联技术（深圳）有限公司'},mainEntityOfPage:articleUrl});
+  const kw=newsArticleKeywords(item,section);
+  const jsonLd=JSON.stringify({'@context':'https://schema.org','@type':'Article',headline:item.title,description:item.description,datePublished:item.publishedAt,keywords:kw.split(',').map(s=>s.trim()).filter(Boolean),author:{'@type':'Organization',name:c.name||'微物联技术（深圳）有限公司'},publisher:{'@type':'Organization',name:c.name||'微物联技术（深圳）有限公司'},mainEntityOfPage:articleUrl});
   const bd=`${nav(pp,c,pfx+'/'+meta.path,pfx)}
 ${newsBreadcrumb(pfx,[{t:'新闻动态',u:pfx+'/news'},{t:meta.title,u:pfx+'/'+meta.path},{t:item.title,u:''}])}
 <div class="relative ${section==='knowledge'?'news-knowledge':''}">
