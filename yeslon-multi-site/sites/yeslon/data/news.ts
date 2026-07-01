@@ -162,7 +162,7 @@ export const news: News[] = [
     category: '展会动态',
     section: 'company',
     keywords: ['深湾自动化', 'IDEE 2026', '国际数字能源展', '电气隐患预警大模型', '数字化配电柜', '智能防雷', '碳管理', 'AI赋能', '数字能源'],
-    image: '/images/news/shenwan-idee-2026.jpg',
+    image: '/images/news/Shenzhen_Convention_and_Exhibi_2026-07-01T07-14-30.png',
     publishedAt: '2026-07-01'
   }
 ];
