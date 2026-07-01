@@ -1032,9 +1032,12 @@ function newsTag(section,category){
 }
 function formatNewsBody(content,section){
   if(!content) return '<p class="text-slate-500">正文更新中</p>';
+  const imgs=[];
+  let idx=0;
+  content=content.replace(/!\[([^\]]*)\]\(([^)]+)\)/g,(m,c,p)=>{const n=idx++;imgs.push({c:p.trim(),a:c.trim()});return'##IMG_'+n+'##';});
   let leadDone=false;
   const blocks=content.split(/(?=[一二三四五六七八九十百]+、)/).filter(Boolean);
-  return blocks.map(block=>{
+  const html=blocks.map(block=>{
     block=block.trim();
     const m=block.match(/^([一二三四五六七八九十百]+、[^。！？\n]{2,48})([\s\S]*)$/);
     if(m){
@@ -1052,6 +1055,7 @@ function formatNewsBody(content,section){
       return `<p class="text-slate-700 leading-[1.85] mb-4 text-[15px]">${h(p)}</p>`;
     }).join('');
   }).join('');
+  return html.replace(/##IMG_(\d+)##/g,(_,n)=>{const i=imgs[+n];if(!i)return '';return'<figure class="my-10 rounded-xl overflow-hidden shadow-sm border border-slate-100"><img src="'+h(i.c)+'" alt="'+h(i.a)+'" class="w-full" loading="lazy"><figcaption class="text-xs text-slate-500 text-center py-3 px-5 bg-slate-50 border-t border-slate-100">'+h(i.a)+'</figcaption></figure>';});
 }
 function newsCard(item,pfx,section,opts={}){
   const base=NEWS_SECTION_META[section].path;
