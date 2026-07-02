@@ -9,6 +9,7 @@
     "build:sites": "node scripts/build-sites.mjs",
     "build:seo": "node scripts/generate-seo.js",
     "preview": "vite preview",
+    "deploy": "node scripts/deploy-upyun.mjs",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
